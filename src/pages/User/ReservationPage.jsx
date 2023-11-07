@@ -1,8 +1,13 @@
 import React from 'react'
+import HeaderReservation from './Components/HeaderReservation'
+import FormReservation from './Components/FormReservation'
 
 function ReservationPage() {
     return (
-        <div>ReservationPage</div>
+        <>
+        <HeaderReservation/>
+        <FormReservation/>
+        </>
     )
 }
 

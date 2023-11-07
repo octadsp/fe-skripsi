@@ -1,33 +1,9 @@
 import logoGuns from "../../../assets/logo.png";
 import ModalUserLogin from "../../../components/Fragments/ModalUserLogin";
-import React, { useEffect } from "react";
 import ModalUserRegister from "../../../components/Fragments/ModalUserRegister";
+import AvatarProfile from "../../../components/Elements/AvatarProfile";
 
 const Header = () => {
-    useEffect(() => {
-        document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
-            anchor.addEventListener("click", function (e) {
-                e.preventDefault(); // Menghentikan perilaku default link (berpindah halaman)
-                const targetId = this.getAttribute("href").substring(1);
-                const targetElement = document.getElementById(targetId);
-                if (targetElement) {
-                    targetElement.scrollIntoView({
-                        behavior: "smooth", // Efek smooth scroll
-                        block: "start", // Memulai scroll dari bagian atas elemen
-                    });
-                }
-            });
-        });
-
-        // Membersihkan event listener ketika komponen di-unmount
-        return () => {
-            document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
-                anchor.removeEventListener("click", function (e) {
-                    e.preventDefault();
-                });
-            });
-        };
-    }, []);
 
     return (
         <header className="bg-navBg py-1 text-light-silver w-full sticky top-0">
@@ -55,11 +31,7 @@ const Header = () => {
                             <ModalUserRegister />
                         </li>
                         {/* <li className="flex justify-center">
-                            <a className="avatar" href="">
-                                <div className="w-8 mask mask-squircle">
-                                    <img src="https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&q=60&w=500&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OHx8bWFufGVufDB8fDB8fHww" />
-                                </div>
-                            </a>
+                            <AvatarProfile width={40} />
                         </li> */}
                     </ul>
                 </nav>
