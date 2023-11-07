@@ -1,17 +1,17 @@
 import React from "react";
 
-function InputText(props) {
+function InputText({ label, type, name, formName, onChange, placeholder }) {
   return (
     <>
-      <label className="text-base text-black font-semibold">{props.label}</label>
+      <label className="text-xs text-black font-semibold">{label}</label>
       <input
-        type={props.type}
-        className="bg-transparent border py-1 px-2 input-none border-gray-400 text-black text-base rounded w-full placeholder:text-gray-300"
-        name={props.name}
-        form={props.formName}
-        // onChange={handleOnChange}
+        type={type}
+        className="bg-transparent border py-1 px-2 input-none border-gray-400 text-black text-sm rounded w-full placeholder:text-gray-300"
+        name={name}
+        form={formName}
+        onChange={onChange}
         // value={email}
-        placeholder={props.placeholder}
+        placeholder={placeholder}
       />
     </>
   );

@@ -1,0 +1,29 @@
+## Checkbox ##
+<div className="form-control flex flex-row justify-evenly ">
+const [checkedOption, setCheckedOption] = useState(null);
+
+  const handleCheckboxChange = (text) => {
+    setCheckedOption(text);
+  };
+
+<CheckBox
+    text={"admin"}
+    checked={checkedOption === "admin"}
+    onChange={() => handleCheckboxChange("admin")}
+/>
+<CheckBox
+    text={"user"}
+    checked={checkedOption === "user"}
+    onChange={() => handleCheckboxChange("user")}
+/>
+<CheckBox
+    text={"merimen"}
+    checked={checkedOption === "merimen"}
+    onChange={() => handleCheckboxChange("merimen")}
+/>
+<CheckBox
+    text={"SA"}
+    checked={checkedOption === "sa"}
+    onChange={() => handleCheckboxChange("sa")}
+/>
+</div>
