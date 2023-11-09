@@ -2,15 +2,16 @@ import logoGuns from "../../../assets/logo.png";
 import ModalUserLogin from "../../../components/Fragments/ModalUserLogin";
 import ModalUserRegister from "../../../components/Fragments/ModalUserRegister";
 import AvatarProfile from "../../../components/Elements/AvatarProfile";
+import { Link } from "react-router-dom";
 
 const Header = () => {
 
     return (
         <header className="bg-navBg py-1 text-light-silver w-full sticky top-0">
             <div className="mx-5 flex justify-between items-center">
-                <div className="flex flex-row w-32">
+                <Link to={"/landing-page"} className="flex flex-row w-32">
                     <img src={logoGuns} />
-                </div>
+                </Link>
                 <nav>
                     <ul className="flex space-x-3">
                         <li className="p-2 hover:p-2 hover:text-mikado-yellow hover:ring-2 hover:ring-mikado-yellow hover:rounded-lg hover:underline"><a href="#herosection" className="">Home</a></li>

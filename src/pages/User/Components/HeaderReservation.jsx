@@ -2,7 +2,7 @@ import React from "react";
 import {BsArrowLeft} from "react-icons/bs"
 import AvatarProfile from "../../../components/Elements/AvatarProfile"
 import logoGuns from "../../../assets/logo.png"
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function HeaderReservation() {
   const navigate = useNavigate();
@@ -10,9 +10,9 @@ function HeaderReservation() {
     <>
     <header className="bg-navBg py-1 text-light-silver w-full sticky top-0">
             <div className="mx-5 flex justify-between items-center">
-                <div className="flex flex-row w-32">
+                <Link to={"/landing-page"} className="flex flex-row w-32">
                     <img src={logoGuns} />
-                </div>
+                </Link>
                 <nav>
                     <ul className="flex space-x-3">
                         <AvatarProfile width={40}/>
