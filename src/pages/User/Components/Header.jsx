@@ -18,8 +18,8 @@ const Header = () => {
                         <li className="p-2 hover:p-2 hover:text-mikado-yellow hover:ring-2 hover:ring-mikado-yellow hover:rounded-lg hover:underline"><a href="#aboutus" className=" ">About Us</a></li>
                         <li className="p-2 hover:p-2 hover:text-mikado-yellow hover:ring-2 hover:ring-mikado-yellow hover:rounded-lg hover:underline"><a href="#servicesection" className=" ">Service</a></li>
                         <li className="p-2 hover:p-2 hover:text-mikado-yellow hover:ring-2 hover:ring-mikado-yellow hover:rounded-lg hover:underline"><a href="#partnersection" className=" ">Partners</a></li>
-                        <li className="p-2 hover:p-2 hover:text-mikado-yellow hover:ring-2 hover:ring-mikado-yellow hover:rounded-lg hover:underline"><a href="#testimonialsection" className=" ">Testimonials</a></li>
-                        <li className="p-2 hover:p-2 hover:text-mikado-yellow hover:ring-2 hover:ring-mikado-yellow hover:rounded-lg hover:underline"><a href="#reservationsection" className=" ">Reservations</a></li>
+                        {/* <li className="p-2 hover:p-2 hover:text-mikado-yellow hover:ring-2 hover:ring-mikado-yellow hover:rounded-lg hover:underline"><a href="#testimonialsection" className=" ">Testimonials</a></li> */}
+                        <li className="p-2 hover:p-2 hover:text-mikado-yellow hover:ring-2 hover:ring-mikado-yellow hover:rounded-lg hover:underline"><Link to={"/reservation-page"} className=" ">Reservations</Link></li>
                         <li className="p-2 hover:p-2 hover:text-mikado-yellow hover:ring-2 hover:ring-mikado-yellow hover:rounded-lg hover:underline"><a href="#contactsection" className=" ">Contacts</a></li>
                         <li className="bg-white py-2 px-4 text-mikado-yellow font-semibold hover:bg-mikado-yellow hover:text-white  rounded-sm">
                             {/* You can open the modal using document.getElementById('ID').showModal() method */}

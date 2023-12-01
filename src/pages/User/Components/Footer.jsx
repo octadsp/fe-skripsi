@@ -19,7 +19,7 @@ const Footer = () => {
                         <div className="flex flex-col gap-3">
                             {/* ADDRESS */}
                             <div className="flex gap-3">
-                                <div className="w-16 flex justify-center items-center">
+                                <div className="w-10 flex justify-center items-center">
                                     <img src={AddressIcon} className="w-[18px]" />
                                 </div>
                                 <p className="text-xs text-justify">Jl. Kenangan Jl. Boulevard Raya Gading Serpong No.38, Curug Sangereng, Kec. Klp. Dua, Kabupaten Tangerang, Banten 15810</p>

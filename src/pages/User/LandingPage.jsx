@@ -6,8 +6,8 @@ import ServiceOverviewSection from './Components/ServiceOverviewSection'
 import ServicesSection from './Components/ServiceSection'
 import TrademarkSection from './Components/TrademarkSection'
 import ServiceStatistic from './Components/ServiceStatistic'
-import TestimonialSection from './Components/TestimonialSection'
-import ContactSection from './Components/ContactSection'
+// import TestimonialSection from './Components/TestimonialSection'
+// import ContactSection from './Components/ContactSection'
 import Footer from './Components/Footer'
 
 function LandingPage() {
@@ -22,8 +22,8 @@ function LandingPage() {
             <ServicesSection />
             <TrademarkSection />
             <ServiceStatistic />
-            <TestimonialSection />
             <Footer />
+            {/* <TestimonialSection /> */}
         </>
     );
 }
