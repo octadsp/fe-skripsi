@@ -16,11 +16,11 @@ function App() {
   return (
     <>
       <Routes>
-        <Route exact path="/auth" element={<AuthPage />} />
-        <Route exact path="/" element={<HomePage />} />
+        <Route exact path="/auth-admin" element={<AuthPage />} />
+        <Route exact path="/" element={<LandingPage />} />
         <Route exact path="/reservation-page" element={<ReservationPage/>}/>
         <Route exact path="/profile" element={<ProfilePage/>}/>
-        <Route exact path="/landing-page" element={<LandingPage />} />
+        <Route exact path="/admin-page" element={<HomePage />} />
       </Routes>
     </>
   );
