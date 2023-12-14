@@ -13,6 +13,8 @@ export default {
       'light-gray': '#F4F4F4',
       'light-silver': '#D9D9D9',
       'navBg': '#2A2A2A',
+      'textSuccess': '#5cb85c',
+      'textError': '#D71313'
     },
     daisyui: {
       themes: false, // true: all themes | false: only light + dark | array: specific themes like this ["light", "dark", "cupcake"]

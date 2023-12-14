@@ -1,6 +1,6 @@
 import React from "react";
 
-function InputText({ label, type, name, formName, onChange, placeholder }) {
+function InputText({ label, type, name, formName, onChange, placeholder, value }) {
   return (
     <>
       <label className="text-xs text-black font-semibold">{label}</label>
@@ -10,7 +10,7 @@ function InputText({ label, type, name, formName, onChange, placeholder }) {
         name={name}
         form={formName}
         onChange={onChange}
-        // value={email}
+        value={value}
         placeholder={placeholder}
       />
     </>

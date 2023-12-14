@@ -15,23 +15,24 @@ function ModalUserRegister() {
     email: "",
     password: "",
     phone: "",
+    roles: "User"
   });
   //console.log(form);
 
   const showAlert = (alertComponent, timeout) => {
     setMessage(alertComponent);
-  
+
     // Setelah timeout, atur pesan kembali menjadi null
     setTimeout(() => {
       setMessage(null);
     }, timeout);
   };
-  
-  const {fullname, lastname, email, password, phone} = form;
-  
+
+  const { fullname, lastname, email, password, phone, roles } = form;
+
   const handleRegister = useMutation(async (e) => {
     try {
-        e.preventDefault();
+      e.preventDefault();
       // Pengecekan Form Input jangan kosong pake trim
       if (fullname.trim() === "" || fullname.trim() === null) {
         const alert = <ErrorAlert title={"First Name cant be empty!"} />;
@@ -55,6 +56,7 @@ function ModalUserRegister() {
         email: email.trim(),
         password: password.trim(),
         phone,
+        roles,
       });
 
       const alert = <SuccessAlert title={"Register Success! 😊"} />;
@@ -66,11 +68,11 @@ function ModalUserRegister() {
         email: "",
         password: "",
         phone: "",
-      })
+      });
     } catch (error) {
-        const alert = <ErrorAlert title={"Oops, email already exists!"}/>;
-        showAlert(alert, 5000);
-        console.log("register failed : ", error);
+      const alert = <ErrorAlert title={"Oops, email already exists!"} />;
+      showAlert(alert, 5000);
+      console.log("register failed : ", error);
     }
   });
 
@@ -82,9 +84,9 @@ function ModalUserRegister() {
   };
 
   return (
-      <>
+    <>
       <dialog id="modalRegister" className="modal">
-      {message && message}
+        {message && message}
         <div className="modal-box text-navBg bg-light-silver">
           <form method="dialog">
             {/* if there is a button in form, it will close the modal */}
@@ -92,7 +94,10 @@ function ModalUserRegister() {
               ✕
             </button>
           </form>
-          <form className="w-full h-full" onSubmit={(e) => handleRegister.mutate(e)}>
+          <form
+            className="w-full h-full"
+            onSubmit={(e) => handleRegister.mutate(e)}
+          >
             <div className="mb-3">
               <h1 className="flex justify-center text-3xl font-bold">
                 Register
@@ -113,7 +118,7 @@ function ModalUserRegister() {
                 label="Lastname"
                 type="text"
                 placeholder="Lastname"
-               //minLength={3}
+                //minLength={3}
                 //maxLength={25}
                 onChange={handleOnChange}
                 value={lastname}
@@ -132,7 +137,7 @@ function ModalUserRegister() {
                 type="password"
                 placeholder="password"
                 //minLength={3}
-               //maxLength={25}
+                //maxLength={25}
                 onChange={handleOnChange}
                 value={password}
                 name="password"
@@ -148,19 +153,20 @@ function ModalUserRegister() {
               />
             </div>
             <div className="flex justify-center mt-5">
-                <button 
-                    className="btn border-none text-navBg hover:text-light-gray w-3/4 bg-mikado-yellow rounded"
-                    disabled={handleRegister.isLoading}
-                    type="submit"
-                >
-                {handleRegister.isLoading ? 
-                <p className="flex justify-center items-center text-navBg">sending 
+              <button
+                className="btn border-none text-navBg hover:text-light-gray w-3/4 bg-mikado-yellow rounded"
+                disabled={handleRegister.isLoading}
+                type="submit"
+              >
+                {handleRegister.isLoading ? (
+                  <p className="flex justify-center items-center text-navBg">
+                    sending
                     <span>&nbsp;</span>
                     <span className="loading loading-spinner loading-md"></span>
-                </p>
-                    :     
-                "Register"
-                }
+                  </p>
+                ) : (
+                  "Register"
+                )}
               </button>
             </div>
           </form>
