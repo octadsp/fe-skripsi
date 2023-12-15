@@ -51,6 +51,10 @@ function ModalUserLogin() {
         password: "",
       });
 
+      const expiresInMillis = response.data.data.expiresIn * 1000; // Konversi ke milidetik
+      // Hitung selisih waktu antara waktu saat ini dan waktu kadaluwarsa
+      const timeDiffInMillis = expiresInMillis - new Date().getTime();
+
       setTimeout(() => {
         // Send data to UserContext
         dispatch({
@@ -58,6 +62,21 @@ function ModalUserLogin() {
           payload: response.data.data,
         });
         setAuthToken(localStorage.token);
+
+        // Setelah waktu kadaluarsa, hapus token dan logout
+        setTimeout(() => {
+          const confirmLogout = window.confirm(
+            "Your session has expired. Please Login again 🤞"
+          );
+          if (confirmLogout) {
+            dispatch({
+              type: "LOGOUT",
+            });
+            setAuthToken();
+            localStorage.removeItem("token");
+            window.location.reload();
+          }
+        }, 10000);
       }, 4000);
     } catch (error) {
       const alert = (
