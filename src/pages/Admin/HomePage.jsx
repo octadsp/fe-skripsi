@@ -117,12 +117,12 @@ function HomePage() {
   return (
     <div className="flex w-full min-h-screen bg-light-silver">
       <div className="bg-white w-64 float-left">
-        <div className="flex justify-center pt-4 mt-2 pb-5 mb-5 bg-navBg text-white rounded-lg">
+        <div className="flex justify-center py-7 mt-5 mb-10 bg-navBg text-white rounded-lg">
           <h1>
             Welcome, {state.user.fullname} {state.user.lastname} 😊
           </h1>
         </div>
-        <Sidebar className="text-navBg">
+        <Sidebar className="text-navBg border-t-2">
           {/* Masters */}
           <Menu
             menuItemStyles={{
