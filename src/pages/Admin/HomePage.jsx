@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, userContext, useContext } from "react";
 import Logo from "../../assets/logo.png";
 import { Sidebar, Menu, MenuItem, SubMenu } from "react-pro-sidebar";
 import CarBrand from "../Admin/pages/AddCarBrand";
@@ -12,6 +12,8 @@ import DemageSubCategories from "../Admin/pages/DemageSubCategories";
 import PriceLists from "../Admin/pages/PriceList";
 import CompanyPartners from "../Admin/pages/CompanyPartners";
 import CompanyServices from "../Admin/pages/CompanyServices";
+
+import { UserContext } from "../../context/userContext";
 
 const pages = [
   {
@@ -84,6 +86,7 @@ const pages = [
 
 function HomePage() {
   const [currentPage, setCurrentPage] = useState(getCurrentPage());
+  const [state] = useContext(UserContext);
 
   function getCurrentPage() {
     const path = window.location.pathname.replace("/", "");
@@ -114,8 +117,10 @@ function HomePage() {
   return (
     <div className="flex w-full min-h-screen bg-light-silver">
       <div className="bg-white w-64 float-left">
-        <div className="flex justify-center mt-5 mb-10">
-          <img src={Logo} width={150} />
+        <div className="flex justify-center pt-4 mt-2 pb-5 mb-5 bg-navBg text-white rounded-lg">
+          <h1>
+            Welcome, {state.user.fullname} {state.user.lastname} 😊
+          </h1>
         </div>
         <Sidebar className="text-navBg">
           {/* Masters */}
