@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import InputForm from "../../../components/Elements/InputForm";
+import Header from "../../../assets/kop.png";
 
 import { useMutation, useQuery } from "react-query";
 import { API } from "../../../config/api";
@@ -77,8 +78,11 @@ function AddCarBrand() {
 
   return (
     <>
+      <div className="flex justify-center mb-20 mt-5">
+        <img src={Header} />
+      </div>
       <div className="flex m-16 gap-5 text-navBg">
-        <div className="flex flex-col w-1/3">
+        <div className="flex flex-col w-1/3 shadow-xl ring-1 ring-light-silver p-5 rounded-lg">
           <div className="mb-10 flex justify-center">
             <h1 className="text-2xl">Input Form</h1>
           </div>
@@ -122,13 +126,16 @@ function AddCarBrand() {
         </div>
         <div className="w-2/3 px-10">
           <div className="overflow-x-auto">
-            <table className="table">
+            <div className="flex justify-center mb-10">
+              <h1 className="font-bold text-3xl">List Car Brand</h1>
+            </div>
+            <table className="table border">
               {/* head */}
-              <thead>
-                <tr className="text-navBg font-bold text-lg">
-                  <th>No</th>
-                  <th>Nama</th>
-                  <th>Tipe</th>
+              <thead className="bg-mikado-yellow">
+                <tr className="text-navBg font-bold text-lg text-center">
+                  <th className="border w-8">No</th>
+                  <th className="border">Nama</th>
+                  <th className="border">Tipe</th>
                 </tr>
               </thead>
               <tbody>
@@ -143,9 +150,9 @@ function AddCarBrand() {
                           : "font-semibold bg-light-silver"
                       }
                     >
-                      <th>{index + 1}</th>
-                      <td>{brand.name}</td>
-                      <td>{brand.tipe}</td>
+                      <th className="border">{index + 1}</th>
+                      <td className="border">{brand.name}</td>
+                      <td className="border">{brand.tipe}</td>
                     </tr>
                   ))}
               </tbody>
