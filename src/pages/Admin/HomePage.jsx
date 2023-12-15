@@ -112,7 +112,7 @@ function HomePage() {
   };
 
   return (
-    <div className="flex w-full min-h-screen bg-gray-200">
+    <div className="flex w-full min-h-screen bg-light-silver">
       <div className="bg-white w-64 float-left">
         <div className="flex justify-center mt-5 mb-10">
           <img src={Logo} width={150} />

@@ -71,7 +71,7 @@ function AddCarBrand() {
         tipe: "",
       });
     } catch (error) {
-      const alert = <ErrorAlert title={"Add brand Failed! ❌"} />;
+      const alert = <ErrorAlert title={"Add Brand Failed! ❌"} />;
       showAlert(alert, 5000);
     }
   });
