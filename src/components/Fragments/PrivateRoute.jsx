@@ -23,3 +23,12 @@ export function PrivateRouteAdmin() {
   }
   return <Outlet />;
 }
+
+export function PrivateRouteVisible() {
+  const [state] = useContext(UserContext);
+
+  if (state.user.roles !== "Visible" || state.user.roles !== "Visible") {
+    return <Navigate to="/" />;
+  }
+  return <Outlet />;
+}

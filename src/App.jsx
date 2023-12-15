@@ -19,7 +19,12 @@ import { UserContext } from "./context/userContext";
 import {
   PrivateRouteAdmin,
   PrivateRouteUser,
+  PrivateRouteVisible,
 } from "./components/Fragments/PrivateRoute";
+import AddCarBrand from "./pages/Admin/pages/AddCarBrand";
+import AddCarType from "./pages/Admin/pages/AddCarType";
+import AddCarClass from "./pages/Admin/pages/AddCarClass";
+import ReservationList from "./pages/Admin/pages/ReservationList";
 
 function App() {
   const navigate = useNavigate();
@@ -84,6 +89,16 @@ function App() {
               element={<ReservationPage />}
             />
             <Route exact path="/profile" element={<ProfilePage />} />
+          </Route>
+          <Route element={<PrivateRouteVisible />}>
+            <Route exact path="/add-car-brand" element={<AddCarBrand />} />
+            <Route exact path="/add-car-type" element={<AddCarType />} />
+            <Route exact path="/add-car-class" element={<AddCarClass />} />
+            <Route
+              exact
+              path="/reservation-list"
+              element={<ReservationList />}
+            />
           </Route>
         </Routes>
       )}
