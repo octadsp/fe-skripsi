@@ -25,6 +25,12 @@ import AddCarBrand from "./pages/Admin/pages/AddCarBrand";
 import AddCarType from "./pages/Admin/pages/AddCarType";
 import AddCarClass from "./pages/Admin/pages/AddCarClass";
 import ReservationList from "./pages/Admin/pages/ReservationList";
+import DemageListCategories from "./pages/Admin/pages/DemageListCategories";
+import DemageCategories from "./pages/Admin/pages/DemageCategories";
+import DemageSubCategories from "./pages/Admin/pages/DemageSubCategories";
+import PriceList from "./pages/Admin/pages/PriceList";
+import CompanyPartners from "./pages/Admin/pages/CompanyPartners";
+import CompanyServices from "./pages/Admin/pages/CompanyServices";
 
 function App() {
   const navigate = useNavigate();
@@ -94,6 +100,29 @@ function App() {
             <Route exact path="/add-car-brand" element={<AddCarBrand />} />
             <Route exact path="/add-car-type" element={<AddCarType />} />
             <Route exact path="/add-car-class" element={<AddCarClass />} />
+            <Route
+              exact
+              path="/reservation-list"
+              element={<ReservationList />}
+            />
+            <Route
+              exact
+              path="/demage-list-categories"
+              element={<DemageListCategories />}
+            />
+            <Route
+              exact
+              path="/demage-categories"
+              element={<DemageCategories />}
+            />
+            <Route
+              exact
+              path="/demage-sub-categories"
+              element={<DemageSubCategories />}
+            />
+            <Route exact path="/price-list" element={<PriceList />} />
+            <Route exact path="/partner" element={<CompanyPartners />} />
+            <Route exact path="/services" element={<CompanyServices />} />
             <Route
               exact
               path="/reservation-list"
