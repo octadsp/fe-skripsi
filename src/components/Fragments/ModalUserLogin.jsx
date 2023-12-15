@@ -76,7 +76,7 @@ function ModalUserLogin() {
             localStorage.removeItem("token");
             window.location.reload();
           }
-        }, 10000);
+        }, timeDiffInMillis);
       }, 4000);
     } catch (error) {
       const alert = (
