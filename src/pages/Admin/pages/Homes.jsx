@@ -14,7 +14,7 @@ function Homes() {
       <div className="flex justify-center mb-20 mt-5">
         <img src={Header} />
       </div>
-      <div className="flex m-16 gap-5 text-navBg justify-center">
+      <div className="flex m-16 gap-5 h-[550px] text-navBg justify-center">
         <p>Selamat datang di halaman admin aplikasi</p>
       </div>
     </>

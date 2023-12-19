@@ -10,6 +10,7 @@ import SuccessAlert from "../../../components/Elements/SuccessAlert";
 
 function DemageCategories() {
   // State to manage form input values
+  const itemPerPage = 10;
   const [message, setMessage] = useState(null);
   const [formData, setFormData] = useState({
     kode: "",

@@ -115,7 +115,7 @@ function HomePage() {
   };
 
   return (
-    <div className="flex w-full h-full bg-light-silver">
+    <div className="flex w-screen h-screen bg-light-silver">
       <div className="bg-white w-64 float-left">
         <div className="flex justify-center py-7 mt-5 mb-10 bg-navBg text-white rounded-lg">
           <h1>
@@ -254,8 +254,8 @@ function HomePage() {
           </Menu>
         </Sidebar>
       </div>
-      <div className="w-full flex p-3">
-        <div className="bg-white w-full rounded-md">
+      <div className="w-full h-full flex p-3">
+        <div className="bg-white overflow-y-auto w-full rounded-md">
           {pages
             .filter((page) => currentPage === page.path)
             .map((page) => (
