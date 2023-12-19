@@ -82,12 +82,12 @@ function AddCarBrand() {
         <img src={Header} />
       </div>
       <div className="flex m-16 gap-5 text-navBg">
-        <div className="flex flex-col w-1/3 shadow-xl ring-1 ring-light-silver p-5 rounded-lg">
+        <div className="flex flex-col w-full h-1/2 shadow-xl ring-1 ring-light-silver p-5 rounded-lg">
           <div className="mb-10 flex justify-center">
             <h1 className="text-2xl">Input Form</h1>
           </div>
           <form
-            className="flex flex-col gap-5 text-lg"
+            className="flex gap-5 text-lg"
             onSubmit={(e) => handleOnSubmit.mutate(e)}
           >
             <InputForm
@@ -104,7 +104,8 @@ function AddCarBrand() {
               value={tipe}
               onChange={handleOnChange}
             />
-            <div className="flex justify-center">
+          </form>
+          <div className="flex justify-center mt-10">
               <button
                 disabled={handleOnSubmit.isLoading}
                 type="submit"
@@ -121,9 +122,10 @@ function AddCarBrand() {
                 )}
               </button>
             </div>
-          </form>
           {message && message}
         </div>
+      </div>
+      <div className="flex m-16 gap-5 text-navBg">
         <div className="w-2/3 px-10">
           <div className="overflow-x-auto">
             <div className="flex justify-center mb-10">

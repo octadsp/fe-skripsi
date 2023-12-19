@@ -14,7 +14,9 @@ function Home() {
     <>
       {state.isLogin ? (
         state.user.roles == "Super Admin" ? (
+          <div>
           <AdminPage />
+          </div>
         ) : (
           <UserPage />
         )
