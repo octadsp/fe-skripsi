@@ -28,9 +28,38 @@ function AddCarBrand() {
   const handleOnEdit = (brand) => {
     setFormEdit({
       id: brand.id,
+      name: brand.name,
+      tipe: brand.tipe,
     });
     document.getElementById("my_modal_editBrand").showModal();
   };
+
+  const handleOnDelete = (brand) => {
+    setFormEdit({
+      id: brand.id,
+      name: brand.name,
+      tipe: brand.tipe,
+    });
+    document.getElementById("my_modal_deleteBrand").showModal();
+  };
+
+  // Function to handle delete action
+  const handleDelete = useMutation(async () => {
+    try {
+      // Use the formEdit.id to make an API call for deleting the brand
+      await API.delete(`/car-brand/${formEdit.id}`);
+      const alert = <SuccessAlert title={"Delete Brand Success! 😊"} />;
+      showAlert(alert, 5000);
+      refetch();
+      setTimeout(() => {
+        refetchAllBrand();
+      }, 1000);
+      document.getElementById("my_modal_deleteBrand").close();
+    } catch (error) {
+      const alert = <ErrorAlert title={"Delete Brand Failed! ❌"} />;
+      showAlert(alert, 5000);
+    }
+  });
 
   const { name, tipe } = formData;
 
@@ -45,7 +74,7 @@ function AddCarBrand() {
     }
   );
 
-  const { data: listAll, refetchAllBrand } = useQuery(
+  const { data: listAll, refetch: refetchAllBrand } = useQuery(
     "listAllCarBrandCache",
     async () => {
       const response = await API.get("/car-all-brands");
@@ -107,6 +136,10 @@ function AddCarBrand() {
         name: "",
         tipe: "",
       });
+
+      setTimeout(() => {
+        refetchAllBrand();
+      }, 1000);
     } catch (error) {
       const alert = <ErrorAlert title={"Add Brand Failed! ❌"} />;
       showAlert(alert, 5000);
@@ -164,8 +197,6 @@ function AddCarBrand() {
                   </button>
                 </div>
               </form>
-
-              {message && message}
             </div>
           </div>
           {/* List */}
@@ -219,24 +250,77 @@ function AddCarBrand() {
                                 </td>
                                 <td className="border">
                                   <div className="flex justify-center gap-3">
-                                    <button className="text-textSuccess hover:bg-textSuccess/40 hover:rounded px-1">
-                                      View
-                                    </button>
                                     <button
-                                      className="text-info hover:bg-info/40 hover:rounded px-2"
-                                      onClick={
-                                        () => handleOnEdit(brand)
-                                        // document
-                                        //   .getElementById("my_modal_editBrand")
-                                        //   .showModal()
-                                      }
+                                      className="text-white text-base bg-textSuccess/90 rounded hover:bg-textSuccess/100 hover:shadow-2xl px-4"
+                                      onClick={() => handleOnEdit(brand)}
                                     >
                                       Edit
                                     </button>
-                                    <EditModal form={formEdit} refetchParent={refetch} />
-                                    <button className="text-textError hover:bg-textError/40 hover:rounded px-1">
+                                    <EditModal
+                                      form={formEdit}
+                                      refetchParent={refetch}
+                                    />
+                                    <button
+                                      className="text-white text-base bg-textError/80 rounded hover:bg-textError/100 hover:shadow-2xl px-2"
+                                      onClick={() => handleOnDelete(brand)}
+                                    >
                                       Delete
                                     </button>
+                                    {/* MODAL DELETE */}
+                                    <dialog
+                                      id="my_modal_deleteBrand"
+                                      className="modal"
+                                    >
+                                      <div className="modal-box bg-white">
+                                        <h3 className="font-bold text-lg border-b-2 border-light-silver pb-3">
+                                          Delete Confirmation (
+                                          <span className="text-textError">
+                                            X
+                                          </span>
+                                          )
+                                        </h3>
+                                        <p className="py-4 px-2 mt-4 bg-textError/20 rounded-lg text-base">
+                                          Are you sure want to delete the
+                                          Brand&nbsp;
+                                          <span className="font-bold text-lg">
+                                            {formEdit.name}&nbsp;
+                                          </span>
+                                          <span>and Type&nbsp;</span>
+                                          <span className="font-bold text-lg">
+                                            {formEdit.tipe}&nbsp;
+                                          </span>
+                                          ?
+                                        </p>
+                                        <div className="flex gap-2 justify-end mr-2 mt-4 pt-3 border-t-2 border-light-silver">
+                                          <button
+                                            onClick={() =>
+                                              document
+                                                .getElementById(
+                                                  "my_modal_deleteBrand"
+                                                )
+                                                .close()
+                                            }
+                                            className="text-navBg/70 hover:font-bold px-2"
+                                          >
+                                            Cancel
+                                          </button>
+                                          <button
+                                            onClick={() =>
+                                              handleDelete.mutate()
+                                            }
+                                            className="bg-textError px-6 py-2 rounded font-bold text-white hover:font-bold hover:bg-textError/80 hover:shadow"
+                                          >
+                                            Yes
+                                          </button>
+                                        </div>
+                                      </div>
+                                      <form
+                                        method="dialog"
+                                        className="modal-backdrop"
+                                      >
+                                        <button>close</button>
+                                      </form>
+                                    </dialog>
                                   </div>
                                 </td>
                               </tr>
@@ -258,6 +342,7 @@ function AddCarBrand() {
                     {pageNumber}
                   </button>
                 ))}
+                {message && message}
               </div>
             </div>
           </div>
