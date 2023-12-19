@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import InputForm from "../../../components/Elements/InputForm";
 import Header from "../../../assets/kop.png";
+import EditModal from "../../../components/Fragments/ModalEdit";
 
 import { useMutation, useQuery } from "react-query";
 import { API } from "../../../config/api";
@@ -18,6 +19,18 @@ function AddCarBrand() {
     name: "",
     tipe: "",
   });
+  const [formEdit, setFormEdit] = useState({
+    id: 1,
+    name: "",
+    tipe: "",
+  });
+
+  const handleOnEdit = (brand) => {
+    setFormEdit({
+      id: brand.id,
+    });
+    document.getElementById("my_modal_editBrand").showModal();
+  };
 
   const { name, tipe } = formData;
 
@@ -40,7 +53,7 @@ function AddCarBrand() {
     }
   );
 
-  const totalPages = Math.min(2, Math.ceil(listAll.length / itemPerPage));
+  const totalPages = Math.min(2, Math.ceil(listAll?.length / itemPerPage));
   const pages = Array.from({ length: totalPages }, (_, index) => index + 1);
 
   const changePage = (newPage) => {
@@ -209,7 +222,18 @@ function AddCarBrand() {
                                     <button className="text-textSuccess hover:bg-textSuccess/40 hover:rounded px-1">
                                       View
                                     </button>
-                                    <button className="text-info hover:bg-info/40 hover:rounded px-2">Edit</button>
+                                    <button
+                                      className="text-info hover:bg-info/40 hover:rounded px-2"
+                                      onClick={
+                                        () => handleOnEdit(brand)
+                                        // document
+                                        //   .getElementById("my_modal_editBrand")
+                                        //   .showModal()
+                                      }
+                                    >
+                                      Edit
+                                    </button>
+                                    <EditModal form={formEdit} refetchParent={refetch} />
                                     <button className="text-textError hover:bg-textError/40 hover:rounded px-1">
                                       Delete
                                     </button>
