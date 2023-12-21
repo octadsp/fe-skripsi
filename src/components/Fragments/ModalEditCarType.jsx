@@ -5,7 +5,7 @@ import { API } from "../../config/api";
 import ErrorAlert from "../../components/Elements/ErrorAlert";
 import SuccessAlert from "../../components/Elements/SuccessAlert";
 
-function ModalEdit({ form, refetchParent }) {
+function ModalEditCarType({ form, refetchParent }) {
   const [message, setMessage] = useState(null);
   const showAlert = (alert, timeout) => {
     setMessage(alert);
@@ -24,10 +24,10 @@ function ModalEdit({ form, refetchParent }) {
   const { name, tipe } = formEdit;
 
   // Fetch car brand details using react-query
-  const { data: carBrandData, refetch } = useQuery(
-    ["getCarBrandDetails", form.id],
+  const { data: carTypeData, refetch } = useQuery(
+    ["getCarTypeDetails", form.id],
     async () => {
-      const response = await API.get(`/car-brand/${form.id}`);
+      const response = await API.get(`/car-type/${form.id}`);
       setFormEdit(response.data.data);
       return response.data.data;
     }
@@ -46,26 +46,26 @@ function ModalEdit({ form, refetchParent }) {
       }
 
       // Use the form.id to make an API call for updating the brand
-      await API.patch(`/car-brand/${form.id}`, {
+      await API.patch(`/car-type/${form.id}`, {
         name: name.trim(),
         tipe: tipe.trim(),
       });
 
-      const alert = <SuccessAlert title={"Edit Brand Success! 😊"} />;
+      const alert = <SuccessAlert title={"Edit Type Success! 😊"} />;
       showAlert(alert, 5000); // showAlert needs to be defined or use an alternative method
 
       setTimeout(() => {
-        document.getElementById("my_modal_editBrand").close();
+        document.getElementById("my_modal_editType").close();
         refetchParent(); // Assuming refetch is defined somewhere
       }, 1000); // Adjust the timeout duration as needed (in milliseconds)
     } catch (error) {
-      const alert = <ErrorAlert title={"Edit Brand Failed! ❌"} />;
+      const alert = <ErrorAlert title={"Edit Type Failed! ❌"} />;
       showAlert(alert, 5000); // showAlert needs to be defined or use an alternative method
     }
   });
 
   return (
-    <dialog id="my_modal_editBrand" className="modal text-navBg">
+    <dialog id="my_modal_editType" className="modal text-navBg">
       {message && message}
       <div className="modal-box bg-white">
         <h3 className="font-bold text-center text-xl">EDIT</h3>
@@ -119,4 +119,4 @@ function ModalEdit({ form, refetchParent }) {
   );
 }
 
-export default ModalEdit;
+export default ModalEditCarType;
