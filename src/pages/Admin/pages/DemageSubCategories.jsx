@@ -290,7 +290,6 @@ function DemageSubCategories() {
                                   <EditModal
                                     form={formEdit}
                                     refetchParent={refetch}
-                                    handleOnChange={handleOnChange}
                                     demageCategoryLists={demageCategoryLists}
                                   />
                                   <button

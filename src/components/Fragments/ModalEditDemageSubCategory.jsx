@@ -8,9 +8,9 @@ import SuccessAlert from "../../components/Elements/SuccessAlert";
 function ModalEditDemageSubCategory({
   form,
   refetchParent,
-  handleOnChange,
   demageCategoryLists,
 }) {
+  //   console.log("🚀 ~ file: ModalEditDemageSubCategory.jsx:14 ~ demageCategoryLists:", demageCategoryLists)
   const [message, setMessage] = useState(null);
   const showAlert = (alert, timeout) => {
     setMessage(alert);
@@ -37,6 +37,21 @@ function ModalEditDemageSubCategory({
       return response.data.data;
     }
   );
+
+  const handleOnChange = (e) => {
+    const { name, value } = e.target;
+
+    // Validate and convert to integer for specific fields
+    const intValue =
+      /^(demage_category_id)$/.test(name) && /^\d+$/.test(value)
+        ? parseInt(value, 10)
+        : value;
+
+    setFormEdit({
+      ...formEdit,
+      [name]: intValue,
+    });
+  };
 
   // Function to handle edit form submission
   const handleOnSubmit = useMutation(async (e) => {
