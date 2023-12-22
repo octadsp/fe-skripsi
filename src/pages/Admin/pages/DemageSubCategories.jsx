@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import InputForm from "../../../components/Elements/InputForm";
 import Header from "../../../assets/kop.png";
-import EditModal from "../../../components/Fragments/ModalEditDemageCategory";
+import EditModal from "../../../components/Fragments/ModalEditDemageSubCategory";
 
 import { useMutation, useQuery } from "react-query";
 import { API } from "../../../config/api";
@@ -290,6 +290,8 @@ function DemageSubCategories() {
                                   <EditModal
                                     form={formEdit}
                                     refetchParent={refetch}
+                                    handleOnChange={handleOnChange}
+                                    demageCategoryLists={demageCategoryLists}
                                   />
                                   <button
                                     className="text-white text-base bg-textError/80 rounded hover:bg-textError/100 hover:shadow-2xl px-2"

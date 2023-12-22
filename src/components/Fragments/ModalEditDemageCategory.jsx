@@ -72,7 +72,7 @@ function ModalEditDemageCategory({ form, refetchParent }) {
   return (
     <dialog id="my_modal_editDemageCategory" className="modal text-navBg">
       {message && message}
-      <div className="modal-box">
+      <div className="modal-box bg-white">
         <h3 className="font-bold text-center text-xl">EDIT</h3>
         <form onSubmit={(e) => handleOnSubmit.mutate(e)}>
           <div className="flex flex-col gap-1">
