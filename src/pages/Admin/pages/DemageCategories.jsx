@@ -67,7 +67,6 @@ function DemageCategories() {
 
   const [currentPage, setCurrentPage] = useState(1);
 
-  // Fetch list of car brands using react-query
   const { data: lists, refetch } = useQuery(
     ["DemageCategoryCache", currentPage],
     async () => {
@@ -84,7 +83,7 @@ function DemageCategories() {
     }
   );
 
-  const totalPages = Math.min(2, Math.ceil(listAll?.length / itemPerPage));
+  const totalPages = Math.ceil(listAll?.length / itemPerPage);
   const pages = Array.from({ length: totalPages }, (_, index) => index + 1);
 
   const changePage = (newPage) => {
@@ -92,7 +91,6 @@ function DemageCategories() {
     refetch();
   };
 
-  // Function to handle form input changes
   const handleOnChange = (e) => {
     setFormData({
       ...formData,

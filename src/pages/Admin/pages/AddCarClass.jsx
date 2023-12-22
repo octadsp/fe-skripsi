@@ -91,7 +91,7 @@ function AddCarClass() {
     }
   );
 
-  const totalPages = Math.min(2, Math.ceil(listAll?.length / itemPerPage));
+  const totalPages = Math.ceil(listAll?.length / itemPerPage);
   const pages = Array.from({ length: totalPages }, (_, index) => index + 1);
 
   const changePage = (newPage) => {
