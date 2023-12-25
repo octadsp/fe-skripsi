@@ -25,7 +25,6 @@ import AddCarBrand from "./pages/Admin/pages/AddCarBrand";
 import AddCarType from "./pages/Admin/pages/AddCarType";
 import AddCarClass from "./pages/Admin/pages/AddCarClass";
 import ReservationList from "./pages/Admin/pages/ReservationList";
-import DemageListCategories from "./pages/Admin/pages/DemageListCategories";
 import DemageCategories from "./pages/Admin/pages/DemageCategories";
 import DemageSubCategories from "./pages/Admin/pages/DemageSubCategories";
 import PriceList from "./pages/Admin/pages/PriceList";
@@ -104,11 +103,6 @@ function App() {
               exact
               path="/reservation-list"
               element={<ReservationList />}
-            />
-            <Route
-              exact
-              path="/demage-list-categories"
-              element={<DemageListCategories />}
             />
             <Route
               exact

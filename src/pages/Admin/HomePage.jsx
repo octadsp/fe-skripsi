@@ -6,7 +6,6 @@ import CarType from "../Admin/pages/AddCarType";
 import CarClass from "../Admin/pages/AddCarClass";
 import ReservationList from "../Admin/pages/ReservationList";
 import Homes from "../Admin/pages/Homes";
-import DemageListCategories from "../Admin/pages/DemageListCategories";
 import DemageCategories from "../Admin/pages/DemageCategories";
 import DemageSubCategories from "../Admin/pages/DemageSubCategories";
 import PriceLists from "../Admin/pages/PriceList";
@@ -49,20 +48,14 @@ const pages = [
   {
     type: "Demage Cars",
     name: "List Categories",
-    path: "demage-list-categories",
-    component: <DemageListCategories />,
+    path: "demage-sub-categories",
+    component: <DemageSubCategories />,
   },
   {
     type: "Demage Cars",
     name: "Categories",
     path: "demage-categories",
     component: <DemageCategories />,
-  },
-  {
-    type: "Demage Cars",
-    name: "Sub Categories",
-    path: "demage-sub-categories",
-    component: <DemageSubCategories />,
   },
   {
     type: "Price List",
