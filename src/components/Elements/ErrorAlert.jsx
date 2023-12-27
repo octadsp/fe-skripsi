@@ -2,7 +2,7 @@ import React from "react";
 
 function ErrorAlert({ title }) {
   return (
-    <div className="alert alert-error fixed top-10 w-1/2 shadow-lg flex justify-center">
+    <div className="alert alert-error absolute top-10 w-1/2 shadow-lg flex justify-center">
       <div className="flex">
         <svg
           xmlns="http://www.w3.org/2000/svg"

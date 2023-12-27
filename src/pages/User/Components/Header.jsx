@@ -10,6 +10,11 @@ import { UserContext } from "../../../context/userContext";
 const Header = () => {
   const [state] = useContext(UserContext);
 
+  const handleReservClick = (e) => {
+    document.getElementById("modalAlert").close();
+    document.getElementById("modalLogin").showModal();
+  };
+
   return (
     <>
       {state.isLogin ? (
@@ -88,10 +93,54 @@ const Header = () => {
                 </li>
                 {/* <li className="p-2 hover:p-2 hover:text-mikado-yellow hover:ring-2 hover:ring-mikado-yellow hover:rounded-lg hover:underline"><a href="#testimonialsection" className=" ">Testimonials</a></li> */}
                 <li className="p-2 hover:p-2 hover:text-mikado-yellow hover:ring-2 hover:ring-mikado-yellow hover:rounded-lg hover:underline">
-                  <Link to={"/reservation-page"} className=" ">
+                  {/* <Link to={"/reservation-page"} className="">
                     Reservations
-                  </Link>
+                  </Link> */}
+                  <button
+                    className=""
+                    onClick={() =>
+                      document.getElementById("modalAlert").showModal()
+                    }
+                  >
+                    Reservations
+                  </button>
                 </li>
+
+                {/* MODAL ALERT */}
+                <dialog id="modalAlert" className="modal text-navBg">
+                  <div className="modal-box">
+                    <form method="dialog">
+                      {/* if there is a button in form, it will close the modal */}
+                      <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
+                        ✕
+                      </button>
+                    </form>
+                    <h3 className="font-bold text-lg">Oops!</h3>
+                    <p className="py-4">
+                      Anda belum login, apakah anda ingin login?
+                    </p>
+                    <div className="flex items-center gap-2 justify-end">
+                      <div>
+                        <form method="dialog">
+                          {/* if there is a button, it will close the modal */}
+                          <button className="hover:shadow hover:bg-navBg/10 hover:rounded-lg px-5 py-1 text-lg">
+                            No
+                          </button>
+                        </form>
+                      </div>
+                      <div>
+                        <button
+                          className="bg-lightGreen hover:bg-textSuccess rounded-lg px-5 py-1 text-lg"
+                          onClick={() => handleReservClick()}
+                        >
+                          Yes
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </dialog>
+                {/* END */}
+
                 <li className="p-2 hover:p-2 hover:text-mikado-yellow hover:ring-2 hover:ring-mikado-yellow hover:rounded-lg hover:underline">
                   <a href="#contactsection" className=" ">
                     Contacts

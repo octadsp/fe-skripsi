@@ -15,7 +15,8 @@ function ModalUserRegister() {
     email: "",
     password: "",
     phone: "",
-    roles: "User"
+    roles: "User",
+    address: "",
   });
   //console.log(form);
 
@@ -28,7 +29,7 @@ function ModalUserRegister() {
     }, timeout);
   };
 
-  const { fullname, lastname, email, password, phone, roles } = form;
+  const { fullname, lastname, email, password, phone, roles, address } = form;
 
   const handleRegister = useMutation(async (e) => {
     try {
@@ -49,6 +50,11 @@ function ModalUserRegister() {
         showAlert(alert, 5000);
         return;
       }
+      if (address === "" || address === null) {
+        const alert = <ErrorAlert title={"Address cant be empty!"} />;
+        showAlert(alert, 5000);
+        return;
+      }
 
       const response = await API.post("/register", {
         fullname: fullname.trim(),
@@ -57,6 +63,7 @@ function ModalUserRegister() {
         password: password.trim(),
         phone,
         roles,
+        address: address.trim(),
       });
 
       const alert = <SuccessAlert title={"Register Success! 😊"} />;
@@ -68,6 +75,7 @@ function ModalUserRegister() {
         email: "",
         password: "",
         phone: "",
+        address: "",
       });
     } catch (error) {
       const alert = <ErrorAlert title={"Oops, email already exists!"} />;
@@ -85,8 +93,8 @@ function ModalUserRegister() {
 
   return (
     <>
+      {message && message}
       <dialog id="modalRegister" className="modal">
-        {message && message}
         <div className="modal-box text-navBg bg-light-silver">
           <form method="dialog">
             {/* if there is a button in form, it will close the modal */}
@@ -150,6 +158,15 @@ function ModalUserRegister() {
                 onChange={handleOnChange}
                 value={phone}
                 name="phone"
+              />
+              <label className="label-text">Alamat</label>
+              <textarea
+                className="rounded px-2 py-1 outline-none resize-none"
+                rows={4}
+                name="address"
+                type="text"
+                onChange={handleOnChange}
+                value={address}
               />
             </div>
             <div className="flex justify-center mt-5">

@@ -14,6 +14,7 @@ export default {
       'light-silver': '#D9D9D9',
       'navBg': '#2A2A2A',
       'textSuccess': '#5cb85c',
+      'lightGreen': '#39e75f',
       'textError': '#D71313'
     },
     daisyui: {

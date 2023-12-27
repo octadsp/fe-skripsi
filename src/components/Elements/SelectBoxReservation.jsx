@@ -1,6 +1,6 @@
 import React from "react";
 
-function SelectBoxReservation({ label }) {
+function SelectBoxReservation({ label, lists }) {
   return (
     <div className="flex flex-col gap-1 w-full">
       <label className="text-sm text-navBg">{label}</label>
@@ -8,9 +8,14 @@ function SelectBoxReservation({ label }) {
         {/* {dataType?.map((item, index) => (
             <option >{item.type}</option>
         ))} */}
-        <option disabled selected hidden>Choose your option...</option>
-        <option>Testing 1</option>
-        <option>Testing 2</option>
+        <option disabled selected hidden>
+          Choose your option...
+        </option>
+        {lists?.map((item) => (
+          <option key={item.id} value={item.name}>
+            {item.name}
+          </option>
+        ))}
       </select>
     </div>
   );
