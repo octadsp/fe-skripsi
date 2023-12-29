@@ -2,6 +2,7 @@ import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import InputForm from "../../../components/Elements/InputFormReservation";
 import SelectBoxReservation from "../../../components/Elements/SelectBoxReservation";
+import CheckBox from "../../../components/Elements/CheckBox";
 
 import { UserContext } from "../../../context/userContext";
 import { API } from "../../../config/api";
@@ -39,6 +40,20 @@ const tahun = [
   { id: 1995, name: "1995" },
   { id: 1, name: "< 1995" },
 ];
+
+const asuransi = [
+  {
+    id: 1,
+    kode: "ASR01",
+    tipe: "Asuransi",
+    name: "Sompo Insurance Indonesia",
+  },
+  { id: 2, kode: "ASR02", tipe: "Asuransi", name: "Bumida" },
+  { id: 3, kode: "ASR03", tipe: "Asuransi", name: "KSK" },
+  { id: 4, kode: "ASR04", tipe: "Asuransi", name: "KB" },
+  { id: 5, kode: "ASR05", tipe: "Asuransi", name: "Binagriya" },
+];
+
 function FormReservation() {
   const [state] = useContext(UserContext);
   const navigate = useNavigate();
@@ -51,6 +66,8 @@ function FormReservation() {
     phone: state.user.phone,
   });
 
+  const [isChecked, setIsChecked] = useState(false);
+
   const { fullname, lastname, namaTertanggung, address, phone } = formUser;
 
   const { data: merek, refetch: refetchMerek } = useQuery(
@@ -60,6 +77,10 @@ function FormReservation() {
       return response.data.data;
     }
   );
+
+  const handleIsChecked = (isChecked) => {
+    setIsChecked(isChecked);
+  };
 
   return (
     <div className="bg-white h-full pb-10">
@@ -117,74 +138,149 @@ function FormReservation() {
             </div>
           </div>
 
-          <div className="flex gap-5">
-            {/* Data Kendaraan */}
-            <div className="p-5 shadow-md border w-full border-light-silver rounded-lg">
-              {/* Header Title */}
-              <div className="text-2xl text-navBg font-semibold mb-4">
-                <h1 className="underline underline-offset-8">Data Kendaraan</h1>
-              </div>
-              {/* Content */}
-              <div className="flex flex-col gap-2">
-                <SelectBoxReservation label="Merk" lists={merek} />
-                <SelectBoxReservation label="Tipe" />
-                <SelectBoxReservation label="Tahun" lists={tahun} />
-                <InputForm type="text" placeholder="xxxx" label="Warna" />
-              </div>
+          {/* CHECKBOX */}
+          <div className="flex flex-col">
+            <div>
+              <p>Apakah anda ingin menggunakan Asuransi?</p>
             </div>
-
-            {/* Keterangan Kejadian */}
-            <div className="p-5 shadow-md border w-full border-light-silver rounded-lg">
-              {/* Header Title */}
-              <div className="text-2xl text-navBg font-semibold mb-4">
-                <h1 className="underline underline-offset-8">
-                  Keterangan - Keterangan Kejadian
-                </h1>
-              </div>
-              {/* Content */}
-              <div className="flex flex-col gap-2">
-                <InputForm
-                  type="date"
-                  placeholder="xxxx"
-                  label="Tanggal Kejadian"
-                />
-                <InputForm type="text" placeholder="xxxx" label="Tempat" />
-                <InputForm type="time" placeholder="xxxx" label="Jam" />
-                <InputForm
-                  type="number"
-                  placeholder="xxxx"
-                  label="Kecepatan ( km/jam )"
-                />
-              </div>
+            <div className="flex">
+              <CheckBox
+                text={"Yes"}
+                checked={isChecked}
+                onChange={(isChecked) => handleIsChecked(isChecked)}
+              />
+              <CheckBox
+                text={"No"}
+                checked={!isChecked}
+                onChange={(isChecked) => handleIsChecked(!isChecked)}
+              />
             </div>
           </div>
+          {/* END CHECKBOX */}
 
-          {/* Nama Pengemudi Kendaraan */}
-          <div className="p-5 shadow-md border border-light-silver rounded-lg">
-            {/* Header Title */}
-            <div className="text-2xl text-navBg font-semibold mb-4">
-              <h1 className="underline underline-offset-8">
-                Nama Pengemudi Kendaraan
-              </h1>
-            </div>
-            {/* Content */}
-            <div className="flex flex-col gap-2">
-              <InputForm type="text" placeholder="xxxx" label="Nama Lengkap" />
-              <div className="flex gap-5">
-                <SelectBoxReservation label="Hubungan dengan tertanggung" />
-                <InputForm type="number" placeholder="xxxx" label="Umur" />
+          {/* CONTENT YES */}
+          {isChecked && (
+            <section className="flex flex-col gap-5">
+              {/* Data Asuransi */}
+              <div>
+                <SelectBoxReservation
+                  label={"Pilih Asuransi"}
+                  lists={asuransi}
+                />
               </div>
+              {/* END Data Asuransi */}
+
               <div className="flex gap-5">
-                <InputForm type="text" placeholder="xxxx" label="Pekerjaan" />
-                <SelectBoxReservation label="Jenis Golongan SIM" />
+                {/* Data Kendaraan */}
+                <div className="p-5 shadow-md border w-full border-light-silver rounded-lg">
+                  {/* Header Title */}
+                  <div className="text-2xl text-navBg font-semibold mb-4">
+                    <h1 className="underline underline-offset-8">
+                      Data Kendaraan
+                    </h1>
+                  </div>
+                  {/* Content */}
+                  <div className="flex flex-col gap-2">
+                    <SelectBoxReservation label="Merek" lists={merek} />
+                    <SelectBoxReservation label="Tipe" />
+                    <SelectBoxReservation label="Tahun" lists={tahun} />
+                    <InputForm type="text" placeholder="xxxx" label="Warna" />
+                  </div>
+                </div>
+
+                {/* Keterangan Kejadian */}
+                <div className="p-5 shadow-md border w-full border-light-silver rounded-lg">
+                  {/* Header Title */}
+                  <div className="text-2xl text-navBg font-semibold mb-4">
+                    <h1 className="underline underline-offset-8">
+                      Keterangan - Keterangan Kejadian
+                    </h1>
+                  </div>
+                  {/* Content */}
+                  <div className="flex flex-col gap-2">
+                    <InputForm
+                      type="date"
+                      placeholder="xxxx"
+                      label="Tanggal Kejadian"
+                    />
+                    <InputForm type="text" placeholder="xxxx" label="Tempat" />
+                    <InputForm type="time" placeholder="xxxx" label="Jam" />
+                    <InputForm
+                      type="number"
+                      placeholder="xxxx"
+                      label="Kecepatan ( km/jam )"
+                    />
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
+
+              {/* Nama Pengemudi Kendaraan */}
+              <div className="p-5 shadow-md border border-light-silver rounded-lg">
+                {/* Header Title */}
+                <div className="text-2xl text-navBg font-semibold mb-4">
+                  <h1 className="underline underline-offset-8">
+                    Nama Pengemudi Kendaraan
+                  </h1>
+                </div>
+                {/* Content */}
+                <div className="flex flex-col gap-2">
+                  <InputForm
+                    type="text"
+                    placeholder="xxxx"
+                    label="Nama Lengkap"
+                  />
+                  <div className="flex gap-5">
+                    <SelectBoxReservation label="Hubungan dengan tertanggung" />
+                    <InputForm type="number" placeholder="xxxx" label="Umur" />
+                  </div>
+                  <div className="flex gap-5">
+                    <InputForm
+                      type="text"
+                      placeholder="xxxx"
+                      label="Pekerjaan"
+                    />
+                    <SelectBoxReservation label="Jenis Golongan SIM" />
+                  </div>
+                </div>
+              </div>
+              <div className="flex justify-center mt-5">
+                <button className="btn btn-wide bg-navBg/50 hover:bg-navBg text-white/50 hover:text-white font-bold">
+                  Submit
+                </button>
+              </div>
+            </section>
+          )}
+          {/* END CONTENT YES */}
+
+          {/* CONTENT NO */}
+          {!isChecked && (
+            <section className="flex flex-col gap-5">
+              {/* Data Kendaraan */}
+              <div className="p-5 shadow-md border w-full border-light-silver rounded-lg">
+                {/* Header Title */}
+                <div className="text-2xl text-navBg font-semibold mb-4">
+                  <h1 className="underline underline-offset-8">
+                    Data Kendaraan
+                  </h1>
+                </div>
+                {/* Content */}
+                <div className="flex flex-col gap-2">
+                  <SelectBoxReservation label="Merk" lists={merek} />
+                  <SelectBoxReservation label="Tipe" />
+                  <SelectBoxReservation label="Tahun" lists={tahun} />
+                  <InputForm type="text" placeholder="xxxx" label="Warna" />
+                </div>
+              </div>
+              <div className="flex justify-center mt-5">
+                <button className="btn btn-wide bg-navBg/50 hover:bg-navBg text-white/50 hover:text-white font-bold">
+                  Submit
+                </button>
+              </div>
+            </section>
+          )}
+          {/* END CONTENT NO */}
         </div>
       </form>
-      <div className="flex justify-center mt-5">
-        <button className="btn btn-wide text-white font-bold">Submit</button>
-      </div>
     </div>
   );
 }
