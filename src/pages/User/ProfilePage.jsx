@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import Header from "./Components/HeaderReservation";
 import AvatarProfile from "../../components/Elements/AvatarProfile";
 import EditModal from "../../components/Fragments/ModalEditProfile";
@@ -8,6 +8,49 @@ import { UserContext } from "../../context/userContext";
 
 function ProfilePage() {
   const [state] = useContext(UserContext);
+  const [preview, setPreview] = useState(null);
+  const [form, setForm] = useState({
+    fullname: "",
+    lastname: "",
+    email: "",
+    phone: "",
+    address: "",
+    image: "",
+  });
+  console.log("🚀 ~ file: ProfilePage.jsx:20 ~ ProfilePage ~ form:", form);
+
+  async function getDataUpdate() {
+    const responseUser = await API.get(`/user/${state.user.id}`);
+    setPreview(responseUser.data.data.image);
+
+    setForm({
+      fullname: responseUser.data.data.fullname,
+      lastname: responseUser.data.data.lastname,
+      email: responseUser.data.data.email,
+      phone: responseUser.data.data.phone,
+      address: responseUser.data.data.address,
+      image: responseUser.data.data.image,
+    });
+  }
+
+  useEffect(() => {
+    getDataUpdate();
+  }, []);
+
+  const handleChange = (e) => {
+    setForm({
+      ...form,
+      [e.target.name]:
+        e.target.type === "file" ? e.target.files : e.target.value,
+    });
+
+    // Create image url for preview
+    if (e.target.type === "file") {
+      let url = URL.createObjectURL(e.target.files[0]);
+      setPreview(url);
+    }
+  };
+  
   return (
     <>
       <Header />
@@ -20,7 +63,7 @@ function ProfilePage() {
                 <div className="px-5">
                   <img
                     class="object-cover rounded-xl h-48 w-96"
-                    src="https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?q=80&w=1374&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                    src={state.user.image}
                   />
                 </div>
                 <div className="mt-2">
@@ -48,35 +91,29 @@ function ProfilePage() {
             </div>
             {/* END */}
             {/* KANAN */}
-            <div className="w-4/6 h-full flex flex-col py-5 px-10 shadow-md border justify-center border-light-silver rounded-lg">
+            <div className="w-4/6 h-full text-navBg flex flex-col py-5 px-10 shadow-md border justify-center border-light-silver rounded-lg">
               <div className="border-b border-b-light-silver my-2"></div>
               <div className="flex gap-10 w-full py-3">
-                <p className="text-navBg w-1/4 font-semibold text-xl">
-                  Nama Depan
-                </p>
+                <p className="w-1/4 font-semibold text-xl">Nama Depan</p>
                 <p className="text-xl font-semibold">
                   : {state?.user.fullname}
                 </p>
               </div>
               <div className="border-b border-b-light-silver my-2"></div>
               <div className="flex gap-10 w-full py-3">
-                <p className="text-navBg w-1/4 font-semibold text-xl">
-                  Nama Belakang
-                </p>
+                <p className="w-1/4 font-semibold text-xl">Nama Belakang</p>
                 <p className="text-xl font-semibold">
                   : {state?.user.lastname}
                 </p>
               </div>
               <div className="border-b border-b-light-silver my-2"></div>
               <div className="flex gap-10 w-full py-3">
-                <p className="text-navBg w-1/4 font-semibold text-xl">
-                  Handphone
-                </p>
+                <p className="w-1/4 font-semibold text-xl">Handphone</p>
                 <p className="text-xl font-semibold">: {state?.user.phone}</p>
               </div>
               <div className="border-b border-b-light-silver my-2"></div>
               <div className="flex gap-10 w-full py-3">
-                <p className="text-navBg w-1/4 font-semibold text-xl">Alamat</p>
+                <p className="w-1/4 font-semibold text-xl">Alamat</p>
                 <p className="text-xl font-semibold">: {state?.user.address}</p>
               </div>
               <div className="border-b border-b-light-silver my-2"></div>

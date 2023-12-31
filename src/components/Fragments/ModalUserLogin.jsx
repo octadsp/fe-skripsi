@@ -51,33 +51,33 @@ function ModalUserLogin() {
         password: "",
       });
 
-      const expiresInMillis = response.data.data.expiresIn * 1000; // Konversi ke milidetik
+      //const expiresInMillis = response.data.data.expiresIn * 1000; // Konversi ke milidetik
       // Hitung selisih waktu antara waktu saat ini dan waktu kadaluwarsa
-      const timeDiffInMillis = expiresInMillis - new Date().getTime();
+      //const timeDiffInMillis = expiresInMillis - new Date().getTime();
 
-      setTimeout(() => {
-        // Send data to UserContext
-        dispatch({
-          type: "LOGIN_SUCCESS",
-          payload: response.data.data,
-        });
-        setAuthToken(localStorage.token);
+      // setTimeout(() => {
+      //   // Send data to UserContext
+      dispatch({
+        type: "LOGIN_SUCCESS",
+        payload: response.data.data,
+      });
+      setAuthToken(localStorage.token);
 
-        // Setelah waktu kadaluarsa, hapus token dan logout
-        setTimeout(() => {
-          const confirmLogout = window.confirm(
-            "Your session has expired. Please Login again 🤞"
-          );
-          if (confirmLogout) {
-            dispatch({
-              type: "LOGOUT",
-            });
-            setAuthToken();
-            localStorage.removeItem("token");
-            window.location.reload();
-          }
-        }, timeDiffInMillis);
-      }, 4000);
+      //   // Setelah waktu kadaluarsa, hapus token dan logout
+      //   setTimeout(() => {
+      //     const confirmLogout = window.confirm(
+      //       "Your session has expired. Please Login again 🤞"
+      //     );
+      //     if (confirmLogout) {
+      //       dispatch({
+      //         type: "LOGOUT",
+      //       });
+      //       setAuthToken();
+      //       localStorage.removeItem("token");
+      //       window.location.reload();
+      //     }
+      //   }, timeDiffInMillis);
+      // }, 4000);
     } catch (error) {
       const alert = (
         <ErrorAlert title={"Username and Password not match! ❌"} />
@@ -86,6 +86,12 @@ function ModalUserLogin() {
       console.log("login failed : ", error);
     }
   });
+
+  const handleCloseModal = (e) => {
+    document.getElementById("modalLogin").close();
+    document.getElementById("modalRegister").showModal();
+  };
+
   return (
     <>
       <dialog id="modalLogin" className="modal">
@@ -139,6 +145,15 @@ function ModalUserLogin() {
                 ) : (
                   "Login"
                 )}
+              </button>
+            </div>
+            <div className="flex gap-2 justify-center mt-2">
+              <p className="text-navBg/70">Belum punya akun?</p>
+              <button
+                onClick={handleCloseModal}
+                className="text-navBg underline"
+              >
+                Register
               </button>
             </div>
           </form>

@@ -3,6 +3,8 @@ import ModalUserLogin from "../../../components/Fragments/ModalUserLogin";
 import ModalUserRegister from "../../../components/Fragments/ModalUserRegister";
 import AvatarProfile from "../../../components/Elements/AvatarProfile";
 import { Link } from "react-router-dom";
+import { FaUser } from "react-icons/fa";
+import { HiArrowLeftOnRectangle } from "react-icons/hi2";
 
 import { useContext, useState } from "react";
 import { UserContext } from "../../../context/userContext";
@@ -13,6 +15,13 @@ const Header = () => {
   const handleReservClick = (e) => {
     document.getElementById("modalAlert").close();
     document.getElementById("modalLogin").showModal();
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    alert("Logout success! 👌");
+    // Back to Landing Page
+    window.location.reload();
   };
 
   return (
@@ -57,7 +66,33 @@ const Header = () => {
                   </a>
                 </li>
                 <li className="flex justify-center">
-                  <AvatarProfile width={40} />
+                  <div className="dropdown dropdown-hover dropdown-end">
+                    <div tabIndex={0} role="button">
+                      <AvatarProfile width={40} state={state} />
+                    </div>
+                    <ul
+                      tabIndex={0}
+                      className="text-navBg dropdown-content gap-1 z-[1] menu  p-2 shadow bg-white rounded-box w-28"
+                    >
+                      <li>
+                        <div className="flex gap-3">
+                          <span>
+                            <FaUser />
+                          </span>
+                          <Link to={"/profile"}>Profile</Link>
+                        </div>
+                      </li>
+                      <div className="ring-1 ring-light-silver"></div>
+                      <li>
+                        <div className="flex gap-3">
+                          <span>
+                            <HiArrowLeftOnRectangle />
+                          </span>
+                          <button onClick={handleLogout}>Logout</button>
+                        </div>
+                      </li>
+                    </ul>
+                  </div>
                 </li>
               </ul>
             </nav>
@@ -108,7 +143,7 @@ const Header = () => {
 
                 {/* MODAL ALERT */}
                 <dialog id="modalAlert" className="modal text-navBg">
-                  <div className="modal-box">
+                  <div className="modal-box bg-white">
                     <form method="dialog">
                       {/* if there is a button in form, it will close the modal */}
                       <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">

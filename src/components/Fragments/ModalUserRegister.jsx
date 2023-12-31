@@ -91,10 +91,15 @@ function ModalUserRegister() {
     });
   };
 
+  const handleCloseModal = (e) => {
+    document.getElementById("modalRegister").close();
+    document.getElementById("modalLogin").showModal();
+  };
+
   return (
     <>
-      {message && message}
       <dialog id="modalRegister" className="modal">
+      {message && message}
         <div className="modal-box text-navBg bg-light-silver">
           <form method="dialog">
             {/* if there is a button in form, it will close the modal */}
@@ -161,7 +166,7 @@ function ModalUserRegister() {
               />
               <label className="label-text">Alamat</label>
               <textarea
-                className="rounded px-2 py-1 outline-none resize-none"
+                className="rounded bg-white/80 px-2 py-1 outline-none resize-none"
                 rows={4}
                 name="address"
                 type="text"
@@ -184,6 +189,15 @@ function ModalUserRegister() {
                 ) : (
                   "Register"
                 )}
+              </button>
+            </div>
+            <div className="flex gap-2 justify-center mt-2">
+              <p className="text-navBg/70">Sudah punya akun?</p>
+              <button
+                onClick={handleCloseModal}
+                className="text-navBg underline"
+              >
+                Login
               </button>
             </div>
           </form>
