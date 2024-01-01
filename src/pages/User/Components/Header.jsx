@@ -5,6 +5,7 @@ import AvatarProfile from "../../../components/Elements/AvatarProfile";
 import { Link } from "react-router-dom";
 import { FaUser } from "react-icons/fa";
 import { HiArrowLeftOnRectangle } from "react-icons/hi2";
+import { IoMdMail } from "react-icons/io";
 
 import { useContext, useState } from "react";
 import { UserContext } from "../../../context/userContext";
@@ -65,7 +66,25 @@ const Header = () => {
                     Contacts
                   </a>
                 </li>
-                <li className="flex justify-center">
+                <li className="flex gap-5 justify-center items-center">
+                  <div className="indicator">
+                    <span className="indicator-item text-textError font-bold">
+                      20
+                    </span>
+                    <div className="text-2xl dropdown dropdown-bottom dropdown-end">
+                      <div tabIndex={0} role="button" className="p-1">
+                        <IoMdMail />
+                      </div>
+                      <ul
+                        tabIndex={0}
+                        className="dropdown-content z-[1] menu p-2 shadow bg-white rounded-box w-52"
+                      >
+                        <li className="bg-light-silver rounded-md text-navBg "><a className="hover:text-navBg">test1</a></li>
+                        <li><a>test1</a></li>
+                        <li><a>test1</a></li>
+                      </ul>
+                    </div>
+                  </div>
                   <div className="dropdown dropdown-hover dropdown-end">
                     <div tabIndex={0} role="button">
                       <AvatarProfile width={40} state={state} />
