@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import InputForm from "../../../components/Elements/InputFormReservation";
 import SelectBoxReservation from "../../../components/Elements/SelectBoxReservation";
@@ -58,17 +58,27 @@ function FormReservation() {
   const [state] = useContext(UserContext);
   const navigate = useNavigate();
 
-  const [formUser, setFormUser] = useState({
-    fullname: "",
-    lastname: "",
-    namaTertanggung: state.user.fullname + " " + state.user.lastname,
-    address: state.user.address,
-    phone: state.user.phone,
-  });
-
   const [isChecked, setIsChecked] = useState(false);
 
-  const { fullname, lastname, namaTertanggung, address, phone } = formUser;
+  const [selectedBrandId, setSelectedBrandId] = useState(0);
+
+  const [formNo, setFormNo] = useState({
+    userId: state?.user.id,
+    namaTertanggung: "",
+    address: "",
+    phone: "",
+    merk: "",
+    tipe: "",
+    tahun: "",
+    warna: "",
+  });
+
+  const [formVehicle, setFormVehicle] = useState({
+    car_brand: "",
+    car_type: "",
+    year: "",
+    color: "",
+  });
 
   const { data: merek, refetch: refetchMerek } = useQuery(
     "merekMobilCache",
@@ -78,9 +88,35 @@ function FormReservation() {
     }
   );
 
+  const { data: type, refetch: refetchType } = useQuery(
+    "typeMobilCache",
+    async () => {
+      const resp = await API.get(`/car-class-brand/${selectedBrandId}`);
+      return resp.data.data;
+    }
+  );
+
   const handleIsChecked = (isChecked) => {
     setIsChecked(isChecked);
   };
+
+  const handleBrandChange = (value) => {
+    setSelectedBrandId(value);
+  };
+
+  const handleSelectChange = (e) => {
+    onChange && onChange(e.target.value);
+  };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      await refetchType();
+    };
+
+    if (selectedBrandId !== 0) {
+      fetchData();
+    }
+  }, [selectedBrandId]);
 
   return (
     <div className="bg-white h-full pb-10">
@@ -102,75 +138,229 @@ function FormReservation() {
           </h1>
         </div>
 
+        {/* CHECKBOX */}
+        <div className="flex flex-col mb-3">
+          <div>
+            <p>Apakah anda ingin menggunakan Asuransi?</p>
+          </div>
+          <div className="flex">
+            <CheckBox
+              text={"Yes"}
+              checked={isChecked}
+              onChange={(isChecked) => handleIsChecked(isChecked)}
+            />
+            <CheckBox
+              text={"No"}
+              checked={!isChecked}
+              onChange={(isChecked) => handleIsChecked(!isChecked)}
+            />
+          </div>
+        </div>
+        {/* END CHECKBOX */}
+
         {/* FORM Reservation */}
         <div className="flex flex-col gap-5">
-          {/* Informasi Data Diri */}
-          <div className="p-5 shadow-md border border-light-silver rounded-lg">
-            {/* Header Title */}
-            <div className="text-2xl text-navBg font-semibold mb-4">
-              <h1 className="underline underline-offset-8">
-                Informasi Data Diri
-              </h1>
-            </div>
-            {/* Content */}
-            <div className="flex flex-col gap-2">
-              <InputForm
-                type="text"
-                placeholder="xxxx"
-                label="Nama Tertanggung"
-                disabled={true}
-                value={state.user.fullname + " " + state.user.lastname}
-              />
-              <InputForm
-                type="text"
-                placeholder="profile kosong"
-                label="Alamat Lengkap"
-                disabled={true}
-                value={state.user.address}
-              />
-              <InputForm
-                type="number"
-                placeholder="xxxx"
-                label="Nomor Handphone / Whatsapp"
-                disabled={true}
-                value={state.user.phone}
-              />
-            </div>
-          </div>
-
-          {/* CHECKBOX */}
-          <div className="flex flex-col">
-            <div>
-              <p>Apakah anda ingin menggunakan Asuransi?</p>
-            </div>
-            <div className="flex">
-              <CheckBox
-                text={"Yes"}
-                checked={isChecked}
-                onChange={(isChecked) => handleIsChecked(isChecked)}
-              />
-              <CheckBox
-                text={"No"}
-                checked={!isChecked}
-                onChange={(isChecked) => handleIsChecked(!isChecked)}
-              />
-            </div>
-          </div>
-          {/* END CHECKBOX */}
-
           {/* CONTENT YES */}
           {isChecked && (
-            <section className="flex flex-col gap-5">
-              {/* Data Asuransi */}
-              <div>
-                <SelectBoxReservation
-                  label={"Pilih Asuransi"}
-                  lists={asuransi}
-                />
-              </div>
-              {/* END Data Asuransi */}
+            <form className="flex flex-col gap-5">
+              {/* Informasi Data Diri */}
+              <section className="p-5 shadow-md border border-light-silver rounded-lg">
+                {/* Header Title */}
+                <div className="text-2xl text-navBg font-semibold mb-4">
+                  <h1 className="underline underline-offset-8">
+                    Informasi Data Diri
+                  </h1>
+                </div>
+                {/* Content */}
+                <div className="flex flex-col gap-2">
+                  <InputForm
+                    type="text"
+                    placeholder="xxxx"
+                    label="Nama Tertanggung"
+                    disabled={true}
+                    value={state.user.fullname + " " + state.user.lastname}
+                  />
+                  <InputForm
+                    type="text"
+                    placeholder="profile kosong"
+                    label="Alamat Lengkap"
+                    disabled={true}
+                    value={state.user.address}
+                  />
+                  <InputForm
+                    type="number"
+                    placeholder="xxxx"
+                    label="Nomor Handphone / Whatsapp"
+                    disabled={true}
+                    value={state.user.phone}
+                  />
+                </div>
+              </section>
+              <section className="flex flex-col gap-5">
+                {/* Data Asuransi */}
+                <div>
+                  <SelectBoxReservation
+                    label={"Pilih Asuransi"}
+                    lists={asuransi}
+                  />
+                </div>
+                {/* END Data Asuransi */}
 
-              <div className="flex gap-5">
+                <div className="flex gap-5">
+                  {/* Data Kendaraan */}
+                  <div className="p-5 shadow-md border w-full border-light-silver rounded-lg">
+                    {/* Header Title */}
+                    <div className="text-2xl text-navBg font-semibold mb-4">
+                      <h1 className="underline underline-offset-8">
+                        Data Kendaraan
+                      </h1>
+                    </div>
+                    {/* Content */}
+                    <div className="flex flex-col gap-2">
+                      <SelectBoxReservation
+                        label="Merk"
+                        lists={merek}
+                        onChange={(value) => handleBrandChange(value)}
+                      />
+                      <div className="flex flex-col gap-1 w-full">
+                        <label className="text-sm text-navBg">Tipe</label>
+                        <select
+                          onChange={""}
+                          className="bg-white text-navBg rounded-md p-2 border border-light-silver shadow"
+                        >
+                          {type && type.length > 0 ? (
+                            <>
+                              <option disabled selected hidden>
+                                Choose your option...
+                              </option>
+                              {type.map((item) => (
+                                <option key={item.id} value={item.id}>
+                                  {item.car_type.name} {item.car_type.tipe}
+                                </option>
+                              ))}
+                            </>
+                          ) : (
+                            <option disabled selected>
+                              Tipe Mobil Kosong
+                            </option>
+                          )}
+                        </select>
+                      </div>
+                      <SelectBoxReservation label="Tahun" lists={tahun} />
+                      <InputForm type="text" placeholder="xxxx" label="Warna" />
+                    </div>
+                  </div>
+
+                  {/* Keterangan Kejadian */}
+                  <div className="p-5 shadow-md border w-full border-light-silver rounded-lg">
+                    {/* Header Title */}
+                    <div className="text-2xl text-navBg font-semibold mb-4">
+                      <h1 className="underline underline-offset-8">
+                        Keterangan - Keterangan Kejadian
+                      </h1>
+                    </div>
+                    {/* Content */}
+                    <div className="flex flex-col gap-2">
+                      <InputForm
+                        type="date"
+                        placeholder="xxxx"
+                        label="Tanggal Kejadian"
+                      />
+                      <InputForm
+                        type="text"
+                        placeholder="xxxx"
+                        label="Tempat"
+                      />
+                      <InputForm type="time" placeholder="xxxx" label="Jam" />
+                      <InputForm
+                        type="number"
+                        placeholder="xxxx"
+                        label="Kecepatan ( km/jam )"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Nama Pengemudi Kendaraan */}
+                <div className="p-5 shadow-md border border-light-silver rounded-lg">
+                  {/* Header Title */}
+                  <div className="text-2xl text-navBg font-semibold mb-4">
+                    <h1 className="underline underline-offset-8">
+                      Nama Pengemudi Kendaraan
+                    </h1>
+                  </div>
+                  {/* Content */}
+                  <div className="flex flex-col gap-2">
+                    <InputForm
+                      type="text"
+                      placeholder="xxxx"
+                      label="Nama Lengkap"
+                    />
+                    <div className="flex gap-5">
+                      <SelectBoxReservation label="Hubungan dengan tertanggung" />
+                      <InputForm
+                        type="number"
+                        placeholder="xxxx"
+                        label="Umur"
+                      />
+                    </div>
+                    <div className="flex gap-5">
+                      <InputForm
+                        type="text"
+                        placeholder="xxxx"
+                        label="Pekerjaan"
+                      />
+                      <SelectBoxReservation label="Jenis Golongan SIM" />
+                    </div>
+                  </div>
+                </div>
+                <div className="flex justify-center mt-5">
+                  <button className="btn btn-wide bg-navBg/50 hover:bg-navBg text-white/50 hover:text-white font-bold">
+                    Submit
+                  </button>
+                </div>
+              </section>
+            </form>
+          )}
+          {/* END CONTENT YES */}
+
+          {/* CONTENT NO */}
+          {!isChecked && (
+            <form className="flex flex-col gap-5">
+              {/* Informasi Data Diri */}
+              <section className="p-5 shadow-md border border-light-silver rounded-lg">
+                {/* Header Title */}
+                <div className="text-2xl text-navBg font-semibold mb-4">
+                  <h1 className="underline underline-offset-8">
+                    Informasi Data Diri
+                  </h1>
+                </div>
+                {/* Content */}
+                <div className="flex flex-col gap-2">
+                  <InputForm
+                    type="text"
+                    placeholder="xxxx"
+                    label="Nama Tertanggung"
+                    disabled={true}
+                    value={state.user.fullname + " " + state.user.lastname}
+                  />
+                  <InputForm
+                    type="text"
+                    placeholder="profile kosong"
+                    label="Alamat Lengkap"
+                    disabled={true}
+                    value={state.user.address}
+                  />
+                  <InputForm
+                    type="number"
+                    placeholder="xxxx"
+                    label="Nomor Handphone / Whatsapp"
+                    disabled={true}
+                    value={state.user.phone}
+                  />
+                </div>
+              </section>
+              <section className="flex flex-col gap-5">
                 {/* Data Kendaraan */}
                 <div className="p-5 shadow-md border w-full border-light-silver rounded-lg">
                   {/* Header Title */}
@@ -181,102 +371,57 @@ function FormReservation() {
                   </div>
                   {/* Content */}
                   <div className="flex flex-col gap-2">
-                    <SelectBoxReservation label="Merek" lists={merek} />
-                    <SelectBoxReservation label="Tipe" />
+                    <div className="flex flex-col gap-1 w-full">
+                      <label className="text-sm text-navBg">Merek</label>
+                      <select
+                        onChange={(value) => handleBrandChange(value)}
+                        className="bg-white text-navBg rounded-md p-2 border border-light-silver shadow"
+                      >
+                        <option disabled selected hidden>
+                          Choose your option...
+                        </option>
+                        {merek?.map((item) => (
+                          <option key={item.id} value={item.id}>
+                            {item.name}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                    <div className="flex flex-col gap-1 w-full">
+                      <label className="text-sm text-navBg">Tipe</label>
+                      <select
+                        onChange={""}
+                        className="bg-white text-navBg rounded-md p-2 border border-light-silver shadow"
+                      >
+                        {type && type.length > 0 ? (
+                          <>
+                            <option disabled selected hidden>
+                              Pilih tipe
+                            </option>
+                            {type?.map((item) => (
+                              <option key={item.id} value={item.name}>
+                                {item.car_type.name} {item.car_type.tipe}
+                              </option>
+                            ))}
+                          </>
+                        ) : (
+                          <option disabled selected>
+                            Tipe Mobil Kosong
+                          </option>
+                        )}
+                      </select>
+                    </div>
                     <SelectBoxReservation label="Tahun" lists={tahun} />
                     <InputForm type="text" placeholder="xxxx" label="Warna" />
                   </div>
                 </div>
-
-                {/* Keterangan Kejadian */}
-                <div className="p-5 shadow-md border w-full border-light-silver rounded-lg">
-                  {/* Header Title */}
-                  <div className="text-2xl text-navBg font-semibold mb-4">
-                    <h1 className="underline underline-offset-8">
-                      Keterangan - Keterangan Kejadian
-                    </h1>
-                  </div>
-                  {/* Content */}
-                  <div className="flex flex-col gap-2">
-                    <InputForm
-                      type="date"
-                      placeholder="xxxx"
-                      label="Tanggal Kejadian"
-                    />
-                    <InputForm type="text" placeholder="xxxx" label="Tempat" />
-                    <InputForm type="time" placeholder="xxxx" label="Jam" />
-                    <InputForm
-                      type="number"
-                      placeholder="xxxx"
-                      label="Kecepatan ( km/jam )"
-                    />
-                  </div>
+                <div className="flex justify-center mt-5">
+                  <button className="btn btn-wide bg-navBg/50 hover:bg-navBg text-white/50 hover:text-white font-bold">
+                    Submit
+                  </button>
                 </div>
-              </div>
-
-              {/* Nama Pengemudi Kendaraan */}
-              <div className="p-5 shadow-md border border-light-silver rounded-lg">
-                {/* Header Title */}
-                <div className="text-2xl text-navBg font-semibold mb-4">
-                  <h1 className="underline underline-offset-8">
-                    Nama Pengemudi Kendaraan
-                  </h1>
-                </div>
-                {/* Content */}
-                <div className="flex flex-col gap-2">
-                  <InputForm
-                    type="text"
-                    placeholder="xxxx"
-                    label="Nama Lengkap"
-                  />
-                  <div className="flex gap-5">
-                    <SelectBoxReservation label="Hubungan dengan tertanggung" />
-                    <InputForm type="number" placeholder="xxxx" label="Umur" />
-                  </div>
-                  <div className="flex gap-5">
-                    <InputForm
-                      type="text"
-                      placeholder="xxxx"
-                      label="Pekerjaan"
-                    />
-                    <SelectBoxReservation label="Jenis Golongan SIM" />
-                  </div>
-                </div>
-              </div>
-              <div className="flex justify-center mt-5">
-                <button className="btn btn-wide bg-navBg/50 hover:bg-navBg text-white/50 hover:text-white font-bold">
-                  Submit
-                </button>
-              </div>
-            </section>
-          )}
-          {/* END CONTENT YES */}
-
-          {/* CONTENT NO */}
-          {!isChecked && (
-            <section className="flex flex-col gap-5">
-              {/* Data Kendaraan */}
-              <div className="p-5 shadow-md border w-full border-light-silver rounded-lg">
-                {/* Header Title */}
-                <div className="text-2xl text-navBg font-semibold mb-4">
-                  <h1 className="underline underline-offset-8">
-                    Data Kendaraan
-                  </h1>
-                </div>
-                {/* Content */}
-                <div className="flex flex-col gap-2">
-                  <SelectBoxReservation label="Merk" lists={merek} />
-                  <SelectBoxReservation label="Tipe" />
-                  <SelectBoxReservation label="Tahun" lists={tahun} />
-                  <InputForm type="text" placeholder="xxxx" label="Warna" />
-                </div>
-              </div>
-              <div className="flex justify-center mt-5">
-                <button className="btn btn-wide bg-navBg/50 hover:bg-navBg text-white/50 hover:text-white font-bold">
-                  Submit
-                </button>
-              </div>
-            </section>
+              </section>
+            </form>
           )}
           {/* END CONTENT NO */}
         </div>
