@@ -3,20 +3,37 @@ import ModalUserLogin from "../../../components/Fragments/ModalUserLogin";
 import ModalUserRegister from "../../../components/Fragments/ModalUserRegister";
 import AvatarProfile from "../../../components/Elements/AvatarProfile";
 import { Link } from "react-router-dom";
-import { FaUser } from "react-icons/fa";
+import { FaUser, FaBell } from "react-icons/fa";
 import { HiArrowLeftOnRectangle } from "react-icons/hi2";
 import { IoMdMail } from "react-icons/io";
 
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
+import { API } from "../../../config/api";
+import { useQuery } from "react-query";
 import { UserContext } from "../../../context/userContext";
+
+// Fungsi untuk menghitung jumlah notifikasi
+const countNotifications = (notifications) => {
+  return notifications ? notifications.length : 0;
+};
 
 const Header = () => {
   const [state] = useContext(UserContext);
+  const [notificationCount, setNotificationCount] = useState(0);
 
   const handleReservClick = (e) => {
     document.getElementById("modalAlert").close();
     document.getElementById("modalLogin").showModal();
   };
+
+  const { data: notif, refetch: refetchNotif } = useQuery(
+    "notifCache",
+    async () => {
+      const resp = await API.get(`/notifications/${state.user.id}`);
+      return resp.data.data;
+    },
+    { refetchInterval: 2000 }
+  );
 
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -24,6 +41,11 @@ const Header = () => {
     // Back to Landing Page
     window.location.reload();
   };
+
+  useEffect(() => {
+    // Set jumlah notifikasi saat data notifikasi berubah
+    setNotificationCount(countNotifications(notif));
+  }, [notif]);
 
   return (
     <>
@@ -69,7 +91,7 @@ const Header = () => {
                 <li className="flex gap-5 justify-center items-center">
                   <div className="indicator">
                     <span className="indicator-item text-textError font-bold">
-                      20
+                      {notificationCount}
                     </span>
                     <div className="text-2xl dropdown dropdown-bottom dropdown-end">
                       <div tabIndex={0} role="button" className="p-1">
@@ -77,11 +99,31 @@ const Header = () => {
                       </div>
                       <ul
                         tabIndex={0}
-                        className="dropdown-content z-[1] menu p-2 shadow bg-white rounded-box w-52"
+                        className="gap-2 dropdown-content z-[1] menu p-2 shadow bg-white rounded-box w-[350px]"
                       >
-                        <li className="bg-light-silver rounded-md text-navBg "><a className="hover:text-navBg">test1</a></li>
-                        <li><a>test1</a></li>
-                        <li><a>test1</a></li>
+                        {notif?.map((item) => (
+                          <li
+                            key={item.id}
+                            className="bg-light-silver/50 rounded-md text-navBg"
+                          >
+                            <div className="flex justify-between">
+                              <div className="flex w-full items-center gap-3">
+                                <div>
+                                  <FaBell className="text-mikado-yellow text-lg" />
+                                </div>
+                                <div className="w-full h-full">
+                                  <h1 className="font-bold">Admin</h1>
+                                  <div>
+                                    <p className="text-xs">{item.message}</p>
+                                  </div>
+                                </div>
+                              </div>
+                              <div className="btn btn-xs border text-navBg hover:text-white hover:border-navBg bg-textSuccess/90 focus:bg-white">
+                                <button>View</button>
+                              </div>
+                            </div>
+                          </li>
+                        ))}
                       </ul>
                     </div>
                   </div>

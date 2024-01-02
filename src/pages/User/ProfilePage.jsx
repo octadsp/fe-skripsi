@@ -17,7 +17,6 @@ function ProfilePage() {
     address: "",
     image: "",
   });
-  console.log("🚀 ~ file: ProfilePage.jsx:20 ~ ProfilePage ~ form:", form);
 
   async function getDataUpdate() {
     const responseUser = await API.get(`/user/${state.user.id}`);

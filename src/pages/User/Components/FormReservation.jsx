@@ -8,38 +8,10 @@ import { UserContext } from "../../../context/userContext";
 import { API } from "../../../config/api";
 import { useQuery } from "react-query";
 
-const tahun = [
-  { id: 2023, name: "2023" },
-  { id: 2022, name: "2022" },
-  { id: 2021, name: "2021" },
-  { id: 2020, name: "2020" },
-  { id: 2019, name: "2019" },
-  { id: 2018, name: "2018" },
-  { id: 2017, name: "2017" },
-  { id: 2016, name: "2016" },
-  { id: 2015, name: "2015" },
-  { id: 2014, name: "2014" },
-  { id: 2013, name: "2013" },
-  { id: 2012, name: "2012" },
-  { id: 2011, name: "2011" },
-  { id: 2010, name: "2010" },
-  { id: 2009, name: "2009" },
-  { id: 2008, name: "2008" },
-  { id: 2007, name: "2007" },
-  { id: 2006, name: "2006" },
-  { id: 2005, name: "2005" },
-  { id: 2004, name: "2004" },
-  { id: 2003, name: "2003" },
-  { id: 2002, name: "2002" },
-  { id: 2001, name: "2001" },
-  { id: 2000, name: "2000" },
-  { id: 1999, name: "1999" },
-  { id: 1998, name: "1998" },
-  { id: 1997, name: "1997" },
-  { id: 1996, name: "1996" },
-  { id: 1995, name: "1995" },
-  { id: 1, name: "< 1995" },
-];
+const tahun = Array.from({ length: 28 }, (_, index) => {
+  const year = 2023 - index;
+  return { id: year, name: year.toString() };
+});
 
 const asuransi = [
   {
@@ -61,23 +33,18 @@ function FormReservation() {
   const [isChecked, setIsChecked] = useState(false);
 
   const [selectedBrandId, setSelectedBrandId] = useState(0);
+  const [isBrandSelected, setIsBrandSelected] = useState(false);
+  const [selectedClassId, setSelectedClassId] = useState(0);
 
   const [formNo, setFormNo] = useState({
     userId: state?.user.id,
-    namaTertanggung: "",
-    address: "",
-    phone: "",
+    namaTertanggung: `${state?.user.fullname} ${state?.user.lastname}`,
+    address: state?.user.address,
+    phone: state?.user.phone,
     merk: "",
     tipe: "",
     tahun: "",
     warna: "",
-  });
-
-  const [formVehicle, setFormVehicle] = useState({
-    car_brand: "",
-    car_type: "",
-    year: "",
-    color: "",
   });
 
   const { data: merek, refetch: refetchMerek } = useQuery(
@@ -96,16 +63,61 @@ function FormReservation() {
     }
   );
 
+  const { data: classData, refetch: refetchClass } = useQuery(
+    "classMobilCache",
+    async () => {
+      const resp = await API.get(`/car-class/${selectedClassId}`);
+      const data = resp.data.data;
+      updateFormNo(data);
+      return data;
+    }
+  );
+
+  const updateFormNo = (classData) => {
+    if (classData) {
+      setFormNo((prevFormNo) => ({
+        ...prevFormNo,
+        merk: classData.car_brand.name,
+        tipe: `${classData.car_type.name} ${classData.car_type.tipe}`,
+      }));
+    }
+  };
+
   const handleIsChecked = (isChecked) => {
     setIsChecked(isChecked);
   };
 
-  const handleBrandChange = (value) => {
-    setSelectedBrandId(value);
+  const handleBrandChange = (e) => {
+    setSelectedBrandId(e);
+    setIsBrandSelected(true);
+  };
+
+  const handleClassChange = (e) => {
+    setSelectedClassId(e);
   };
 
   const handleSelectChange = (e) => {
-    onChange && onChange(e.target.value);
+    handleBrandChange && handleBrandChange(e.target.value);
+  };
+
+  const handleSelectClassChange = (e) => {
+    handleClassChange && handleClassChange(e.target.value);
+  };
+
+  const handleTahunChange = (e) => {
+    const selectedTahun = e.target.value;
+    setFormNo((prevFormNo) => ({
+      ...prevFormNo,
+      tahun: selectedTahun,
+    }));
+  };
+
+  const handleWarnaChange = (e) => {
+    const enteredWarna = e.target.value;
+    setFormNo((prevFormNo) => ({
+      ...prevFormNo,
+      warna: enteredWarna,
+    }));
   };
 
   useEffect(() => {
@@ -117,6 +129,16 @@ function FormReservation() {
       fetchData();
     }
   }, [selectedBrandId]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      await refetchClass();
+    };
+
+    if (selectedClassId !== 0) {
+      fetchData();
+    }
+  }, [selectedClassId]);
 
   return (
     <div className="bg-white h-full pb-10">
@@ -217,23 +239,35 @@ function FormReservation() {
                     </div>
                     {/* Content */}
                     <div className="flex flex-col gap-2">
-                      <SelectBoxReservation
-                        label="Merk"
-                        lists={merek}
-                        onChange={(value) => handleBrandChange(value)}
-                      />
+                      <div className="flex flex-col gap-1 w-full">
+                        <label className="text-sm text-navBg">Merek</label>
+                        <select
+                          onChange={(e) => handleSelectChange(e)}
+                          className="bg-white text-navBg rounded-md p-2 border border-light-silver shadow"
+                        >
+                          <option disabled selected hidden>
+                            Choose your option...
+                          </option>
+                          {merek?.map((item) => (
+                            <option key={item.id} value={item.id}>
+                              {item.name}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
                       <div className="flex flex-col gap-1 w-full">
                         <label className="text-sm text-navBg">Tipe</label>
                         <select
-                          onChange={""}
+                          onChange={(e) => handleSelectClassChange(e)}
                           className="bg-white text-navBg rounded-md p-2 border border-light-silver shadow"
+                          disabled={!isBrandSelected}
                         >
                           {type && type.length > 0 ? (
                             <>
                               <option disabled selected hidden>
-                                Choose your option...
+                                Pilih tipe
                               </option>
-                              {type.map((item) => (
+                              {type?.map((item) => (
                                 <option key={item.id} value={item.id}>
                                   {item.car_type.name} {item.car_type.tipe}
                                 </option>
@@ -241,13 +275,39 @@ function FormReservation() {
                             </>
                           ) : (
                             <option disabled selected>
-                              Tipe Mobil Kosong
+                              Pilih merek terlebih dahulu
                             </option>
                           )}
                         </select>
                       </div>
-                      <SelectBoxReservation label="Tahun" lists={tahun} />
-                      <InputForm type="text" placeholder="xxxx" label="Warna" />
+
+                      <div className="flex flex-col gap-1 w-full">
+                        <label className="text-sm text-navBg">Tahun</label>
+                        <select
+                          onChange={(e) => handleTahunChange(e)}
+                          className="bg-white text-navBg rounded-md p-2 border border-light-silver shadow"
+                        >
+                          <option disabled selected hidden>
+                            Pilih tahun
+                          </option>
+                          {tahun?.map((item) => (
+                            <option
+                              key={item.id}
+                              value={item.id}
+                              name={item.name}
+                            >
+                              {item.name}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+
+                      <InputForm
+                        type="text"
+                        placeholder="xxxx"
+                        label="Warna"
+                        onChange={handleWarnaChange}
+                      />
                     </div>
                   </div>
 
@@ -374,7 +434,7 @@ function FormReservation() {
                     <div className="flex flex-col gap-1 w-full">
                       <label className="text-sm text-navBg">Merek</label>
                       <select
-                        onChange={(value) => handleBrandChange(value)}
+                        onChange={(e) => handleSelectChange(e)}
                         className="bg-white text-navBg rounded-md p-2 border border-light-silver shadow"
                       >
                         <option disabled selected hidden>
@@ -390,8 +450,9 @@ function FormReservation() {
                     <div className="flex flex-col gap-1 w-full">
                       <label className="text-sm text-navBg">Tipe</label>
                       <select
-                        onChange={""}
+                        onChange={(e) => handleSelectClassChange(e)}
                         className="bg-white text-navBg rounded-md p-2 border border-light-silver shadow"
+                        disabled={!isBrandSelected}
                       >
                         {type && type.length > 0 ? (
                           <>
@@ -399,20 +460,46 @@ function FormReservation() {
                               Pilih tipe
                             </option>
                             {type?.map((item) => (
-                              <option key={item.id} value={item.name}>
+                              <option key={item.id} value={item.id}>
                                 {item.car_type.name} {item.car_type.tipe}
                               </option>
                             ))}
                           </>
                         ) : (
                           <option disabled selected>
-                            Tipe Mobil Kosong
+                            Pilih merek terlebih dahulu
                           </option>
                         )}
                       </select>
                     </div>
-                    <SelectBoxReservation label="Tahun" lists={tahun} />
-                    <InputForm type="text" placeholder="xxxx" label="Warna" />
+
+                    <div className="flex flex-col gap-1 w-full">
+                      <label className="text-sm text-navBg">Tahun</label>
+                      <select
+                        onChange={(e) => handleTahunChange(e)}
+                        className="bg-white text-navBg rounded-md p-2 border border-light-silver shadow"
+                      >
+                        <option disabled selected hidden>
+                          Pilih tahun
+                        </option>
+                        {tahun?.map((item) => (
+                          <option
+                            key={item.id}
+                            value={item.id}
+                            name={item.name}
+                          >
+                            {item.name}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+
+                    <InputForm
+                      type="text"
+                      placeholder="xxxx"
+                      label="Warna"
+                      onChange={handleWarnaChange}
+                    />
                   </div>
                 </div>
                 <div className="flex justify-center mt-5">
