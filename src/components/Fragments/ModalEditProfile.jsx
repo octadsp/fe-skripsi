@@ -22,7 +22,6 @@ function ModalEditProfile({ form, refetchParent }) {
   });
 
   const { fullname, lastname, email, phone, address, image } = formEdit;
-  console.log("🚀 ~ file: ModalEditProfile.jsx:25 ~ ModalEditProfile ~ image:", image)
 
   async function getDataProfile() {
     const resp = await API.get(`/user/${state.user.id}`);

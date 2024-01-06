@@ -7,6 +7,7 @@ function InputFormReservation({
   value,
   disabled,
   onChange,
+  name,
 }) {
   return (
     <div className="flex flex-col gap-1 w-full">
@@ -17,6 +18,7 @@ function InputFormReservation({
         value={value}
         disabled={disabled}
         onChange={onChange}
+        name={name}
         className="bg-white rounded-md p-2 border border-light-silver shadow text-navBg"
       ></input>
     </div>

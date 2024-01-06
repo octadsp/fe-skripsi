@@ -3,10 +3,12 @@ import { useNavigate } from "react-router-dom";
 import InputForm from "../../../components/Elements/InputFormReservation";
 import SelectBoxReservation from "../../../components/Elements/SelectBoxReservation";
 import CheckBox from "../../../components/Elements/CheckBox";
+import SuccessAlert from "../../../components/Elements/SuccessAlert";
+import ErrorAlert from "../../../components/Elements/ErrorAlert";
 
 import { UserContext } from "../../../context/userContext";
 import { API } from "../../../config/api";
-import { useQuery } from "react-query";
+import { useQuery, useMutation } from "react-query";
 
 const tahun = Array.from({ length: 28 }, (_, index) => {
   const year = 2023 - index;
@@ -26,15 +28,32 @@ const asuransi = [
   { id: 5, kode: "ASR05", tipe: "Asuransi", name: "Binagriya" },
 ];
 
+const sim = [
+  { id: 1, name: "SIM A", tipe: "Mobil Kecil", status: "A" },
+  { id: 2, name: "SIM B1", tipe: "Mobil Besar", status: "A" },
+  { id: 3, name: "SIM B2", tipe: "Mobil Truck", status: "A" },
+  { id: 4, name: "SIM C", tipe: "Motor", status: "A" },
+  { id: 5, name: "SIM D", tipe: "Kendaraan Khusus", status: "A" },
+];
+
+const hubungan = [
+  { id: 1, name: "Ayah", status: "A" },
+  { id: 2, name: "Ibu", status: "A" },
+  { id: 3, name: "Kakak", status: "A" },
+  { id: 4, name: "Adik", status: "A" },
+  { id: 5, name: "Saudara", status: "A" },
+];
+
 function FormReservation() {
   const [state] = useContext(UserContext);
   const navigate = useNavigate();
+  const [message, setMessage] = useState(null);
 
-  const [isChecked, setIsChecked] = useState(false);
+  const [isChecked, setIsChecked] = useState(true);
 
   const [selectedBrandId, setSelectedBrandId] = useState(0);
   const [isBrandSelected, setIsBrandSelected] = useState(false);
-  const [selectedClassId, setSelectedClassId] = useState(0);
+  const [selectedClassId, setSelectedClassId] = useState(1);
 
   const [formNo, setFormNo] = useState({
     userId: state?.user.id,
@@ -45,7 +64,32 @@ function FormReservation() {
     tipe: "",
     tahun: "",
     warna: "",
+    asuransi: "",
+    tanggal: "",
+    tempat: "",
+    jam: "",
+    kecepatan: "",
+    namaLengkap: "",
+    hubungan: "",
+    umur: "",
+    pekerjaan: "",
+    sim: "",
   });
+
+  const [formItem, setFormItem] = useState({
+    item: "",
+    image: "",
+    price: 0,
+  });
+
+  const showAlert = (alertComponent, timeout) => {
+    setMessage(alertComponent);
+
+    // Setelah timeout, atur pesan kembali menjadi null
+    setTimeout(() => {
+      setMessage(null);
+    }, timeout);
+  };
 
   const { data: merek, refetch: refetchMerek } = useQuery(
     "merekMobilCache",
@@ -120,6 +164,159 @@ function FormReservation() {
     }));
   };
 
+  const handleAsuransiChange = (e) => {
+    const value = e.target.value;
+    setFormNo((prevFormNo) => ({
+      ...prevFormNo,
+      asuransi: value,
+    }));
+  };
+
+  const handleHubunganChange = (e) => {
+    const value = e.target.value;
+    setFormNo((prevFormNo) => ({
+      ...prevFormNo,
+      hubungan: value,
+    }));
+  };
+
+  const handleSimChange = (e) => {
+    const value = e.target.value;
+    setFormNo((prevFormNo) => ({
+      ...prevFormNo,
+      sim: value,
+    }));
+  };
+
+  const handleInputOnChange = (e) => {
+    const { name, value } = e.target;
+
+    setFormNo((prevFormNo) => ({
+      ...prevFormNo,
+      [name]: value,
+    }));
+  };
+
+  const generateOrderCode = async () => {
+    const currentDate = new Date();
+    const dayOfMonth = currentDate.getDate();
+    const month = currentDate.getMonth() + 1;
+    const year = currentDate.getFullYear().toString().slice(-2);
+
+    const resp = await API.get(
+      `/order-count?date=${currentDate.toISOString()}`
+    );
+    const orderCount = resp.data.count + 1;
+
+    const formattedOrderCount = orderCount.toString().padStart(4, "0");
+
+    const orderCode = `RES${dayOfMonth}${month}${year}${formattedOrderCount}`;
+
+    return orderCode;
+  };
+
+  const handleSubmitNon = useMutation(async (e) => {
+    try {
+      e.preventDefault();
+
+      const respItem = await API.post("/reservation-item", {
+        item: formItem.item,
+        price: formItem.price,
+      });
+
+      const currentTime = new Date(); // Get the current time
+      const formattedTime = currentTime.toISOString(); // Format the time as needed
+
+      const respNotif = await API.post("/notification", {
+        user_id: formNo.userId,
+        title: "Success Reservasi",
+        message: `Success melakukan reservasi kendaraan ${formNo.merk} dengan tipe ${formNo.tipe}`,
+      });
+
+      const resp = await API.post("/reservation", {
+        kode_order: "RES",
+        status: "Pending",
+        order_masuk: formattedTime,
+        user_id: formNo.userId,
+        car_brand: formNo.merk.trim(),
+        car_type: formNo.tipe,
+        car_year: formNo.tahun.trim(),
+        car_color: formNo.warna.trim(),
+        is_insurance: 0,
+        reservation_item_id: respItem.data.data.id,
+      });
+
+      const alert = <SuccessAlert title={"Reservation Success! 😊"} />;
+      showAlert(alert, 5000);
+
+      setTimeout(() => {
+        window.location.reload();
+      }, 7000);
+    } catch (error) {
+      const alert = (
+        <ErrorAlert title={"Reservation Failed! please try again 😥"} />
+      );
+      showAlert(alert, 5000);
+      console.log("reservation failed : ", error);
+    }
+  });
+
+  const handleSubmitYes = useMutation(async (e) => {
+    try {
+      e.preventDefault();
+
+      const respItem = await API.post("/reservation-item", {
+        item: formItem.item,
+        price: formItem.price,
+      });
+
+      const currentTime = new Date(); // Get the current time
+      const formattedTime = currentTime.toISOString(); // Format the time as needed
+
+      const respNotif = await API.post("/notification", {
+        user_id: formNo.userId,
+        title: "Success Reservasi",
+        message: `Success melakukan reservasi kendaraan ${formNo.merk} dengan tipe ${formNo.tipe}`,
+      });
+
+      const resp = await API.post("/reservation", {
+        kode_order: "RES",
+        status: "Pending",
+        order_masuk: formattedTime,
+        user_id: formNo.userId,
+        car_brand: formNo.merk.trim(),
+        car_type: formNo.tipe,
+        car_year: formNo.tahun.trim(),
+        car_color: formNo.warna.trim(),
+        event_date: formNo.tanggal,
+        place: formNo.tempat,
+        time: formNo.jam,
+        driver_speed: formNo.kecepatan,
+        driver_name: formNo.namaLengkap,
+        driver_relation: formNo.hubungan,
+        driver_job: formNo.pekerjaan,
+        driver_age: formNo.umur,
+        driver_license: formNo.sim,
+        is_insurance: 1,
+        insurance_name: formNo.asuransi,
+        reservation_item_id: respItem.data.data.id,
+      });
+
+      const alert = <SuccessAlert title={"Reservation Success! 😊"} />;
+      showAlert(alert, 5000);
+
+      setTimeout(() => {
+        window.location.reload();
+      }, 7000);
+    } catch (error) {
+      const alert = (
+        <ErrorAlert title={"Reservation Failed! please try again 😥"} />
+      );
+      showAlert(alert, 5000);
+      console.log("reservation failed : ", error);
+    }
+  });
+
   useEffect(() => {
     const fetchData = async () => {
       await refetchType();
@@ -142,7 +339,8 @@ function FormReservation() {
 
   return (
     <div className="bg-white h-full pb-10">
-      <form className="flex flex-col mx-24">
+      {message && message}
+      <div className="flex flex-col mx-24">
         {/* Header */}
         <div className="py-3 border-b-2 border-navBg">
           <ul className="flex gap-2">
@@ -184,7 +382,10 @@ function FormReservation() {
         <div className="flex flex-col gap-5">
           {/* CONTENT YES */}
           {isChecked && (
-            <form className="flex flex-col gap-5">
+            <form
+              onSubmit={(e) => handleSubmitYes.mutate(e)}
+              className="flex flex-col gap-5"
+            >
               {/* Informasi Data Diri */}
               <section className="p-5 shadow-md border border-light-silver rounded-lg">
                 {/* Header Title */}
@@ -220,11 +421,21 @@ function FormReservation() {
               </section>
               <section className="flex flex-col gap-5">
                 {/* Data Asuransi */}
-                <div>
-                  <SelectBoxReservation
-                    label={"Pilih Asuransi"}
-                    lists={asuransi}
-                  />
+                <div className="flex flex-col gap-1 w-full">
+                  <label className="text-sm text-navBg">Pilih Asuransi</label>
+                  <select
+                    onChange={(e) => handleAsuransiChange(e)}
+                    className="bg-white text-navBg rounded-md p-2 border border-light-silver shadow"
+                  >
+                    <option disabled selected hidden>
+                      Choose your option...
+                    </option>
+                    {asuransi?.map((item) => (
+                      <option key={item.id} value={item.name}>
+                        {item.name}
+                      </option>
+                    ))}
+                  </select>
                 </div>
                 {/* END Data Asuransi */}
 
@@ -325,17 +536,29 @@ function FormReservation() {
                         type="date"
                         placeholder="xxxx"
                         label="Tanggal Kejadian"
+                        name="tanggal"
+                        onChange={handleInputOnChange}
                       />
                       <InputForm
                         type="text"
                         placeholder="xxxx"
                         label="Tempat"
+                        name="tempat"
+                        onChange={handleInputOnChange}
                       />
-                      <InputForm type="time" placeholder="xxxx" label="Jam" />
+                      <InputForm
+                        type="time"
+                        placeholder="xxxx"
+                        label="Jam"
+                        name="jam"
+                        onChange={handleInputOnChange}
+                      />
                       <InputForm
                         type="number"
                         placeholder="xxxx"
                         label="Kecepatan ( km/jam )"
+                        name="kecepatan"
+                        onChange={handleInputOnChange}
                       />
                     </div>
                   </div>
@@ -355,13 +578,35 @@ function FormReservation() {
                       type="text"
                       placeholder="xxxx"
                       label="Nama Lengkap"
+                      name="namaLengkap"
+                      onChange={handleInputOnChange}
                     />
                     <div className="flex gap-5">
-                      <SelectBoxReservation label="Hubungan dengan tertanggung" />
+                      {/* <SelectBoxReservation label="Hubungan dengan tertanggung" /> */}
+                      <div className="flex flex-col gap-1 w-full">
+                        <label className="text-sm text-navBg">
+                          Hubungan dengan tertanggung
+                        </label>
+                        <select
+                          onChange={(e) => handleHubunganChange(e)}
+                          className="bg-white text-navBg rounded-md p-2 border border-light-silver shadow"
+                        >
+                          <option disabled selected hidden>
+                            Choose your option...
+                          </option>
+                          {hubungan?.map((item) => (
+                            <option key={item.id} value={item.name}>
+                              {item.name}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
                       <InputForm
                         type="number"
                         placeholder="xxxx"
                         label="Umur"
+                        name="umur"
+                        onChange={handleInputOnChange}
                       />
                     </div>
                     <div className="flex gap-5">
@@ -369,14 +614,46 @@ function FormReservation() {
                         type="text"
                         placeholder="xxxx"
                         label="Pekerjaan"
+                        name="pekerjaan"
+                        onChange={handleInputOnChange}
                       />
-                      <SelectBoxReservation label="Jenis Golongan SIM" />
+                      {/* <SelectBoxReservation label="Jenis Golongan SIM" /> */}
+                      <div className="flex flex-col gap-1 w-full">
+                        <label className="text-sm text-navBg">
+                          SIM (Surat Izin Mengemudi)
+                        </label>
+                        <select
+                          onChange={(e) => handleSimChange(e)}
+                          className="bg-white text-navBg rounded-md p-2 border border-light-silver shadow"
+                        >
+                          <option disabled selected hidden>
+                            Choose your option...
+                          </option>
+                          {sim?.map((item) => (
+                            <option key={item.id} value={item.name}>
+                              {item.name}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
                     </div>
                   </div>
                 </div>
                 <div className="flex justify-center mt-5">
-                  <button className="btn btn-wide bg-navBg/50 hover:bg-navBg text-white/50 hover:text-white font-bold">
-                    Submit
+                  <button
+                    disabled={handleSubmitYes.isLoading}
+                    type="submit"
+                    className="btn btn-wide bg-navBg/50 hover:bg-navBg text-white/50 hover:text-white font-bold"
+                  >
+                    {handleSubmitYes.isLoading ? (
+                      <p className="flex justify-center items-center text-navBg">
+                        reserving
+                        <span>&nbsp;</span>
+                        <span className="loading loading-spinner loading-md"></span>
+                      </p>
+                    ) : (
+                      "Submit"
+                    )}
                   </button>
                 </div>
               </section>
@@ -386,7 +663,10 @@ function FormReservation() {
 
           {/* CONTENT NO */}
           {!isChecked && (
-            <form className="flex flex-col gap-5">
+            <form
+              onSubmit={(e) => handleSubmitNon.mutate(e)}
+              className="flex flex-col gap-5"
+            >
               {/* Informasi Data Diri */}
               <section className="p-5 shadow-md border border-light-silver rounded-lg">
                 {/* Header Title */}
@@ -502,17 +782,32 @@ function FormReservation() {
                     />
                   </div>
                 </div>
-                <div className="flex justify-center mt-5">
-                  <button className="btn btn-wide bg-navBg/50 hover:bg-navBg text-white/50 hover:text-white font-bold">
-                    Submit
-                  </button>
+                <div className="flex flex-col items-center justify-center mt-2">
+                  <div className="mb-3"></div>
+                  <div>
+                    <button
+                      disabled={handleSubmitNon.isLoading}
+                      type="submit"
+                      className="btn btn-wide bg-navBg/50 hover:bg-navBg text-white/50 hover:text-white font-bold"
+                    >
+                      {handleSubmitNon.isLoading ? (
+                        <p className="flex justify-center items-center text-navBg">
+                          reserving
+                          <span>&nbsp;</span>
+                          <span className="loading loading-spinner loading-md"></span>
+                        </p>
+                      ) : (
+                        "Submit"
+                      )}
+                    </button>
+                  </div>
                 </div>
               </section>
             </form>
           )}
           {/* END CONTENT NO */}
         </div>
-      </form>
+      </div>
     </div>
   );
 }

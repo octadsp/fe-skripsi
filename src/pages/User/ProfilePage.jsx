@@ -2,12 +2,28 @@ import React, { useState, useContext, useEffect } from "react";
 import Header from "./Components/HeaderReservation";
 import AvatarProfile from "../../components/Elements/AvatarProfile";
 import EditModal from "../../components/Fragments/ModalEditProfile";
+import { FcExpired } from "react-icons/fc";
+import { FcSynchronize } from "react-icons/fc";
+import { FcOk } from "react-icons/fc";
 
 import { API } from "../../config/api";
+import { useQuery } from "react-query";
 import { UserContext } from "../../context/userContext";
+
+const formatDate = (dateString) => {
+  const options = { day: "numeric", month: "long", year: "numeric" };
+  const formattedDate = new Date(dateString).toLocaleDateString(
+    "id-ID",
+    options
+  );
+  const [day, month, year] = formattedDate.split(" ");
+  const monthName = month.charAt(0).toUpperCase() + month.slice(1); // Ubah huruf pertama bulan menjadi kapital
+  return `${day} ${monthName} ${year}`;
+};
 
 function ProfilePage() {
   const [state] = useContext(UserContext);
+  const [openTab, setOpenTab] = useState(1);
   const [preview, setPreview] = useState(null);
   const [form, setForm] = useState({
     fullname: "",
@@ -32,6 +48,30 @@ function ProfilePage() {
     });
   }
 
+  const { data: history, refetch: refetchHistory } = useQuery(
+    "historyCache",
+    async () => {
+      const response = await API.get("/reservations");
+      return response.data.data;
+    }
+  );
+
+  // Fungsi untuk memfilter data berdasarkan user_id
+  const filterHistoryByUserId = (userId) => {
+    return history?.filter((item) => item.user_id === userId);
+  };
+
+  // Menggunakan fungsi filterHistoryByUserId dengan user_id dari state atau sesuai kebutuhan
+  const filteredHistory = filterHistoryByUserId(state.user.id);
+
+  const filterHistoryStatus = (status) => {
+    return filteredHistory?.filter((item) => item.status === status);
+  };
+
+  const filteredPending = filterHistoryStatus("Pending");
+  const filteredProses = filterHistoryStatus("Proses");
+  const filteredSelesai = filterHistoryStatus("Selesai");
+
   useEffect(() => {
     getDataUpdate();
   }, []);
@@ -49,7 +89,20 @@ function ProfilePage() {
       setPreview(url);
     }
   };
-  
+
+  const getStatusIcon = (status) => {
+    switch (status.toLowerCase()) {
+      case "pending":
+        return <FcExpired className="text-6xl" />;
+      case "proses":
+        return <FcSynchronize className="text-6xl" />;
+      case "selesai":
+        return <FcOk className="text-6xl" />;
+      default:
+        return null; // Jika status tidak sesuai, tidak menampilkan ikon
+    }
+  };
+
   return (
     <>
       <Header />
@@ -61,7 +114,7 @@ function ProfilePage() {
               <div className="h-full bg-white flex flex-col justify-center items-center shadow-md border border-light-silver rounded-lg py-5">
                 <div className="px-5">
                   <img
-                    class="object-cover rounded-xl h-48 w-96"
+                    className="object-cover rounded-xl h-48 w-96"
                     src={state.user.image}
                   />
                 </div>
@@ -75,7 +128,7 @@ function ProfilePage() {
                 </div>
                 <div>
                   <button
-                    className="btn btn-block btn-sm mt-3 bg-mikado-yellow hover:text-white text-navBg font-bold border-navBg/20"
+                    className="btn btn-block btn-sm mt-3 bg-mikado-yellow hover:text-white hover:bg-navBg text-navBg font-bold border-navBg/20"
                     onClick={() =>
                       document
                         .getElementById("my_modal_editProfile")
@@ -121,120 +174,153 @@ function ProfilePage() {
           </div>
         </div>
 
-        <div className="flex mx-16 pt-10 ">
-          <div className="w-full flex flex-col gap-2 py-10 px-16 shadow-md border border-light-silver rounded-lg">
+        <div className="flex mx-5 pt-10 ">
+          <div className="w-full flex flex-col gap-2 py-5 px-5 shadow-md border border-light-silver rounded-lg">
             {/* TITLE */}
-            <div className="pb-4">
+            <div className="flex justify-center pb-4 mb-5">
               <h1 className="text-navBg text-3xl font-bold">
                 History Reservation
               </h1>
             </div>
 
-            {/* CONTENT */}
-            <div className="w-full grid grid-cols-2 gap-5 text-navBg">
-              <div className="flex justify-between items-center rounded-lg p-3 shadow-lg ring-1 ring-light-silver">
-                <div className="flex flex-col w-3/4 ">
-                  <h1 className="text-xl">00001 - 23 Januari 2019</h1>
-                  <p className="mt-3 text-lg">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Ab
-                    fugit qui quas iste nesciunt esse dolorem inventore est
-                    blanditiis, laboriosam expedita{" "}
-                  </p>
+            <div className="text-navBg">
+              <ul className="flex justify-around text-2xl">
+                <li>
+                  <a
+                    onClick={() => setOpenTab(1)}
+                    className={
+                      openTab === 1
+                        ? "border-b px-10 py-2 bg-light-silver/10 rounded-t-box cursor-pointer"
+                        : "px-10 py-2 text-navBg/50 cursor-pointer"
+                    }
+                  >
+                    Pending
+                  </a>
+                </li>
+                <li>
+                  <a
+                    onClick={() => setOpenTab(2)}
+                    className={
+                      openTab === 2
+                        ? "border-b px-10 py-2 bg-light-silver/10 rounded-t-box cursor-pointer"
+                        : "px-10 py-2 text-navBg/50 cursor-pointer"
+                    }
+                  >
+                    Proses
+                  </a>
+                </li>
+                <li>
+                  <a
+                    onClick={() => setOpenTab(3)}
+                    className={
+                      openTab === 3
+                        ? "border-b px-10 py-2 bg-light-silver/10 rounded-t-box cursor-pointer"
+                        : "px-10 py-2 text-navBg/50 cursor-pointer"
+                    }
+                  >
+                    Selesai
+                  </a>
+                </li>
+              </ul>
+              <div className="mt-10">
+                <div className={openTab === 1 ? "block" : "hidden"}>
+                  <div className="w-full grid grid-cols-3 gap-5 text-navBg">
+                    {filteredPending?.map((item) => (
+                      <div className="flex flex-col justify-between items-center rounded-lg p-3 shadow-lg ring-1 ring-light-silver">
+                        <div className="flex items-center gap-5">
+                          <div className="flex flex-col">
+                            <h1 className="text-lg">
+                              {item.kode_order} - {formatDate(item.created_at)}
+                            </h1>
+                            <p className="mt-3 text-sm">
+                              Kendaraan merek {item.car_brand} dengan tipe{" "}
+                              {item.car_type} berwarna {item.car_color}
+                            </p>
+                          </div>
+                          <div>
+                            <div className="flex flex-col items-center">
+                              {getStatusIcon(item.status)}
+                              <div>{item.status}</div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="flex justify-center item-center">
+                          <div>
+                            <button className="text-navBg btn btn-wide btn-sm mt-5 transition ease-in-out delay-90 hover:-translate-y-1 hover:scale-110 hover:bg-navBg hover:text-white bg-mikado-yellow font-semibold rounded-lg">
+                              Detail
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
                 </div>
-                <div className="w-1/4 flex justify-center item-center">
-                  <button className="transition ease-in-out delay-90 hover:-translate-y-1 hover:scale-110 my-5 px-12 h-16 hover:bg-navBg hover:text-white bg-mikado-yellow font-semibold text-lg rounded-lg">
-                    Detail
-                  </button>
+                <div className={openTab === 2 ? "block" : "hidden"}>
+                  <div className="w-full grid grid-cols-3 gap-5 text-navBg">
+                    {filteredProses?.map((item) => (
+                      <div className="flex flex-col justify-between items-center rounded-lg p-3 shadow-lg ring-1 ring-light-silver">
+                        <div className="flex items-center gap-5">
+                          <div className="flex flex-col">
+                            <h1 className="text-lg">
+                              {item.kode_order} - {formatDate(item.created_at)}
+                            </h1>
+                            <p className="mt-3 text-sm">
+                              Kendaraan merek {item.car_brand} dengan tipe{" "}
+                              {item.car_type} berwarna {item.car_color}
+                            </p>
+                          </div>
+                          <div>
+                            <div className="flex flex-col items-center">
+                              {getStatusIcon(item.status)}
+                              <div>{item.status}</div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="flex justify-center item-center">
+                          <div>
+                            <button className="text-navBg btn btn-wide btn-sm mt-5 transition ease-in-out delay-90 hover:-translate-y-1 hover:scale-110 hover:bg-navBg hover:text-white bg-mikado-yellow font-semibold rounded-lg">
+                              Detail
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
                 </div>
-              </div>
-              <div className="flex justify-between items-center rounded-lg p-3 shadow-lg ring-1 ring-light-silver">
-                <div className="flex flex-col w-3/4 ">
-                  <h1 className="text-xl">00001 - 23 Januari 2019</h1>
-                  <p className="mt-3 text-lg">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Ab
-                    fugit qui quas iste nesciunt esse dolorem inventore est
-                    blanditiis, laboriosam expedita{" "}
-                  </p>
-                </div>
-                <div className="w-1/4 flex justify-center item-center">
-                  <button className="transition ease-in-out delay-90 hover:-translate-y-1 hover:scale-110 my-5 px-12 h-16 hover:bg-navBg hover:text-white bg-mikado-yellow font-semibold text-lg rounded-lg">
-                    Detail
-                  </button>
-                </div>
-              </div>
-              <div className="flex justify-between items-center rounded-lg p-3 shadow-lg ring-1 ring-light-silver">
-                <div className="flex flex-col w-3/4 ">
-                  <h1 className="text-xl">00001 - 23 Januari 2019</h1>
-                  <p className="mt-3 text-lg">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Ab
-                    fugit qui quas iste nesciunt esse dolorem inventore est
-                    blanditiis, laboriosam expedita{" "}
-                  </p>
-                </div>
-                <div className="w-1/4 flex justify-center item-center">
-                  <button className="transition ease-in-out delay-90 hover:-translate-y-1 hover:scale-110 my-5 px-12 h-16 hover:bg-navBg hover:text-white bg-mikado-yellow font-semibold text-lg rounded-lg">
-                    Detail
-                  </button>
-                </div>
-              </div>
-              <div className="flex justify-between items-center rounded-lg p-3 shadow-lg ring-1 ring-light-silver">
-                <div className="flex flex-col w-3/4 ">
-                  <h1 className="text-xl">00001 - 23 Januari 2019</h1>
-                  <p className="mt-3 text-lg">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Ab
-                    fugit qui quas iste nesciunt esse dolorem inventore est
-                    blanditiis, laboriosam expedita{" "}
-                  </p>
-                </div>
-                <div className="w-1/4 flex justify-center item-center">
-                  <button className="transition ease-in-out delay-90 hover:-translate-y-1 hover:scale-110 my-5 px-12 h-16 hover:bg-navBg hover:text-white bg-mikado-yellow font-semibold text-lg rounded-lg">
-                    Detail
-                  </button>
-                </div>
-              </div>
-              <div className="flex justify-between items-center rounded-lg p-3 shadow-lg ring-1 ring-light-silver">
-                <div className="flex flex-col w-3/4 ">
-                  <h1 className="text-xl">00001 - 23 Januari 2019</h1>
-                  <p className="mt-3 text-lg">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Ab
-                    fugit qui quas iste nesciunt esse dolorem inventore est
-                    blanditiis, laboriosam expedita{" "}
-                  </p>
-                </div>
-                <div className="w-1/4 flex justify-center item-center">
-                  <button className="transition ease-in-out delay-90 hover:-translate-y-1 hover:scale-110 my-5 px-12 h-16 hover:bg-navBg hover:text-white bg-mikado-yellow font-semibold text-lg rounded-lg">
-                    Detail
-                  </button>
-                </div>
-              </div>
-              <div className="flex justify-between items-center rounded-lg p-3 shadow-lg ring-1 ring-light-silver">
-                <div className="flex flex-col w-3/4 ">
-                  <h1 className="text-xl">00001 - 23 Januari 2019</h1>
-                  <p className="mt-3 text-lg">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Ab
-                    fugit qui quas iste nesciunt esse dolorem inventore est
-                    blanditiis, laboriosam expedita{" "}
-                  </p>
-                </div>
-                <div className="w-1/4 flex justify-center item-center">
-                  <button className="transition ease-in-out delay-90 hover:-translate-y-1 hover:scale-110 my-5 px-12 h-16 hover:bg-navBg hover:text-white bg-mikado-yellow font-semibold text-lg rounded-lg">
-                    Detail
-                  </button>
-                </div>
-              </div>
-              <div className="flex justify-between items-center rounded-lg p-3 shadow-lg ring-1 ring-light-silver">
-                <div className="flex flex-col w-3/4 ">
-                  <h1 className="text-xl">00001 - 23 Januari 2019</h1>
-                  <p className="mt-3 text-lg">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Ab
-                    fugit qui quas iste nesciunt esse dolorem inventore est
-                    blanditiis, laboriosam expedita{" "}
-                  </p>
-                </div>
-                <div className="w-1/4 flex justify-center item-center">
-                  <button className="transition ease-in-out delay-90 hover:-translate-y-1 hover:scale-110 my-5 px-12 h-16 hover:bg-navBg hover:text-white bg-mikado-yellow font-semibold text-lg rounded-lg">
-                    Detail
-                  </button>
+                <div className={openTab === 3 ? "block" : "hidden"}>
+                  <div className="w-full grid grid-cols-3 gap-5 text-navBg">
+                    {filteredSelesai?.map((item) => (
+                      <div className="flex flex-col justify-between items-center rounded-lg p-3 shadow-lg ring-1 ring-light-silver">
+                        <div className="flex items-center gap-5">
+                          <div className="flex flex-col">
+                            <h1 className="text-lg">
+                              {item.kode_order} - {formatDate(item.created_at)}
+                            </h1>
+                            <p className="mt-3 text-sm">
+                              Kendaraan merek {item.car_brand} dengan tipe{" "}
+                              {item.car_type} berwarna {item.car_color}
+                            </p>
+                          </div>
+                          <div>
+                            <div className="flex flex-col items-center">
+                              {getStatusIcon(item.status)}
+                              <div>{item.status}</div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="flex justify-center item-center">
+                          <div>
+                            <button className="text-navBg btn btn-wide btn-sm mt-5 transition ease-in-out delay-90 hover:-translate-y-1 hover:scale-110 hover:bg-navBg hover:text-white bg-mikado-yellow font-semibold rounded-lg">
+                              Detail
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </div>
             </div>

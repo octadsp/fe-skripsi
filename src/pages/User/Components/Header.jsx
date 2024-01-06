@@ -50,7 +50,7 @@ const Header = () => {
   return (
     <>
       {state.isLogin ? (
-        <header className="bg-navBg py-1 text-light-silver w-full sticky top-0">
+        <header className="bg-navBg py-1 text-light-silver w-full z-10 sticky top-0">
           <div className="mx-5 flex justify-between items-center">
             <Link to={"/landing-page"} className="flex flex-row w-32">
               <img src={logoGuns} />
