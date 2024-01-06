@@ -34,19 +34,25 @@ function ProfilePage() {
     image: "",
   });
 
-  async function getDataUpdate() {
-    const responseUser = await API.get(`/user/${state.user.id}`);
-    setPreview(responseUser.data.data.image);
+  const { data: user, refetch: refetchUser } = useQuery(
+    "userCache",
+    async () => {
+      const resp = await API.get(`/user/${state.user.id}`);
+      setPreview(resp.data.data.image);
 
-    setForm({
-      fullname: responseUser.data.data.fullname,
-      lastname: responseUser.data.data.lastname,
-      email: responseUser.data.data.email,
-      phone: responseUser.data.data.phone,
-      address: responseUser.data.data.address,
-      image: responseUser.data.data.image,
-    });
-  }
+      setForm({
+        fullname: resp.data.data.fullname,
+        lastname: resp.data.data.lastname,
+        email: resp.data.data.email,
+        phone: resp.data.data.phone,
+        address: resp.data.data.address,
+        image: resp.data.data.image,
+      });
+    },
+    {
+      refetchInterval: 5000,
+    }
+  );
 
   const { data: history, refetch: refetchHistory } = useQuery(
     "historyCache",
@@ -71,10 +77,6 @@ function ProfilePage() {
   const filteredPending = filterHistoryStatus("Pending");
   const filteredProses = filterHistoryStatus("Proses");
   const filteredSelesai = filterHistoryStatus("Selesai");
-
-  useEffect(() => {
-    getDataUpdate();
-  }, []);
 
   const handleChange = (e) => {
     setForm({
@@ -190,7 +192,7 @@ function ProfilePage() {
                     onClick={() => setOpenTab(1)}
                     className={
                       openTab === 1
-                        ? "border-b px-10 py-2 bg-light-silver/10 rounded-t-box cursor-pointer"
+                        ? "border-b-2 px-10 py-2 bg-light-silver/10 rounded-t-box cursor-pointer"
                         : "px-10 py-2 text-navBg/50 cursor-pointer"
                     }
                   >
@@ -224,103 +226,130 @@ function ProfilePage() {
               </ul>
               <div className="mt-10">
                 <div className={openTab === 1 ? "block" : "hidden"}>
-                  <div className="w-full grid grid-cols-3 gap-5 text-navBg">
-                    {filteredPending?.map((item) => (
-                      <div className="flex flex-col justify-between items-center rounded-lg p-3 shadow-lg ring-1 ring-light-silver">
-                        <div className="flex items-center gap-5">
-                          <div className="flex flex-col">
-                            <h1 className="text-lg">
-                              {item.kode_order} - {formatDate(item.created_at)}
-                            </h1>
-                            <p className="mt-3 text-sm">
-                              Kendaraan merek {item.car_brand} dengan tipe{" "}
-                              {item.car_type} berwarna {item.car_color}
-                            </p>
+                  {filteredPending && filteredPending.length > 0 ? (
+                    <div className="w-full grid grid-cols-3 gap-5 text-navBg">
+                      {filteredPending?.map((item) => (
+                        <div className="flex flex-col justify-between items-center rounded-lg p-3 shadow-lg ring-1 ring-light-silver">
+                          <div className="flex items-center gap-5">
+                            <div className="flex flex-col">
+                              <h1 className="text-lg">
+                                {item.kode_order} -{" "}
+                                {formatDate(item.created_at)}
+                              </h1>
+                              <p className="mt-3 text-sm">
+                                Kendaraan merek {item.car_brand} dengan tipe{" "}
+                                {item.car_type} berwarna {item.car_color}
+                              </p>
+                            </div>
+                            <div>
+                              <div className="flex flex-col items-center">
+                                {getStatusIcon(item.status)}
+                                <div>{item.status}</div>
+                              </div>
+                            </div>
                           </div>
-                          <div>
-                            <div className="flex flex-col items-center">
-                              {getStatusIcon(item.status)}
-                              <div>{item.status}</div>
+
+                          <div className="flex justify-center item-center">
+                            <div>
+                              <button className="text-navBg btn btn-wide btn-sm mt-5 transition ease-in-out delay-90 hover:-translate-y-1 hover:scale-110 hover:bg-navBg hover:text-white bg-mikado-yellow font-semibold rounded-lg">
+                                Detail
+                              </button>
                             </div>
                           </div>
                         </div>
-
-                        <div className="flex justify-center item-center">
-                          <div>
-                            <button className="text-navBg btn btn-wide btn-sm mt-5 transition ease-in-out delay-90 hover:-translate-y-1 hover:scale-110 hover:bg-navBg hover:text-white bg-mikado-yellow font-semibold rounded-lg">
-                              Detail
-                            </button>
-                          </div>
-                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="flex justify-center bg-light-gray/30 p-5 rounded-box shadow">
+                      <div className="text-lg text-navBg/60">
+                        Tidak ada data
                       </div>
-                    ))}
-                  </div>
+                    </div>
+                  )}
                 </div>
                 <div className={openTab === 2 ? "block" : "hidden"}>
-                  <div className="w-full grid grid-cols-3 gap-5 text-navBg">
-                    {filteredProses?.map((item) => (
-                      <div className="flex flex-col justify-between items-center rounded-lg p-3 shadow-lg ring-1 ring-light-silver">
-                        <div className="flex items-center gap-5">
-                          <div className="flex flex-col">
-                            <h1 className="text-lg">
-                              {item.kode_order} - {formatDate(item.created_at)}
-                            </h1>
-                            <p className="mt-3 text-sm">
-                              Kendaraan merek {item.car_brand} dengan tipe{" "}
-                              {item.car_type} berwarna {item.car_color}
-                            </p>
+                  {filteredProses && filteredProses.length > 0 ? (
+                    <div className="w-full grid grid-cols-3 gap-5 text-navBg">
+                      {filteredProses?.map((item) => (
+                        <div className="flex flex-col justify-between items-center rounded-lg p-3 shadow-lg ring-1 ring-light-silver">
+                          <div className="flex items-center gap-5">
+                            <div className="flex flex-col">
+                              <h1 className="text-lg">
+                                {item.kode_order} -{" "}
+                                {formatDate(item.created_at)}
+                              </h1>
+                              <p className="mt-3 text-sm">
+                                Kendaraan merek {item.car_brand} dengan tipe{" "}
+                                {item.car_type} berwarna {item.car_color}
+                              </p>
+                            </div>
+                            <div>
+                              <div className="flex flex-col items-center">
+                                {getStatusIcon(item.status)}
+                                <div>{item.status}</div>
+                              </div>
+                            </div>
                           </div>
-                          <div>
-                            <div className="flex flex-col items-center">
-                              {getStatusIcon(item.status)}
-                              <div>{item.status}</div>
+
+                          <div className="flex justify-center item-center">
+                            <div>
+                              <button className="text-navBg btn btn-wide btn-sm mt-5 transition ease-in-out delay-90 hover:-translate-y-1 hover:scale-110 hover:bg-navBg hover:text-white bg-mikado-yellow font-semibold rounded-lg">
+                                Detail
+                              </button>
                             </div>
                           </div>
                         </div>
-
-                        <div className="flex justify-center item-center">
-                          <div>
-                            <button className="text-navBg btn btn-wide btn-sm mt-5 transition ease-in-out delay-90 hover:-translate-y-1 hover:scale-110 hover:bg-navBg hover:text-white bg-mikado-yellow font-semibold rounded-lg">
-                              Detail
-                            </button>
-                          </div>
-                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="flex justify-center bg-light-gray/30 p-5 rounded-box shadow">
+                      <div className="text-lg text-navBg/60">
+                        Tidak ada data
                       </div>
-                    ))}
-                  </div>
+                    </div>
+                  )}
                 </div>
                 <div className={openTab === 3 ? "block" : "hidden"}>
-                  <div className="w-full grid grid-cols-3 gap-5 text-navBg">
-                    {filteredSelesai?.map((item) => (
-                      <div className="flex flex-col justify-between items-center rounded-lg p-3 shadow-lg ring-1 ring-light-silver">
-                        <div className="flex items-center gap-5">
-                          <div className="flex flex-col">
-                            <h1 className="text-lg">
-                              {item.kode_order} - {formatDate(item.created_at)}
-                            </h1>
-                            <p className="mt-3 text-sm">
-                              Kendaraan merek {item.car_brand} dengan tipe{" "}
-                              {item.car_type} berwarna {item.car_color}
-                            </p>
+                  {filteredSelesai && filteredSelesai.length > 0 ? (
+                    <div className="w-full grid grid-cols-3 gap-5 text-navBg">
+                      {filteredSelesai?.map((item) => (
+                        <div className="flex flex-col justify-between items-center rounded-lg p-3 shadow-lg ring-1 ring-light-silver">
+                          <div className="flex items-center gap-5">
+                            <div className="flex flex-col">
+                              <h1 className="text-lg">
+                                {item.kode_order} -{" "}
+                                {formatDate(item.created_at)}
+                              </h1>
+                              <p className="mt-3 text-sm">
+                                Kendaraan merek {item.car_brand} dengan tipe{" "}
+                                {item.car_type} berwarna {item.car_color}
+                              </p>
+                            </div>
+                            <div>
+                              <div className="flex flex-col items-center">
+                                {getStatusIcon(item.status)}
+                                <div>{item.status}</div>
+                              </div>
+                            </div>
                           </div>
-                          <div>
-                            <div className="flex flex-col items-center">
-                              {getStatusIcon(item.status)}
-                              <div>{item.status}</div>
+
+                          <div className="flex justify-center item-center">
+                            <div>
+                              <button className="text-navBg btn btn-wide btn-sm mt-5 transition ease-in-out delay-90 hover:-translate-y-1 hover:scale-110 hover:bg-navBg hover:text-white bg-mikado-yellow font-semibold rounded-lg">
+                                Detail
+                              </button>
                             </div>
                           </div>
                         </div>
-
-                        <div className="flex justify-center item-center">
-                          <div>
-                            <button className="text-navBg btn btn-wide btn-sm mt-5 transition ease-in-out delay-90 hover:-translate-y-1 hover:scale-110 hover:bg-navBg hover:text-white bg-mikado-yellow font-semibold rounded-lg">
-                              Detail
-                            </button>
-                          </div>
-                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="flex justify-center bg-light-gray/30 p-5 rounded-box shadow">
+                      <div className="text-lg text-navBg/60">
+                        Tidak ada data
                       </div>
-                    ))}
-                  </div>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>

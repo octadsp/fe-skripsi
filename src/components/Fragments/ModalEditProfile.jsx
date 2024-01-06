@@ -11,7 +11,7 @@ function ModalEditProfile({ form, refetchParent }) {
   const [state] = useContext(UserContext);
   const [message, setMessage] = useState(false);
 
-  const [preview, setPreview] = useState(null);
+  const [preview, setPreview] = useState(state.user.image);
   const [formEdit, setFormEdit] = useState({
     fullname: "",
     lastname: "",
@@ -77,9 +77,9 @@ function ModalEditProfile({ form, refetchParent }) {
 
       const formData = new FormData();
       formData.set("fullname", fullname);
-      if (image) {
-        formData.set("image", image[0], image[0].name);
-      }
+      // if (image) {
+      //   formData.set("image", image[0], image[0].name);
+      // }
       formData.set("lastname", lastname);
       formData.set("email", email);
       formData.set("phone", phone);
@@ -92,6 +92,7 @@ function ModalEditProfile({ form, refetchParent }) {
       showAlert(alert, 3000);
       setTimeout(() => {
         document.getElementById("my_modal_editProfile").close();
+        window.location.reload();
       }, 3000);
     } catch (err) {
       console.log(err);
@@ -100,12 +101,12 @@ function ModalEditProfile({ form, refetchParent }) {
 
   return (
     <dialog id="my_modal_editProfile" className="modal text-navBg">
-      {message && message}
       <div className="modal-box bg-white">
+        {message && message}
         <h3 className="font-bold text-center text-xl mb-3">Edit Profile</h3>
         <form onSubmit={(e) => handleSubmit.mutate(e)}>
           <div className="flex flex-col gap-1">
-            <div className="flex flex-col gap-3 items-center mb-5">
+            {/* <div className="flex flex-col gap-3 items-center mb-5">
               <img src={preview} class="object-cover rounded-xl h-52 w-56" />
               <input
                 onChange={handleChange}
@@ -114,12 +115,15 @@ function ModalEditProfile({ form, refetchParent }) {
                 type="file"
                 className="file-input text-sm file-input-bordered file-input-accent w-full max-w-xs bg-light-gray"
               />
-            </div>
+            </div> */}
             <label className="text-sm">Nama Depan</label>
             <input
               placeholder={state.user.fullname}
               className="bg-light-gray focus:bg-light-silver p-2 w-full text-sm text-navBg focus:outline-none focus:ring-2 focus:ring-navBg/50 rounded-lg"
               value={fullname}
+              name="fullname"
+              form="fullname"
+              type="text"
               onChange={handleChange}
             />
           </div>
@@ -129,6 +133,9 @@ function ModalEditProfile({ form, refetchParent }) {
               placeholder={state.user.lastname}
               className="bg-light-gray focus:bg-light-silver p-2 w-full text-sm text-navBg focus:outline-none focus:ring-2 focus:ring-navBg/50 rounded-lg"
               value={lastname}
+              name="lastname"
+              form="lastname"
+              type="text"
               onChange={handleChange}
             />
           </div>
@@ -138,6 +145,9 @@ function ModalEditProfile({ form, refetchParent }) {
               placeholder={state.user.phone}
               className="bg-light-gray focus:bg-light-silver p-2 w-full text-sm text-navBg focus:outline-none focus:ring-2 focus:ring-navBg/50 rounded-lg"
               value={phone}
+              name="phone"
+              form="phone"
+              type="text"
               onChange={handleChange}
             />
           </div>
@@ -148,6 +158,7 @@ function ModalEditProfile({ form, refetchParent }) {
               rows={4}
               name="address"
               type="text"
+              form="address"
               onChange={handleChange}
               value={address}
             />

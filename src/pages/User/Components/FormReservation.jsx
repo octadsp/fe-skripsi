@@ -250,8 +250,8 @@ function FormReservation() {
       showAlert(alert, 5000);
 
       setTimeout(() => {
-        window.location.reload();
-      }, 7000);
+        navigate("/landing-page");
+      }, 6000);
     } catch (error) {
       const alert = (
         <ErrorAlert title={"Reservation Failed! please try again 😥"} />
@@ -306,8 +306,8 @@ function FormReservation() {
       showAlert(alert, 5000);
 
       setTimeout(() => {
-        window.location.reload();
-      }, 7000);
+        navigate("/landing-page");
+      }, 6000);
     } catch (error) {
       const alert = (
         <ErrorAlert title={"Reservation Failed! please try again 😥"} />
