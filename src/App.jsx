@@ -10,6 +10,7 @@ import Home from "./pages/Home";
 import ReservationPage from "./pages/User/ReservationPage";
 import ProfilePage from "./pages/User/ProfilePage";
 import LandingPage from "./pages/User/LandingPage";
+import DetailReservation from "./pages/User/Components/DetailReservation";
 
 // API CONFIG
 import { API, setAuthToken } from "./config/api";
@@ -94,6 +95,11 @@ function App() {
               element={<ReservationPage />}
             />
             <Route exact path="/profile" element={<ProfilePage />} />
+            <Route
+              exact
+              path="/detail-reservation/:id"
+              element={<DetailReservation />}
+            />
           </Route>
           <Route element={<PrivateRouteVisible />}>
             <Route exact path="/add-car-brand" element={<AddCarBrand />} />

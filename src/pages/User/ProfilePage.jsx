@@ -9,6 +9,7 @@ import { FcOk } from "react-icons/fc";
 import { API } from "../../config/api";
 import { useQuery } from "react-query";
 import { UserContext } from "../../context/userContext";
+import { Link } from "react-router-dom";
 
 const formatDate = (dateString) => {
   const options = { day: "numeric", month: "long", year: "numeric" };
@@ -29,6 +30,7 @@ function ProfilePage() {
     fullname: "",
     lastname: "",
     email: "",
+    institute: "",
     phone: "",
     address: "",
     image: "",
@@ -44,6 +46,7 @@ function ProfilePage() {
         fullname: resp.data.data.fullname,
         lastname: resp.data.data.lastname,
         email: resp.data.data.email,
+        institute: resp.data.data.institute,
         phone: resp.data.data.phone,
         address: resp.data.data.address,
         image: resp.data.data.image,
@@ -117,16 +120,16 @@ function ProfilePage() {
                 <div className="px-5">
                   <img
                     className="object-cover rounded-xl h-48 w-96"
-                    src={state.user.image}
+                    src={form.image}
                   />
                 </div>
                 <div className="mt-2">
                   <h1 className="text-xl text-navBg">
-                    {state?.user.fullname} {state?.user.lastname}
+                    {form.fullname} {form.lastname}
                   </h1>
                 </div>
                 <div className="mt-1">
-                  <h1 className="text-sm text-navBg/60">{state?.user.email}</h1>
+                  <h1 className="text-sm text-navBg/60">{form.institute}</h1>
                 </div>
                 <div>
                   <button
@@ -149,26 +152,22 @@ function ProfilePage() {
               <div className="border-b border-b-light-silver my-2"></div>
               <div className="flex gap-10 w-full py-3">
                 <p className="w-1/4 font-semibold text-xl">Nama Depan</p>
-                <p className="text-xl font-semibold">
-                  : {state?.user.fullname}
-                </p>
+                <p className="text-xl font-semibold">: {form.fullname}</p>
               </div>
               <div className="border-b border-b-light-silver my-2"></div>
               <div className="flex gap-10 w-full py-3">
                 <p className="w-1/4 font-semibold text-xl">Nama Belakang</p>
-                <p className="text-xl font-semibold">
-                  : {state?.user.lastname}
-                </p>
+                <p className="text-xl font-semibold">: {form.lastname}</p>
               </div>
               <div className="border-b border-b-light-silver my-2"></div>
               <div className="flex gap-10 w-full py-3">
                 <p className="w-1/4 font-semibold text-xl">Handphone</p>
-                <p className="text-xl font-semibold">: {state?.user.phone}</p>
+                <p className="text-xl font-semibold">: {form.phone}</p>
               </div>
               <div className="border-b border-b-light-silver my-2"></div>
               <div className="flex gap-10 w-full py-3">
                 <p className="w-1/4 font-semibold text-xl">Alamat</p>
-                <p className="text-xl font-semibold">: {state?.user.address}</p>
+                <p className="text-xl font-semibold">: {form.address}</p>
               </div>
               <div className="border-b border-b-light-silver my-2"></div>
             </div>
@@ -251,9 +250,12 @@ function ProfilePage() {
 
                           <div className="flex justify-center item-center">
                             <div>
-                              <button className="text-navBg btn btn-wide btn-sm mt-5 transition ease-in-out delay-90 hover:-translate-y-1 hover:scale-110 hover:bg-navBg hover:text-white bg-mikado-yellow font-semibold rounded-lg">
+                              <Link
+                                to={`/detail-reservation/` + item.id}
+                                className="text-navBg btn btn-wide btn-sm mt-5 transition ease-in-out delay-90 hover:-translate-y-1 hover:scale-110 hover:bg-navBg hover:text-white bg-mikado-yellow font-semibold rounded-lg"
+                              >
                                 Detail
-                              </button>
+                              </Link>
                             </div>
                           </div>
                         </div>
@@ -293,9 +295,12 @@ function ProfilePage() {
 
                           <div className="flex justify-center item-center">
                             <div>
-                              <button className="text-navBg btn btn-wide btn-sm mt-5 transition ease-in-out delay-90 hover:-translate-y-1 hover:scale-110 hover:bg-navBg hover:text-white bg-mikado-yellow font-semibold rounded-lg">
+                              <Link
+                                to={`/detail-reservation/` + item.id}
+                                className="text-navBg btn btn-wide btn-sm mt-5 transition ease-in-out delay-90 hover:-translate-y-1 hover:scale-110 hover:bg-navBg hover:text-white bg-mikado-yellow font-semibold rounded-lg"
+                              >
                                 Detail
-                              </button>
+                              </Link>
                             </div>
                           </div>
                         </div>
@@ -335,9 +340,12 @@ function ProfilePage() {
 
                           <div className="flex justify-center item-center">
                             <div>
-                              <button className="text-navBg btn btn-wide btn-sm mt-5 transition ease-in-out delay-90 hover:-translate-y-1 hover:scale-110 hover:bg-navBg hover:text-white bg-mikado-yellow font-semibold rounded-lg">
+                              <Link
+                                to={`/detail-reservation/` + item.id}
+                                className="text-navBg btn btn-wide btn-sm mt-5 transition ease-in-out delay-90 hover:-translate-y-1 hover:scale-110 hover:bg-navBg hover:text-white bg-mikado-yellow font-semibold rounded-lg"
+                              >
                                 Detail
-                              </button>
+                              </Link>
                             </div>
                           </div>
                         </div>
