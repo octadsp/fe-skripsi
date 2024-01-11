@@ -8,7 +8,33 @@ import { API } from "../../../config/api";
 import ErrorAlert from "../../../components/Elements/ErrorAlert";
 import SuccessAlert from "../../../components/Elements/SuccessAlert";
 
+function formatDateAndTime(inputDateString) {
+  const inputDate = new Date(inputDateString);
+
+  const options = {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+  };
+
+  return new Intl.DateTimeFormat("id-ID", options).format(inputDate);
+}
+
 function ReservationList() {
+  const { data: reservation, refetch: reservRefetch } = useQuery(
+    "reservListCache",
+    async () => {
+      const resp = await API.get(`/reservations`);
+      return resp.data.data;
+    }
+  );
+  // console.log(
+  //   "🚀 ~ file: ReservationList.jsx:13 ~ ReservationList ~ reservation:",
+  //   reservation
+  // );
   return (
     <>
       <div className="flex justify-center mb-20 mt-5">
@@ -26,10 +52,9 @@ function ReservationList() {
                 <th className="border w-8">No</th>
                 <th className="border">Kode Order</th>
                 <th className="border">Status</th>
-                <th className="border">Jam Order Masuk</th>
-                <th className="border">Jam Order Proses</th>
-                <th className="border">Jam Order Selesai</th>
+                <th className="border">Tanggal Order Masuk</th>
                 <th className="border">Nama Customer</th>
+                <th className="border">Perusahaan</th>
                 <th className="border">Kendaraan</th>
                 <th className="border">Asuransi</th>
                 <th className="border">Item</th>
@@ -37,42 +62,36 @@ function ReservationList() {
               </tr>
             </thead>
             <tbody>
-              {/* Render list of car brands */}
-              {/* {lists &&
-                lists.map((brand, index) => (
-                  <tr
-                    key={index}
-                    className={
-                      index % 2 === 0
-                        ? "font-semibold"
-                        : "font-semibold bg-light-silver"
-                    }
-                  >
-                    <th className="border">{index + 1}</th>
-                    <td className="border">{brand.car_brand.name}</td>
-                    <td className="border text-center">
-                      {brand.car_type.name}
-                    </td>
-                    <td className="border text-center">{brand.golongan}</td>
+              {reservation &&
+                reservation?.map((item, index) => (
+                  <tr key={index}>
+                    <th className="border">1</th>
+                    <th className="border">{item.kode_order}</th>
+                    <th className="border">{item.status}</th>
+                    <th className="border">
+                      {formatDateAndTime(item.order_masuk)}
+                    </th>
+                    <th className="border">
+                      {item.user.fullname} {item.user.lastname}
+                    </th>
+                    <th className="border">{item.user.institute}</th>
+                    <th className="border">
+                      {item.car_brand} {item.car_type}
+                    </th>
+                    <th className="border">
+                      {item.insurance_name || "Tidak Pakai"}
+                    </th>
+                    <th className="border">{item.reservation_item.item}</th>
+                    <th className="border text-center">
+                      <button className="bg-textSuccess p-1 rounded-lg">
+                        View
+                      </button>
+                      <button className="bg-textSuccess p-1 rounded-lg">
+                        View
+                      </button>
+                    </th>
                   </tr>
-                ))} */}
-              <tr>
-                <th className="border">1</th>
-                <th className="border">GUN01</th>
-                <th className="border">Proses</th>
-                <th className="border">12:30</th>
-                <th className="border">14:00</th>
-                <th className="border">belum selesai</th>
-                <th className="border">Ahmad</th>
-                <th className="border">Honda Nisan</th>
-                <th className="border">Central Asia</th>
-                <th className="border">Bemper Depan, Kaca Spion</th>
-                <th className="border text-center">
-                  <button className="bg-textSuccess p-1 rounded-lg">
-                    View
-                  </button>
-                </th>
-              </tr>
+                ))}
             </tbody>
           </table>
         </div>
