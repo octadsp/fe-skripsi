@@ -3,45 +3,12 @@ import { BsArrowLeft } from "react-icons/bs";
 import { FcExpired } from "react-icons/fc";
 import { FcSynchronize } from "react-icons/fc";
 import { FcOk } from "react-icons/fc";
+import ErrorAlert from "../../../components/Elements/ErrorAlert";
 
 import { UserContext } from "../../../context/userContext";
 import { API } from "../../../config/api";
 import { useQuery, useMutation } from "react-query";
 import { Link, useNavigate, useParams } from "react-router-dom";
-
-// 1 Post punya banyak Photo
-// 1 Reservation punya banyak Item
-
-const items = [
-  {
-    id: 10,
-    Image:
-      "https://res.cloudinary.com/dpxazv6a6/image/upload/v1704687841/skripsi/no_image_btbbwy.png",
-    item: "Bemper Depan",
-    price: 450000,
-  },
-  {
-    id: 21,
-    Image:
-      "https://res.cloudinary.com/dpxazv6a6/image/upload/v1704536262/skripsi/zxrgubz4yrk92qxlo6lw.png",
-    item: "Pintu Samping",
-    price: 200000,
-  },
-  {
-    id: 32,
-    Image:
-      "https://res.cloudinary.com/dpxazv6a6/image/upload/v1704290798/skripsi/kjak0g7kancjg5pfoggf.jpg",
-    item: "Kap Sun Roof",
-    price: 320000,
-  },
-  {
-    id: 44,
-    Image:
-      "https://res.cloudinary.com/dpxazv6a6/image/upload/v1704536435/skripsi/nnqunjrh9fcdxwk1iilc.jpg",
-    item: "Sayap Belakang",
-    price: 250000,
-  },
-];
 
 function formatPrice(price) {
   // Convert price to string
@@ -87,14 +54,22 @@ const formatDate = (dateString) => {
 };
 
 function DetailReservation() {
-  const [state] = useContext(UserContext);
   const navigate = useNavigate();
   const { id } = useParams();
+  const [message, setMessage] = useState(null);
   const [selectedItems, setSelectedItems] = useState({});
   console.log(
     "🚀 ~ file: DetailReservation.jsx:94 ~ DetailReservation ~ selectedItems:",
     selectedItems
   );
+  const showAlert = (alertComponent, timeout) => {
+    setMessage(alertComponent);
+
+    // Setelah timeout, atur pesan kembali menjadi null
+    setTimeout(() => {
+      setMessage(null);
+    }, timeout);
+  };
 
   // Function to handle checkbox toggle
   const handleCheckboxToggle = (itemId) => {
@@ -111,10 +86,14 @@ function DetailReservation() {
       return resp.data.data;
     }
   );
-  // console.log(
-  //   "🚀 ~ file: DetailReservation.jsx:95 ~ DetailReservation ~ reservation:",
-  //   reservation
-  // );
+
+  const { data: items, refetch: refetchItem } = useQuery(
+    "itemsCache",
+    async () => {
+      const resp = await API.get("/reservation-items");
+      return resp.data.data;
+    }
+  );
 
   // Function to calculate total items and total estimated price
   const calculateTotal = () => {
@@ -134,10 +113,39 @@ function DetailReservation() {
   };
 
   const { totalItems, totalEstimatedPrice } = calculateTotal();
-  // console.log(
-  //   "🚀 ~ file: DetailReservation.jsx:137 ~ DetailReservation ~ totalEstimatedPrice:",
-  //   totalEstimatedPrice
-  // );
+
+  const { mutate: handleSubmitApprove } = useMutation(async (e) => {
+    try {
+      e.preventDefault();
+      const arrayKeySelected = Object.keys(selectedItems);
+
+      // iterate array of keys
+      for (const itemId of arrayKeySelected) {
+        if (selectedItems[itemId]) {
+          // Use parseInt to convert itemId to a number (assuming it's an integer)
+          const respApprove = await API.patch(
+            `/reservation-item-status/${parseInt(itemId, 10)}`,
+            {
+              status: true,
+            }
+          );
+        }
+      }
+
+      const respStatResev = await API.patch(`/reservation/${id}`, {
+        status: true,
+      });
+
+      alert("Approval Success!");
+      navigate("/profile");
+    } catch (error) {
+      const alert = (
+        <ErrorAlert title={"Approval Failed! please try again 😥"} />
+      );
+      showAlert(alert, 5000);
+      console.log("approval failed : ", error);
+    }
+  });
 
   return (
     <>
@@ -155,6 +163,7 @@ function DetailReservation() {
         </div>
       </header>
       <section className="bg-white h-full w-full">
+        {message && message}
         <div className="flex flex-col shadow mx-24 text-navBg py-5">
           <div className="flex justify-between my-5">
             {/* KODE RESERV */}
@@ -453,16 +462,18 @@ function DetailReservation() {
               </div>
             </div>
             <div className="grid grid-cols-4 gap-2">
-              {items?.map((item) => (
-                <div className="mb-10">
+              {items?.map((item, index) => (
+                <div key={index} className="mb-10">
                   <div className="flex justify-center">
                     <img
                       className="w-72 h-64 object-cover rounded-xl border border-light-silver shadow"
-                      src={item.Image}
+                      src={item.image}
                     />
                   </div>
                   <div className="flex flex-col items-center gap-2 mx-2 mt-2">
-                    <p className="text-lg font-medium">{item.item}</p>
+                    <p className="text-lg font-medium">
+                      {item.demage_sub_category.name}
+                    </p>
                     <p>{formatPrice(item.price)}</p>
                   </div>
                   <label className="flex justify-center mt-5">
@@ -478,7 +489,10 @@ function DetailReservation() {
               ))}
             </div>
             <div className="flex justify-center w-full">
-              <button className="btn btn-wide btn-sm bg-white hover:bg-textSuccess hover:text-white ring-1 ring-light-silver hover:ring-textSuccess hover:shadow">
+              <button
+                onClick={handleSubmitApprove}
+                className="btn btn-wide btn-sm bg-white hover:bg-textSuccess hover:text-white ring-1 ring-light-silver hover:ring-textSuccess hover:shadow"
+              >
                 <p>Submit</p>
               </button>
             </div>

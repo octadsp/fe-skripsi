@@ -219,11 +219,6 @@ function FormReservation() {
     try {
       e.preventDefault();
 
-      const respItem = await API.post("/reservation-item", {
-        item: formItem.item,
-        price: formItem.price,
-      });
-
       const currentTime = new Date(); // Get the current time
       const formattedTime = currentTime.toISOString(); // Format the time as needed
 
@@ -243,7 +238,6 @@ function FormReservation() {
         car_year: formNo.tahun.trim(),
         car_color: formNo.warna.trim(),
         is_insurance: 0,
-        reservation_item_id: respItem.data.data.id,
       });
 
       const alert = <SuccessAlert title={"Reservation Success! 😊"} />;
@@ -264,11 +258,6 @@ function FormReservation() {
   const handleSubmitYes = useMutation(async (e) => {
     try {
       e.preventDefault();
-
-      const respItem = await API.post("/reservation-item", {
-        item: formItem.item,
-        price: formItem.price,
-      });
 
       const currentTime = new Date(); // Get the current time
       const formattedTime = currentTime.toISOString(); // Format the time as needed
@@ -299,7 +288,6 @@ function FormReservation() {
         driver_license: formNo.sim,
         is_insurance: 1,
         insurance_name: formNo.asuransi,
-        reservation_item_id: respItem.data.data.id,
       });
 
       const alert = <SuccessAlert title={"Reservation Success! 😊"} />;

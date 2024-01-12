@@ -58,12 +58,13 @@ function ProfilePage() {
   );
 
   const { data: history, refetch: refetchHistory } = useQuery(
-    "historyCache",
+    "historyReservCache",
     async () => {
       const response = await API.get("/reservations");
       return response.data.data;
     }
   );
+  console.log("🚀 ~ ProfilePage ~ history:", history);
 
   // Fungsi untuk memfilter data berdasarkan user_id
   const filterHistoryByUserId = (userId) => {
@@ -71,7 +72,7 @@ function ProfilePage() {
   };
 
   // Menggunakan fungsi filterHistoryByUserId dengan user_id dari state atau sesuai kebutuhan
-  const filteredHistory = filterHistoryByUserId(state.user.id);
+  const filteredHistory = filterHistoryByUserId(state?.user.id);
 
   const filterHistoryStatus = (status) => {
     return filteredHistory?.filter((item) => item.status === status);
@@ -225,7 +226,7 @@ function ProfilePage() {
               </ul>
               <div className="mt-10">
                 <div className={openTab === 1 ? "block" : "hidden"}>
-                  {filteredPending && filteredPending.length > 0 ? (
+                  {filteredPending && filteredPending?.length > 0 ? (
                     <div className="w-full grid grid-cols-3 gap-5 text-navBg">
                       {filteredPending?.map((item) => (
                         <div className="flex flex-col justify-between items-center rounded-lg p-3 shadow-lg ring-1 ring-light-silver">
