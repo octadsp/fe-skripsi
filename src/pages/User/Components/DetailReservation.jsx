@@ -58,10 +58,7 @@ function DetailReservation() {
   const { id } = useParams();
   const [message, setMessage] = useState(null);
   const [selectedItems, setSelectedItems] = useState({});
-  console.log(
-    "🚀 ~ file: DetailReservation.jsx:94 ~ DetailReservation ~ selectedItems:",
-    selectedItems
-  );
+
   const showAlert = (alertComponent, timeout) => {
     setMessage(alertComponent);
 
@@ -91,9 +88,30 @@ function DetailReservation() {
     "itemsCache",
     async () => {
       const resp = await API.get("/reservation-items");
+
       return resp.data.data;
     }
   );
+
+  const { data: itemByReserv, refetch: refetchItemByReserv } = useQuery(
+    "itemsByReservCache",
+    async () => {
+      const resp = await API.get(`/reservation-item-byreservation/${id}`);
+      return resp.data.data;
+    }
+  );
+
+  console.log(itemByReserv);
+
+  const filterItemStatus = (status) => {
+    return items?.filter((item) => item.status === status);
+  };
+
+  const fetchDataAndFilter = async () => {
+    await refetchItem();
+  };
+
+  const filterStatusTrue = filterItemStatus(true);
 
   // Function to calculate total items and total estimated price
   const calculateTotal = () => {
@@ -113,6 +131,21 @@ function DetailReservation() {
   };
 
   const { totalItems, totalEstimatedPrice } = calculateTotal();
+
+  const calculateTotalNew = (data) => {
+    // Gunakan metode .map() untuk menghasilkan array total harga dari setiap item
+    const totalPriceArray = data?.map((item) => item.price);
+
+    // Gunakan metode .reduce() untuk menjumlahkan total harga dari array totalPriceArray
+    const totalPrice =
+      totalPriceArray?.reduce((acc, price) => acc + price, 0) || 0;
+
+    const totalItems = data?.length;
+    return { totalPrice, totalItems };
+  };
+
+  const totalNew = calculateTotalNew(filterStatusTrue);
+  console.log("🚀 ~ DetailReservation ~ totalNew:", totalNew);
 
   const { mutate: handleSubmitApprove } = useMutation(async (e) => {
     try {
@@ -446,57 +479,99 @@ function DetailReservation() {
           )}
 
           {/* ITEMS KERUSAKAN */}
-          <div className="mx-5 mt-3 p-5 shadow bg-light-gray/50 rounded-lg">
-            <div className="flex justify-center mb-10">
-              <h1 className="text-2xl">Items Kerusakan</h1>
-            </div>
-            <div className="p-2 shadow bg-white/80 rounded-xl mb-5 flex flex-col gap-2">
-              <div>
-                Total Item : <span className="font-medium">{totalItems}</span>
+          {reservation?.status === "Pending" ? (
+            <div className="mx-5 mt-3 p-5 shadow bg-light-gray/50 rounded-lg">
+              <div className="flex justify-center mb-10">
+                <h1 className="text-2xl">Items Kerusakan</h1>
               </div>
-              <div>
-                Total Perkiraan Harga :{" "}
-                <span className="font-medium">
-                  {formatPrice(totalEstimatedPrice)}
-                </span>
-              </div>
-            </div>
-            <div className="grid grid-cols-4 gap-2">
-              {items?.map((item, index) => (
-                <div key={index} className="mb-10">
-                  <div className="flex justify-center">
-                    <img
-                      className="w-72 h-64 object-cover rounded-xl border border-light-silver shadow"
-                      src={item.image}
-                    />
-                  </div>
-                  <div className="flex flex-col items-center gap-2 mx-2 mt-2">
-                    <p className="text-lg font-medium">
-                      {item.demage_sub_category.name}
-                    </p>
-                    <p>{formatPrice(item.price)}</p>
-                  </div>
-                  <label className="flex justify-center mt-5">
-                    <input
-                      type="checkbox"
-                      checked={selectedItems[item.id] || false}
-                      onChange={() => handleCheckboxToggle(item.id)}
-                      className="mr-2"
-                    />
-                    <span>Approve</span>
-                  </label>
+              <div className="p-2 shadow bg-white/80 rounded-xl mb-5 flex flex-col gap-2">
+                <div>
+                  Total Item : <span className="font-medium">{totalItems}</span>
                 </div>
-              ))}
+                <div>
+                  Total Perkiraan Harga :{" "}
+                  <span className="font-medium">
+                    {formatPrice(totalEstimatedPrice)}
+                  </span>
+                </div>
+              </div>
+              <div className="grid grid-cols-4 gap-2">
+                {itemByReserv?.map((item, index) => (
+                  <div key={index} className="mb-10">
+                    <div className="flex justify-center">
+                      <img
+                        className="w-72 h-64 object-cover rounded-xl border border-light-silver shadow"
+                        src={item.image}
+                      />
+                    </div>
+                    <div className="flex flex-col items-center gap-2 mx-2 mt-2">
+                      <p className="text-lg font-medium">
+                        {item.demage_sub_category.name}
+                      </p>
+                      <p>{formatPrice(item.price)}</p>
+                    </div>
+                    <label className="flex justify-center mt-5">
+                      <input
+                        type="checkbox"
+                        checked={selectedItems[item.id] || false}
+                        onChange={() => handleCheckboxToggle(item.id)}
+                        className="mr-2"
+                      />
+                      <span>Approve</span>
+                    </label>
+                  </div>
+                ))}
+              </div>
+              <div className="flex justify-center w-full">
+                {itemByReserv && itemByReserv.length > 0 ? (
+                  <button
+                    onClick={handleSubmitApprove}
+                    className="btn btn-wide btn-sm bg-white hover:bg-textSuccess hover:text-white ring-1 ring-light-silver hover:ring-textSuccess hover:shadow"
+                  >
+                    <p>Submit</p>
+                  </button>
+                ) : (
+                  <div>tunggu admin. . .</div>
+                )}
+              </div>
             </div>
-            <div className="flex justify-center w-full">
-              <button
-                onClick={handleSubmitApprove}
-                className="btn btn-wide btn-sm bg-white hover:bg-textSuccess hover:text-white ring-1 ring-light-silver hover:ring-textSuccess hover:shadow"
-              >
-                <p>Submit</p>
-              </button>
+          ) : (
+            <div className="mx-5 mt-3 p-5 shadow bg-light-gray/50 rounded-lg">
+              <div className="flex justify-center mb-10">
+                <h1 className="text-2xl">Items Kerusakan</h1>
+              </div>
+              <div className="p-2 shadow bg-white/80 rounded-xl mb-5 flex flex-col gap-2">
+                <div>
+                  Total Item :{" "}
+                  <span className="font-medium">{totalNew?.totalItems}</span>
+                </div>
+                <div>
+                  Total Perkiraan Harga :{" "}
+                  <span className="font-medium">
+                    {formatPrice(totalNew?.totalPrice)}
+                  </span>
+                </div>
+              </div>
+              <div className="grid grid-cols-4 gap-2">
+                {filterStatusTrue?.map((item, index) => (
+                  <div key={index} className="mb-10">
+                    <div className="flex justify-center">
+                      <img
+                        className="w-72 h-64 object-cover rounded-xl border border-light-silver shadow"
+                        src={item.image}
+                      />
+                    </div>
+                    <div className="flex flex-col items-center gap-2 mx-2 mt-2">
+                      <p className="text-lg font-medium">
+                        {item.demage_sub_category.name}
+                      </p>
+                      <p>{formatPrice(item.price)}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
-          </div>
+          )}
         </div>
       </section>
     </>
