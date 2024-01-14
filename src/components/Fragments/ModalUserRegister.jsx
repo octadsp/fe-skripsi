@@ -13,6 +13,7 @@ function ModalUserRegister() {
     fullname: "",
     lastname: "",
     email: "",
+    institute: "",
     password: "",
     phone: "",
     roles: "User",
@@ -29,7 +30,16 @@ function ModalUserRegister() {
     }, timeout);
   };
 
-  const { fullname, lastname, email, password, phone, roles, address } = form;
+  const {
+    fullname,
+    lastname,
+    email,
+    password,
+    phone,
+    institute,
+    roles,
+    address,
+  } = form;
 
   const handleRegister = useMutation(async (e) => {
     try {
@@ -55,12 +65,18 @@ function ModalUserRegister() {
         showAlert(alert, 5000);
         return;
       }
+      if (institute === "" || institute === null) {
+        const alert = <ErrorAlert title={"Institute cant be empty!"} />;
+        showAlert(alert, 5000);
+        return;
+      }
 
       const response = await API.post("/register", {
         fullname: fullname.trim(),
         lastname,
         email: email.trim(),
         password: password.trim(),
+        institute: institute.trim(),
         phone,
         roles,
         address: address.trim(),
@@ -73,6 +89,7 @@ function ModalUserRegister() {
         fullname: "",
         lastname: "",
         email: "",
+        institute: "",
         password: "",
         phone: "",
         address: "",
@@ -99,7 +116,7 @@ function ModalUserRegister() {
   return (
     <>
       <dialog id="modalRegister" className="modal">
-      {message && message}
+        {message && message}
         <div className="modal-box text-navBg bg-light-silver">
           <form method="dialog">
             {/* if there is a button in form, it will close the modal */}
@@ -136,6 +153,16 @@ function ModalUserRegister() {
                 onChange={handleOnChange}
                 value={lastname}
                 name="lastname"
+              />
+              <InputForm
+                label="Institute"
+                type="text"
+                placeholder="Institute"
+                //minLength={3}
+                //maxLength={25}
+                onChange={handleOnChange}
+                value={institute}
+                name="institute"
               />
               <InputForm
                 label="Email"
