@@ -19,7 +19,8 @@ const pages = [
     type: "Homes",
     name: "Homes",
     path: "homes",
-    component: <Homes />,
+    // component: <Homes />,
+    component: <ReservationList/>
   },
   {
     type: "Masters",

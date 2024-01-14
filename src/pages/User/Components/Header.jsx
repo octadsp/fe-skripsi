@@ -112,7 +112,7 @@ const Header = () => {
                                   <FaBell className="text-mikado-yellow text-lg" />
                                 </div>
                                 <div className="w-full h-full">
-                                  <h1 className="font-bold">Admin</h1>
+                                  <h1 className="font-bold">{item.title}</h1>
                                   <div>
                                     <p className="text-xs">{item.message}</p>
                                   </div>
