@@ -1,15 +1,18 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import InputForm from "../../../components/Elements/InputForm";
 import Header from "../../../assets/kop.png";
 
 import { useMutation, useQuery } from "react-query";
 import { API } from "../../../config/api";
+import { UserContext } from "../../../context/userContext";
 
 import ErrorAlert from "../../../components/Elements/ErrorAlert";
 import SuccessAlert from "../../../components/Elements/SuccessAlert";
 import ModalReject from "../Components/ModalReject";
 import ModalUpload from "../Components/ModalUpload";
 import ModalView from "../Components/ModalView";
+import ModalSend from "../Components/ModalSend";
+import ModalSendMessage from "../Components/ModalSendMessage";
 
 function formatDateAndTime(inputDateString) {
   const inputDate = new Date(inputDateString);
@@ -27,11 +30,14 @@ function formatDateAndTime(inputDateString) {
 }
 
 function ReservationList() {
+  const [state] = useContext(UserContext);
   const [openTab, setOpenTab] = useState(1);
   const [prosesTab, setProsesTab] = useState(1);
   const [rejectUserID, setRejectUserID] = useState(1);
-  const [uploadID, setUploadID] = useState(null);
+  const [uploadID, setUploadID] = useState(1);
   const [viewModal, setViewModal] = useState(1);
+  const [sendID, setSendID] = useState(1);
+  const [sendMessage, setSendMessage] = useState(1);
 
   const { data: reservation, refetch: reservRefetch } = useQuery(
     "reservListCache",
@@ -103,6 +109,16 @@ function ReservationList() {
   const handleViewButton = (reservID) => {
     document.getElementById("modalView").showModal();
     setViewModal(reservID);
+  };
+
+  const handleSendButton = (reservID) => {
+    document.getElementById("modalSend").showModal();
+    setSendID(reservID);
+  };
+
+  const handleSendMessageToCust = (reservID) => {
+    document.getElementById("modalSendMessage").showModal();
+    setSendMessage(reservID);
   };
 
   return (
@@ -335,7 +351,7 @@ function ReservationList() {
                           {item.insurance_name || "Tidak Pakai"}
                         </th>
                         <th className="border text-center">
-                          <div className="flex gap-2">
+                          <div className="flex gap-2 justify-between">
                             <button
                               onClick={() => handleUploadButton(item.id)}
                               className="bg-light-silver hover:bg-lightGreen py-1 px-2 rounded-lg"
@@ -350,6 +366,13 @@ function ReservationList() {
                               View
                             </button>
                             <ModalView reservID={viewModal} />
+                            <button
+                              onClick={() => handleSendButton(item.id)}
+                              className="bg-textSuccess hover:bg-lightGreen py-1 px-2 rounded-lg"
+                            >
+                              Send
+                            </button>
+                            <ModalSend reservID={sendID} />
                           </div>
                         </th>
                       </tr>
@@ -415,14 +438,13 @@ function ReservationList() {
                           {item.insurance_name || "Tidak Pakai"}
                         </th>
                         <th className="border text-center">
-                          <div className="flex gap-2">
-                            <button className="bg-textSuccess p-1 rounded-lg">
-                              View
-                            </button>
-                            <button className="bg-textSuccess p-1 rounded-lg">
-                              View
-                            </button>
-                          </div>
+                          <button
+                            onClick={() => handleSendMessageToCust(item.id)}
+                            className="bg-light-silver/80 hover:bg-light-silver hover:ring-1 hover:ring-navBg py-1 px-2 rounded-lg"
+                          >
+                            Kirim Pesan
+                          </button>
+                          <ModalSendMessage reservID={sendMessage} />
                         </th>
                       </tr>
                     ))}

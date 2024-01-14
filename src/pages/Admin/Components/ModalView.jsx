@@ -43,7 +43,6 @@ function ModalView({ reservID }) {
   return (
     <dialog id="modalView" className="modal">
       <form
-        // onSubmit={(e) => handleSubmitReject.mutate(e)}
         className="modal-box w-11/12 max-w-5xl text-navBg bg-light-silver"
       >
         <div className="hidden">{reservID}</div>
