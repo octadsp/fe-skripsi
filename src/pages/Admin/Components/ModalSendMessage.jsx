@@ -49,7 +49,7 @@ function ModalSendMessage({ reservID }) {
 
       document.getElementById("modalSendMessage").close();
     } catch (error) {
-      console.log("Rejected failed!", error);
+      console.log("Send Message failed!", error);
     }
   });
 

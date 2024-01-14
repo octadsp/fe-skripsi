@@ -66,18 +66,31 @@ function ProfilePage() {
     }
   );
 
-  const { data: reservBySubMKC, refetch: reservBySubMKCUserRefetch } = useQuery(
-    "reservBySubMKCUserCache",
+  const { data: reservBySubBD, refetch: reservBySubBDRefetch } = useQuery(
+    "reservBySubBDCache",
+    async () => {
+      const resp = await API.get("/reservation-substatus/bd");
+      return resp.data.data;
+    }
+  );
+  const { data: reservBySubMKC, refetch: reservBySubMKCRefetch } = useQuery(
+    "reservBySubMKCCache",
     async () => {
       const resp = await API.get("/reservation-substatus/mkc");
       return resp.data.data;
     }
   );
-
-  const { data: reservBySubMKA, refetch: reservBySubMKAUserRefetch } = useQuery(
-    "reservBySubMKAUserCache",
+  const { data: reservBySubMKA, refetch: reservBySubMKARefetch } = useQuery(
+    "reservBySubMKACache",
     async () => {
       const resp = await API.get("/reservation-substatus/mka");
+      return resp.data.data;
+    }
+  );
+  const { data: reservBySubSD, refetch: reservBySubSDRefetch } = useQuery(
+    "reservBySubSDCache",
+    async () => {
+      const resp = await API.get("/reservation-substatus/sd");
       return resp.data.data;
     }
   );
@@ -87,17 +100,26 @@ function ProfilePage() {
     return history?.filter((item) => item.user_id === userId);
   };
 
+  const filterHistoryBD = (userId) => {
+    return reservBySubBD?.filter((item) => item.user_id === userId);
+  };
   const filterHistoryMKC = (userId) => {
     return reservBySubMKC?.filter((item) => item.user_id === userId);
   };
   const filterHistoryMKA = (userId) => {
     return reservBySubMKA?.filter((item) => item.user_id === userId);
   };
+  const filterHistorySD = (userId) => {
+    return reservBySubSD?.filter((item) => item.user_id === userId);
+  };
 
   // Menggunakan fungsi filterHistoryByUserId dengan user_id dari state atau sesuai kebutuhan
   const filteredHistory = filterHistoryByUserId(state?.user.id);
+  const filteredHistoryBD = filterHistoryBD(state?.user.id);
+  console.log("🚀 ~ ProfilePage ~ filteredHistoryBD:", filteredHistoryBD)
   const filteredHistoryMKC = filterHistoryMKC(state?.user.id);
   const filteredHistoryMKA = filterHistoryMKA(state?.user.id);
+  const filteredHistorySD = filterHistorySD(state?.user.id);
 
   const filterHistoryStatus = (status) => {
     return filteredHistory?.filter((item) => item.status === status);
@@ -274,17 +296,6 @@ function ProfilePage() {
                               </div>
                             </div>
                           </div>
-
-                          <div className="flex justify-center item-center">
-                            <div>
-                              <Link
-                                to={`/detail-reservation/` + item.id}
-                                className="text-navBg btn btn-wide btn-sm mt-5 transition ease-in-out delay-90 hover:-translate-y-1 hover:scale-110 hover:bg-navBg hover:text-white bg-mikado-yellow font-semibold rounded-lg"
-                              >
-                                Detail
-                              </Link>
-                            </div>
-                          </div>
                         </div>
                       ))}
                     </div>
@@ -310,7 +321,7 @@ function ProfilePage() {
                               : "px-10 py-2 text-navBg/50 cursor-pointer"
                           }
                         >
-                          Belum Konfirmasi
+                          Belum Dicek
                         </a>
                       </li>
                       <li>
@@ -322,15 +333,39 @@ function ProfilePage() {
                               : "px-10 py-2 text-navBg/50 cursor-pointer"
                           }
                         >
-                          Sudah Konfirmasi
+                          Konfirmasi Pengecekan
+                        </a>
+                      </li>
+                      <li>
+                        <a
+                          onClick={() => setTabProsesSub(3)}
+                          className={
+                            tabProsesSub === 3
+                              ? "px-10 py-2 bg-mikado-yellow/50 rounded-t-box cursor-pointer"
+                              : "px-10 py-2 text-navBg/50 cursor-pointer"
+                          }
+                        >
+                          Admin Approval
+                        </a>
+                      </li>
+                      <li>
+                        <a
+                          onClick={() => setTabProsesSub(4)}
+                          className={
+                            tabProsesSub === 4
+                              ? "px-10 py-2 bg-mikado-yellow/50 rounded-t-box cursor-pointer"
+                              : "px-10 py-2 text-navBg/50 cursor-pointer"
+                          }
+                        >
+                          Sedang Diperbaiki
                         </a>
                       </li>
                     </ul>
                   </div>
                   <div className={tabProsesSub === 1 ? "block" : "hidden"}>
-                    {filteredProses && filteredProses.length > 0 ? (
+                    {filteredHistoryBD && filteredHistoryBD.length > 0 ? (
                       <div className="w-full grid grid-cols-3 gap-5 text-navBg">
-                        {filteredHistoryMKC?.map((item) => (
+                        {filteredHistoryBD?.map((item) => (
                           <div className="flex flex-col justify-between items-center rounded-lg p-3 shadow-lg ring-1 ring-light-silver">
                             <div className="flex items-center gap-5">
                               <div className="flex flex-col">
@@ -374,10 +409,111 @@ function ProfilePage() {
                   </div>
 
                   <div className={tabProsesSub === 2 ? "block" : "hidden"}>
-                    {filteredProses && filteredProses.length > 0 ? (
+                    {filteredHistoryMKC && filteredHistoryMKC.length > 0 ? (
                       <div className="w-full grid grid-cols-3 gap-5 text-navBg">
-                        {filteredHistoryMKA?.map((item) => (
-                          <div className="flex flex-col justify-between items-center rounded-lg p-3 shadow-lg ring-1 ring-light-silver">
+                        {filteredHistoryMKC?.map((item, index) => (
+                          <div
+                            key={index}
+                            className="flex flex-col justify-between items-center rounded-lg p-3 shadow-lg ring-1 ring-light-silver"
+                          >
+                            <div className="flex items-center gap-5">
+                              <div className="flex flex-col">
+                                <h1 className="text-lg">
+                                  {item.kode_order} -{" "}
+                                  {formatDate(item.created_at)}
+                                </h1>
+                                <p className="mt-3 text-sm">
+                                  Kendaraan merek {item.car_brand} dengan tipe{" "}
+                                  {item.car_type} berwarna {item.car_color}
+                                </p>
+                              </div>
+                              <div>
+                                <div className="flex flex-col items-center">
+                                  {getStatusIcon(item.status)}
+                                  <div>{item.status}</div>
+                                </div>
+                              </div>
+                            </div>
+
+                            <div className="flex justify-center item-center">
+                              <div>
+                                <Link
+                                  to={`/detail-reservation/` + item.id}
+                                  className="text-navBg btn btn-wide btn-sm mt-5 transition ease-in-out delay-90 hover:-translate-y-1 hover:scale-110 hover:bg-navBg hover:text-white bg-mikado-yellow font-semibold rounded-lg"
+                                >
+                                  Detail
+                                </Link>
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    ) : (
+                      <div className="flex justify-center bg-light-gray/30 p-5 rounded-box shadow">
+                        <div className="text-lg text-navBg/60">
+                          Tidak ada data
+                        </div>
+                      </div>
+                    )}
+                  </div>
+
+                  <div className={tabProsesSub === 3 ? "block" : "hidden"}>
+                    {filteredHistoryMKA && filteredHistoryMKA.length > 0 ? (
+                      <div className="w-full grid grid-cols-3 gap-5 text-navBg">
+                        {filteredHistoryMKA?.map((item, index) => (
+                          <div
+                            key={index}
+                            className="flex flex-col justify-between items-center rounded-lg p-3 shadow-lg ring-1 ring-light-silver"
+                          >
+                            <div className="flex items-center gap-5">
+                              <div className="flex flex-col">
+                                <h1 className="text-lg">
+                                  {item.kode_order} -{" "}
+                                  {formatDate(item.created_at)}
+                                </h1>
+                                <p className="mt-3 text-sm">
+                                  Kendaraan merek {item.car_brand} dengan tipe{" "}
+                                  {item.car_type} berwarna {item.car_color}
+                                </p>
+                              </div>
+                              <div>
+                                <div className="flex flex-col items-center">
+                                  {getStatusIcon(item.status)}
+                                  <div>{item.status}</div>
+                                </div>
+                              </div>
+                            </div>
+
+                            <div className="flex justify-center item-center">
+                              <div>
+                                <Link
+                                  to={`/detail-reservation/` + item.id}
+                                  className="text-navBg btn btn-wide btn-sm mt-5 transition ease-in-out delay-90 hover:-translate-y-1 hover:scale-110 hover:bg-navBg hover:text-white bg-mikado-yellow font-semibold rounded-lg"
+                                >
+                                  Detail
+                                </Link>
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    ) : (
+                      <div className="flex justify-center bg-light-gray/30 p-5 rounded-box shadow">
+                        <div className="text-lg text-navBg/60">
+                          Tidak ada data
+                        </div>
+                      </div>
+                    )}
+                  </div>
+
+                  <div className={tabProsesSub === 4 ? "block" : "hidden"}>
+                    {filteredHistorySD && filteredHistorySD.length > 0 ? (
+                      <div className="w-full grid grid-cols-3 gap-5 text-navBg">
+                        {filteredHistorySD?.map((item, index) => (
+                          <div
+                            key={index}
+                            className="flex flex-col justify-between items-center rounded-lg p-3 shadow-lg ring-1 ring-light-silver"
+                          >
                             <div className="flex items-center gap-5">
                               <div className="flex flex-col">
                                 <h1 className="text-lg">

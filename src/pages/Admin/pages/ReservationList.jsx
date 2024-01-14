@@ -686,14 +686,9 @@ function ReservationList() {
                         {item.insurance_name || "Tidak Pakai"}
                       </th>
                       <th className="border text-center">
-                        <div className="flex gap-2">
-                          <button className="bg-textSuccess p-1 rounded-lg">
-                            View
-                          </button>
-                          <button className="bg-textSuccess p-1 rounded-lg">
-                            View
-                          </button>
-                        </div>
+                        <button className="bg-textSuccess p-1 rounded-lg">
+                          View
+                        </button>
                       </th>
                     </tr>
                   ))}

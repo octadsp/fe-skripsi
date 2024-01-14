@@ -11,20 +11,15 @@ import { useQuery, useMutation } from "react-query";
 import { Link, useNavigate, useParams } from "react-router-dom";
 
 function formatPrice(price) {
-  // Convert price to string
-  const priceString = price.toString();
+  /// Use Intl.NumberFormat for formatting
+  const formatter = new Intl.NumberFormat("id-ID", {
+    style: "currency",
+    currency: "IDR",
+    minimumFractionDigits: 0, // Adjust this value based on your requirements
+  });
 
-  // Split the string into integer and decimal parts
-  const [integerPart] = priceString.split(".");
-
-  // Add dots for thousands separator
-  const formattedIntegerPart = integerPart.replace(
-    /\B(?=(\d{3})+(?!\d))/g,
-    "."
-  );
-
-  // Combine the integer and decimal parts
-  const formattedPrice = `Rp. ${formattedIntegerPart}`;
+  // Format the price using the formatter
+  const formattedPrice = formatter.format(price || 0);
 
   return formattedPrice;
 }
@@ -129,20 +124,6 @@ function DetailReservation() {
   };
 
   const { totalItems, totalEstimatedPrice } = calculateTotal();
-
-  const calculateTotalNew = (data) => {
-    // Gunakan metode .map() untuk menghasilkan array total harga dari setiap item
-    const totalPriceArray = data?.map((item) => item.price);
-
-    // Gunakan metode .reduce() untuk menjumlahkan total harga dari array totalPriceArray
-    const totalPrice =
-      totalPriceArray?.reduce((acc, price) => acc + price, 0) || 0;
-
-    const totalItems = data?.length;
-    return { totalPrice, totalItems };
-  };
-
-  const totalNew = calculateTotalNew(filterStatusTrue);
 
   const { mutate: handleSubmitApprove } = useMutation(async (e) => {
     try {
@@ -522,7 +503,7 @@ function DetailReservation() {
                 ))}
               </div> */}
               <div className="flex justify-center w-full">
-                {itemByReserv && itemByReserv.length > 0 ? (
+                {itemByReserv && itemByReserv?.length > 0 ? (
                   <button
                     onClick={handleSubmitApprove}
                     className="btn btn-wide btn-sm bg-white hover:bg-textSuccess hover:text-white ring-1 ring-light-silver hover:ring-textSuccess hover:shadow"
