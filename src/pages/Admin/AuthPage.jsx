@@ -1,7 +1,5 @@
 import React from "react";
-// import Logo from "../assets/logo.png";
-import BgImage from "../../assets/Bengkel.jpg";
-// import Register from "../../components/Fragments/Register";
+import BgImage from "../../assets/bengkel.jpg";
 import Login from "../../components/Fragments/Login";
 
 function AuthPage() {
