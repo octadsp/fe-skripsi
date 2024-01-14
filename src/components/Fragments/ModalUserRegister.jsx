@@ -191,7 +191,7 @@ function ModalUserRegister() {
                 value={phone}
                 name="phone"
               />
-              <label className="label-text">Alamat</label>
+              <label className="label-text text-navBg">Alamat</label>
               <textarea
                 className="rounded bg-white/80 px-2 py-1 outline-none resize-none"
                 rows={4}

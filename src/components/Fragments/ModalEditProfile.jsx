@@ -69,24 +69,29 @@ function ModalEditProfile({ form, refetchParent }) {
       e.preventDefault();
 
       //configuration
-      const config = {
-        headers: {
-          "Content-type": "multipart/form-data",
-        },
-      };
+      // const config = {
+      //   headers: {
+      //     "Content-type": "multipart/form-data",
+      //   },
+      // };
 
-      const formData = new FormData();
-      formData.set("fullname", fullname);
+      // const formData = new FormData();
+      // formData.set("fullname", fullname);
       // if (image) {
       //   formData.set("image", image[0], image[0].name);
       // }
-      formData.set("lastname", lastname);
-      formData.set("email", email);
-      formData.set("phone", phone);
-      formData.set("address", address);
+      // formData.set("lastname", lastname);
+      // formData.set("email", email);
+      // formData.set("phone", phone);
+      // formData.set("address", address);
 
       // update user data
-      const resp = await API.patch(`/user/${state.user.id}`, formData, config);
+      const resp = await API.patch(`/user-info/${state.user.id}`, {
+        fullname: fullname,
+        lastname: lastname,
+        phone: phone,
+        address: address,
+      });
 
       const alert = <SuccessAlert title={"Edit Profile Success! 😊"} />;
       showAlert(alert, 3000);
