@@ -25,6 +25,7 @@ const formatDate = (dateString) => {
 function ProfilePage() {
   const [state] = useContext(UserContext);
   const [openTab, setOpenTab] = useState(1);
+  const [tabProsesSub, setTabProsesSub] = useState(1);
   const [preview, setPreview] = useState(null);
   const [form, setForm] = useState({
     fullname: "",
@@ -64,15 +65,39 @@ function ProfilePage() {
       return response.data.data;
     }
   );
-  console.log("🚀 ~ ProfilePage ~ history:", history);
+
+  const { data: reservBySubMKC, refetch: reservBySubMKCUserRefetch } = useQuery(
+    "reservBySubMKCUserCache",
+    async () => {
+      const resp = await API.get("/reservation-substatus/mkc");
+      return resp.data.data;
+    }
+  );
+
+  const { data: reservBySubMKA, refetch: reservBySubMKAUserRefetch } = useQuery(
+    "reservBySubMKAUserCache",
+    async () => {
+      const resp = await API.get("/reservation-substatus/mka");
+      return resp.data.data;
+    }
+  );
 
   // Fungsi untuk memfilter data berdasarkan user_id
   const filterHistoryByUserId = (userId) => {
     return history?.filter((item) => item.user_id === userId);
   };
 
+  const filterHistoryMKC = (userId) => {
+    return reservBySubMKC?.filter((item) => item.user_id === userId);
+  };
+  const filterHistoryMKA = (userId) => {
+    return reservBySubMKA?.filter((item) => item.user_id === userId);
+  };
+
   // Menggunakan fungsi filterHistoryByUserId dengan user_id dari state atau sesuai kebutuhan
   const filteredHistory = filterHistoryByUserId(state?.user.id);
+  const filteredHistoryMKC = filterHistoryMKC(state?.user.id);
+  const filteredHistoryMKA = filterHistoryMKA(state?.user.id);
 
   const filterHistoryStatus = (status) => {
     return filteredHistory?.filter((item) => item.status === status);
@@ -225,6 +250,7 @@ function ProfilePage() {
                 </li>
               </ul>
               <div className="mt-10">
+                {/* PENDING */}
                 <div className={openTab === 1 ? "block" : "hidden"}>
                   {filteredPending && filteredPending?.length > 0 ? (
                     <div className="w-full grid grid-cols-3 gap-5 text-navBg">
@@ -270,51 +296,131 @@ function ProfilePage() {
                     </div>
                   )}
                 </div>
+
+                {/* PROSES */}
                 <div className={openTab === 2 ? "block" : "hidden"}>
-                  {filteredProses && filteredProses.length > 0 ? (
-                    <div className="w-full grid grid-cols-3 gap-5 text-navBg">
-                      {filteredProses?.map((item) => (
-                        <div className="flex flex-col justify-between items-center rounded-lg p-3 shadow-lg ring-1 ring-light-silver">
-                          <div className="flex items-center gap-5">
-                            <div className="flex flex-col">
-                              <h1 className="text-lg">
-                                {item.kode_order} -{" "}
-                                {formatDate(item.created_at)}
-                              </h1>
-                              <p className="mt-3 text-sm">
-                                Kendaraan merek {item.car_brand} dengan tipe{" "}
-                                {item.car_type} berwarna {item.car_color}
-                              </p>
+                  <div className="flex justify-center mb-5">
+                    <ul className="flex justify-around text-2xl">
+                      <li>
+                        <a
+                          onClick={() => setTabProsesSub(1)}
+                          className={
+                            tabProsesSub === 1
+                              ? "px-10 py-2 bg-mikado-yellow/50 rounded-t-box cursor-pointer"
+                              : "px-10 py-2 text-navBg/50 cursor-pointer"
+                          }
+                        >
+                          Belum Konfirmasi
+                        </a>
+                      </li>
+                      <li>
+                        <a
+                          onClick={() => setTabProsesSub(2)}
+                          className={
+                            tabProsesSub === 2
+                              ? "px-10 py-2 bg-mikado-yellow/50 rounded-t-box cursor-pointer"
+                              : "px-10 py-2 text-navBg/50 cursor-pointer"
+                          }
+                        >
+                          Sudah Konfirmasi
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
+                  <div className={tabProsesSub === 1 ? "block" : "hidden"}>
+                    {filteredProses && filteredProses.length > 0 ? (
+                      <div className="w-full grid grid-cols-3 gap-5 text-navBg">
+                        {filteredHistoryMKC?.map((item) => (
+                          <div className="flex flex-col justify-between items-center rounded-lg p-3 shadow-lg ring-1 ring-light-silver">
+                            <div className="flex items-center gap-5">
+                              <div className="flex flex-col">
+                                <h1 className="text-lg">
+                                  {item.kode_order} -{" "}
+                                  {formatDate(item.created_at)}
+                                </h1>
+                                <p className="mt-3 text-sm">
+                                  Kendaraan merek {item.car_brand} dengan tipe{" "}
+                                  {item.car_type} berwarna {item.car_color}
+                                </p>
+                              </div>
+                              <div>
+                                <div className="flex flex-col items-center">
+                                  {getStatusIcon(item.status)}
+                                  <div>{item.status}</div>
+                                </div>
+                              </div>
                             </div>
-                            <div>
-                              <div className="flex flex-col items-center">
-                                {getStatusIcon(item.status)}
-                                <div>{item.status}</div>
+
+                            <div className="flex justify-center item-center">
+                              <div>
+                                <Link
+                                  to={`/detail-reservation/` + item.id}
+                                  className="text-navBg btn btn-wide btn-sm mt-5 transition ease-in-out delay-90 hover:-translate-y-1 hover:scale-110 hover:bg-navBg hover:text-white bg-mikado-yellow font-semibold rounded-lg"
+                                >
+                                  Detail
+                                </Link>
                               </div>
                             </div>
                           </div>
+                        ))}
+                      </div>
+                    ) : (
+                      <div className="flex justify-center bg-light-gray/30 p-5 rounded-box shadow">
+                        <div className="text-lg text-navBg/60">
+                          Tidak ada data
+                        </div>
+                      </div>
+                    )}
+                  </div>
 
-                          <div className="flex justify-center item-center">
-                            <div>
-                              <Link
-                                to={`/detail-reservation/` + item.id}
-                                className="text-navBg btn btn-wide btn-sm mt-5 transition ease-in-out delay-90 hover:-translate-y-1 hover:scale-110 hover:bg-navBg hover:text-white bg-mikado-yellow font-semibold rounded-lg"
-                              >
-                                Detail
-                              </Link>
+                  <div className={tabProsesSub === 2 ? "block" : "hidden"}>
+                    {filteredProses && filteredProses.length > 0 ? (
+                      <div className="w-full grid grid-cols-3 gap-5 text-navBg">
+                        {filteredHistoryMKA?.map((item) => (
+                          <div className="flex flex-col justify-between items-center rounded-lg p-3 shadow-lg ring-1 ring-light-silver">
+                            <div className="flex items-center gap-5">
+                              <div className="flex flex-col">
+                                <h1 className="text-lg">
+                                  {item.kode_order} -{" "}
+                                  {formatDate(item.created_at)}
+                                </h1>
+                                <p className="mt-3 text-sm">
+                                  Kendaraan merek {item.car_brand} dengan tipe{" "}
+                                  {item.car_type} berwarna {item.car_color}
+                                </p>
+                              </div>
+                              <div>
+                                <div className="flex flex-col items-center">
+                                  {getStatusIcon(item.status)}
+                                  <div>{item.status}</div>
+                                </div>
+                              </div>
+                            </div>
+
+                            <div className="flex justify-center item-center">
+                              <div>
+                                <Link
+                                  to={`/detail-reservation/` + item.id}
+                                  className="text-navBg btn btn-wide btn-sm mt-5 transition ease-in-out delay-90 hover:-translate-y-1 hover:scale-110 hover:bg-navBg hover:text-white bg-mikado-yellow font-semibold rounded-lg"
+                                >
+                                  Detail
+                                </Link>
+                              </div>
                             </div>
                           </div>
-                        </div>
-                      ))}
-                    </div>
-                  ) : (
-                    <div className="flex justify-center bg-light-gray/30 p-5 rounded-box shadow">
-                      <div className="text-lg text-navBg/60">
-                        Tidak ada data
+                        ))}
                       </div>
-                    </div>
-                  )}
+                    ) : (
+                      <div className="flex justify-center bg-light-gray/30 p-5 rounded-box shadow">
+                        <div className="text-lg text-navBg/60">
+                          Tidak ada data
+                        </div>
+                      </div>
+                    )}
+                  </div>
                 </div>
+
+                {/* SELESAI */}
                 <div className={openTab === 3 ? "block" : "hidden"}>
                   {filteredSelesai && filteredSelesai.length > 0 ? (
                     <div className="w-full grid grid-cols-3 gap-5 text-navBg">

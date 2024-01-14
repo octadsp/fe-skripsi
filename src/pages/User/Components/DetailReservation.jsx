@@ -96,15 +96,13 @@ function DetailReservation() {
   const { data: itemByReserv, refetch: refetchItemByReserv } = useQuery(
     "itemsByReservCache",
     async () => {
-      const resp = await API.get(`/reservation-item-byreservation/${id}`);
+      const resp = await API.get(`/reservation-item-byreserv/${id}/yes`);
       return resp.data.data;
     }
   );
 
-  console.log(itemByReserv);
-
   const filterItemStatus = (status) => {
-    return items?.filter((item) => item.status === status);
+    return itemByReserv?.filter((item) => item.status === status);
   };
 
   const fetchDataAndFilter = async () => {
@@ -145,7 +143,6 @@ function DetailReservation() {
   };
 
   const totalNew = calculateTotalNew(filterStatusTrue);
-  console.log("🚀 ~ DetailReservation ~ totalNew:", totalNew);
 
   const { mutate: handleSubmitApprove } = useMutation(async (e) => {
     try {
@@ -165,8 +162,10 @@ function DetailReservation() {
         }
       }
 
-      const respStatResev = await API.patch(`/reservation/${id}`, {
-        status: true,
+      const respStatResev = await API.patch(`/reservation-status/${id}`, {
+        sub_status: "mka",
+        total_item: totalItems,
+        total_price: totalEstimatedPrice,
       });
 
       alert("Approval Success!");
@@ -495,7 +494,7 @@ function DetailReservation() {
                   </span>
                 </div>
               </div>
-              <div className="grid grid-cols-4 gap-2">
+              {/* <div className="grid grid-cols-4 gap-2">
                 {itemByReserv?.map((item, index) => (
                   <div key={index} className="mb-10">
                     <div className="flex justify-center">
@@ -521,7 +520,7 @@ function DetailReservation() {
                     </label>
                   </div>
                 ))}
-              </div>
+              </div> */}
               <div className="flex justify-center w-full">
                 {itemByReserv && itemByReserv.length > 0 ? (
                   <button
@@ -536,41 +535,108 @@ function DetailReservation() {
               </div>
             </div>
           ) : (
-            <div className="mx-5 mt-3 p-5 shadow bg-light-gray/50 rounded-lg">
-              <div className="flex justify-center mb-10">
-                <h1 className="text-2xl">Items Kerusakan</h1>
-              </div>
-              <div className="p-2 shadow bg-white/80 rounded-xl mb-5 flex flex-col gap-2">
-                <div>
-                  Total Item :{" "}
-                  <span className="font-medium">{totalNew?.totalItems}</span>
-                </div>
-                <div>
-                  Total Perkiraan Harga :{" "}
-                  <span className="font-medium">
-                    {formatPrice(totalNew?.totalPrice)}
-                  </span>
-                </div>
-              </div>
-              <div className="grid grid-cols-4 gap-2">
-                {filterStatusTrue?.map((item, index) => (
-                  <div key={index} className="mb-10">
-                    <div className="flex justify-center">
-                      <img
-                        className="w-72 h-64 object-cover rounded-xl border border-light-silver shadow"
-                        src={item.image}
-                      />
+            <>
+              {reservation?.sub_status === "mkc" ? (
+                <>
+                  <div className="mx-5 mt-3 p-5 shadow bg-light-gray/50 rounded-lg">
+                    <div className="flex justify-center mb-10">
+                      <h1 className="text-2xl">Items Kerusakan</h1>
                     </div>
-                    <div className="flex flex-col items-center gap-2 mx-2 mt-2">
-                      <p className="text-lg font-medium">
-                        {item.demage_sub_category.name}
-                      </p>
-                      <p>{formatPrice(item.price)}</p>
+                    <div className="p-2 shadow bg-white/80 rounded-xl mb-5 flex flex-col gap-2">
+                      <div>
+                        Total Item :{" "}
+                        <span className="font-medium">{totalItems}</span>
+                      </div>
+                      <div>
+                        Total Perkiraan Harga :{" "}
+                        <span className="font-medium">
+                          {formatPrice(totalEstimatedPrice)}
+                        </span>
+                      </div>
+                    </div>
+                    <div className="grid grid-cols-4 gap-2">
+                      {itemByReserv?.map((item, index) => (
+                        <div key={index} className="mb-10">
+                          <div className="flex justify-center">
+                            <img
+                              className="w-72 h-64 object-cover rounded-xl border border-light-silver shadow"
+                              src={item.image}
+                            />
+                          </div>
+                          <div className="flex flex-col items-center gap-2 mx-2 mt-2">
+                            <p className="text-lg font-medium">
+                              {item.demage_sub_category.name}
+                            </p>
+                            <p>{formatPrice(item.price)}</p>
+                          </div>
+                          <label className="flex justify-center mt-5">
+                            <input
+                              type="checkbox"
+                              checked={selectedItems[item.id] || false}
+                              onChange={() => handleCheckboxToggle(item.id)}
+                              className="mr-2"
+                            />
+                            <span>Approve</span>
+                          </label>
+                        </div>
+                      ))}
+                    </div>
+                    <div className="flex justify-center w-full">
+                      {itemByReserv && itemByReserv.length > 0 ? (
+                        <button
+                          onClick={handleSubmitApprove}
+                          className="btn btn-wide btn-sm bg-white hover:bg-textSuccess hover:text-white ring-1 ring-light-silver hover:ring-textSuccess hover:shadow"
+                        >
+                          <p>Submit</p>
+                        </button>
+                      ) : (
+                        <div>tunggu admin. . .</div>
+                      )}
                     </div>
                   </div>
-                ))}
-              </div>
-            </div>
+                </>
+              ) : (
+                <>
+                  <div className="mx-5 mt-3 p-5 shadow bg-light-gray/50 rounded-lg">
+                    <div className="flex justify-center mb-10">
+                      <h1 className="text-2xl">Items Kerusakan</h1>
+                    </div>
+                    <div className="p-2 shadow bg-white/80 rounded-xl mb-5 flex flex-col gap-2">
+                      <div>
+                        Total Item :{" "}
+                        <span className="font-medium">
+                          {reservation?.total_item}
+                        </span>
+                      </div>
+                      <div>
+                        Total Perkiraan Harga :{" "}
+                        <span className="font-medium">
+                          {formatPrice(reservation?.total_price)}
+                        </span>
+                      </div>
+                    </div>
+                    <div className="grid grid-cols-4 gap-2">
+                      {filterStatusTrue?.map((item, index) => (
+                        <div key={index} className="mb-10">
+                          <div className="flex justify-center">
+                            <img
+                              className="w-72 h-64 object-cover rounded-xl border border-light-silver shadow"
+                              src={item.image}
+                            />
+                          </div>
+                          <div className="flex flex-col items-center gap-2 mx-2 mt-2">
+                            <p className="text-lg font-medium">
+                              {item.demage_sub_category.name}
+                            </p>
+                            <p>{formatPrice(item.price)}</p>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </>
+              )}
+            </>
           )}
         </div>
       </section>
