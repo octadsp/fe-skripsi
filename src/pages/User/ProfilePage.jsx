@@ -2,6 +2,7 @@ import React, { useState, useContext, useEffect } from "react";
 import Header from "./Components/HeaderReservation";
 import AvatarProfile from "../../components/Elements/AvatarProfile";
 import EditModal from "../../components/Fragments/ModalEditProfile";
+import ModalRating from "./Components/ModalRating";
 import { FcExpired } from "react-icons/fc";
 import { FcSynchronize } from "react-icons/fc";
 import { FcOk } from "react-icons/fc";
@@ -24,9 +25,11 @@ const formatDate = (dateString) => {
 
 function ProfilePage() {
   const [state] = useContext(UserContext);
+  // console.log("🚀 ~ ProfilePage ~ state:", state.user.id)
   const [openTab, setOpenTab] = useState(1);
   const [tabProsesSub, setTabProsesSub] = useState(1);
   const [preview, setPreview] = useState(null);
+  const [reservID, setReservID] = useState(1);
   const [form, setForm] = useState({
     fullname: "",
     lastname: "",
@@ -116,7 +119,6 @@ function ProfilePage() {
   // Menggunakan fungsi filterHistoryByUserId dengan user_id dari state atau sesuai kebutuhan
   const filteredHistory = filterHistoryByUserId(state?.user.id);
   const filteredHistoryBD = filterHistoryBD(state?.user.id);
-  console.log("🚀 ~ ProfilePage ~ filteredHistoryBD:", filteredHistoryBD)
   const filteredHistoryMKC = filterHistoryMKC(state?.user.id);
   const filteredHistoryMKA = filterHistoryMKA(state?.user.id);
   const filteredHistorySD = filterHistorySD(state?.user.id);
@@ -141,6 +143,11 @@ function ProfilePage() {
       let url = URL.createObjectURL(e.target.files[0]);
       setPreview(url);
     }
+  };
+
+  const handleRating = (reservID) => {
+    document.getElementById("modalRating").showModal();
+    setReservID(reservID);
   };
 
   const getStatusIcon = (status) => {
@@ -276,8 +283,11 @@ function ProfilePage() {
                 <div className={openTab === 1 ? "block" : "hidden"}>
                   {filteredPending && filteredPending?.length > 0 ? (
                     <div className="w-full grid grid-cols-3 gap-5 text-navBg">
-                      {filteredPending?.map((item) => (
-                        <div className="flex flex-col justify-between items-center rounded-lg p-3 shadow-lg ring-1 ring-light-silver">
+                      {filteredPending?.map((item, index) => (
+                        <div
+                          key={index}
+                          className="flex flex-col justify-between items-center rounded-lg p-3 shadow-lg ring-1 ring-light-silver"
+                        >
                           <div className="flex items-center gap-5">
                             <div className="flex flex-col">
                               <h1 className="text-lg">
@@ -365,8 +375,11 @@ function ProfilePage() {
                   <div className={tabProsesSub === 1 ? "block" : "hidden"}>
                     {filteredHistoryBD && filteredHistoryBD.length > 0 ? (
                       <div className="w-full grid grid-cols-3 gap-5 text-navBg">
-                        {filteredHistoryBD?.map((item) => (
-                          <div className="flex flex-col justify-between items-center rounded-lg p-3 shadow-lg ring-1 ring-light-silver">
+                        {filteredHistoryBD?.map((item, index) => (
+                          <div
+                            key={index}
+                            className="flex flex-col justify-between items-center rounded-lg p-3 shadow-lg ring-1 ring-light-silver"
+                          >
                             <div className="flex items-center gap-5">
                               <div className="flex flex-col">
                                 <h1 className="text-lg">
@@ -560,8 +573,11 @@ function ProfilePage() {
                 <div className={openTab === 3 ? "block" : "hidden"}>
                   {filteredSelesai && filteredSelesai.length > 0 ? (
                     <div className="w-full grid grid-cols-3 gap-5 text-navBg">
-                      {filteredSelesai?.map((item) => (
-                        <div className="flex flex-col justify-between items-center rounded-lg p-3 shadow-lg ring-1 ring-light-silver">
+                      {filteredSelesai?.map((item, index) => (
+                        <div
+                          key={index}
+                          className="flex flex-col justify-between items-center rounded-lg p-3 shadow-lg ring-1 ring-light-silver"
+                        >
                           <div className="flex items-center gap-5">
                             <div className="flex flex-col">
                               <h1 className="text-lg">
@@ -583,12 +599,13 @@ function ProfilePage() {
 
                           <div className="flex justify-center item-center">
                             <div>
-                              <Link
-                                to={`/detail-reservation/` + item.id}
+                              <button
+                                onClick={() => handleRating(item.id)}
                                 className="text-navBg btn btn-wide btn-sm mt-5 transition ease-in-out delay-90 hover:-translate-y-1 hover:scale-110 hover:bg-navBg hover:text-white bg-mikado-yellow font-semibold rounded-lg"
                               >
                                 Detail
-                              </Link>
+                              </button>
+                              <ModalRating reservID={reservID} />
                             </div>
                           </div>
                         </div>
