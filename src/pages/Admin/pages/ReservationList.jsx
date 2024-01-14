@@ -15,6 +15,7 @@ import ModalSend from "../Components/ModalSend";
 import ModalSendMessage from "../Components/ModalSendMessage";
 import ModalViewMKA from "../Components/ModalViewMKA";
 import ModalApproved from "../Components/ModalApproved";
+import ModalSelesai from "../Components/ModalSelesai";
 
 function formatDateAndTime(inputDateString) {
   const inputDate = new Date(inputDateString);
@@ -42,6 +43,7 @@ function ReservationList() {
   const [sendID, setSendID] = useState(1);
   const [approved, setApproved] = useState(1);
   const [sendMessage, setSendMessage] = useState(1);
+  const [selesai, setSelesai] = useState(1);
 
   const { data: reservation, refetch: reservRefetch } = useQuery(
     "reservListCache",
@@ -133,6 +135,11 @@ function ReservationList() {
   const handleSendMessageToCust = (reservID) => {
     document.getElementById("modalSendMessage").showModal();
     setSendMessage(reservID);
+  };
+
+  const handleSelesai = (reservID) => {
+    document.getElementById("modalSelesai").showModal();
+    setSelesai(reservID);
   };
 
   return (
@@ -603,14 +610,13 @@ function ReservationList() {
                           {item.insurance_name || "Tidak Pakai"}
                         </th>
                         <th className="border text-center">
-                          <div className="flex gap-2">
-                            <button className="bg-textSuccess p-1 rounded-lg">
-                              View
-                            </button>
-                            <button className="bg-textSuccess p-1 rounded-lg">
-                              View
-                            </button>
-                          </div>
+                          <button
+                            onClick={() => handleSelesai(item.id)}
+                            className="bg-textSuccess p-1 rounded-lg"
+                          >
+                            Selesai
+                          </button>
+                          <ModalSelesai reservID={selesai} />
                         </th>
                       </tr>
                     ))}
