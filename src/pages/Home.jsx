@@ -13,9 +13,10 @@ function Home() {
   return (
     <>
       {state.isLogin ? (
-        state.user.roles == "Super Admin" ? (
+        state?.user.roles == "Super Admin" ||
+        state?.user.roles == "Admin Reservation" ? (
           <div>
-          <AdminPage />
+            <AdminPage />
           </div>
         ) : (
           <UserPage />

@@ -19,8 +19,8 @@ const pages = [
     type: "Homes",
     name: "Homes",
     path: "homes",
-    // component: <Homes />,
-    component: <ReservationList/>
+    component: <Homes />,
+    // component: <ReservationList/>
   },
   {
     type: "Masters",
@@ -81,6 +81,7 @@ const pages = [
 function HomePage() {
   const [currentPage, setCurrentPage] = useState(getCurrentPage());
   const [state] = useContext(UserContext);
+  console.log("🚀 ~ HomePage ~ state:", state);
 
   function getCurrentPage() {
     const path = window.location.pathname.replace("/", "");
@@ -116,137 +117,167 @@ function HomePage() {
             Welcome, {state.user.fullname} {state.user.lastname} 😊
           </h1>
         </div>
-        <Sidebar className="text-navBg border-t-2">
-          {/* Masters */}
-          <Menu
-            menuItemStyles={{
-              button: {
-                [`&.active`]: {
-                  backgroundColor: "#13395e",
-                  color: "#b6c8d9",
+        {state?.user.roles == "Super Admin" ? (
+          <Sidebar className="text-navBg border-t-2">
+            {/* Masters */}
+            <Menu
+              menuItemStyles={{
+                button: {
+                  [`&.active`]: {
+                    backgroundColor: "#13395e",
+                    color: "#b6c8d9",
+                  },
                 },
-              },
-            }}
-          >
-            <SubMenu label="Masters">
-              {pages
-                .filter((page) => page.type === "Masters") // Filter only type "Masters"
-                .map((page) => (
-                  <MenuItem
-                    key={page.path}
-                    onClick={() => changePage(page.path)}
-                    className={currentPage === page.path ? "active" : ""}
-                  >
-                    {page.name}
-                  </MenuItem>
-                ))}
-            </SubMenu>
-          </Menu>
+              }}
+            >
+              <SubMenu label="Masters">
+                {pages
+                  .filter((page) => page.type === "Masters") // Filter only type "Masters"
+                  .map((page) => (
+                    <MenuItem
+                      key={page.path}
+                      onClick={() => changePage(page.path)}
+                      className={currentPage === page.path ? "active" : ""}
+                    >
+                      {page.name}
+                    </MenuItem>
+                  ))}
+              </SubMenu>
+            </Menu>
 
-          {/* Reservations */}
-          <Menu
-            menuItemStyles={{
-              button: {
-                [`&.active`]: {
-                  backgroundColor: "#13395e",
-                  color: "#b6c8d9",
+            {/* Reservations */}
+            <Menu
+              menuItemStyles={{
+                button: {
+                  [`&.active`]: {
+                    backgroundColor: "#13395e",
+                    color: "#b6c8d9",
+                  },
                 },
-              },
-            }}
-          >
-            <SubMenu label="Reservations">
-              {pages
-                .filter((page) => page.type === "Reservations") // Filter only type "Masters"
-                .map((page) => (
-                  <MenuItem
-                    key={page.path}
-                    onClick={() => changePage(page.path)}
-                    className={currentPage === page.path ? "active" : ""}
-                  >
-                    {page.name}
-                  </MenuItem>
-                ))}
-            </SubMenu>
-          </Menu>
+              }}
+            >
+              <SubMenu label="Reservations">
+                {pages
+                  .filter((page) => page.type === "Reservations") // Filter only type "Masters"
+                  .map((page) => (
+                    <MenuItem
+                      key={page.path}
+                      onClick={() => changePage(page.path)}
+                      className={currentPage === page.path ? "active" : ""}
+                    >
+                      {page.name}
+                    </MenuItem>
+                  ))}
+              </SubMenu>
+            </Menu>
 
-          {/* Demage Cars */}
-          <Menu
-            menuItemStyles={{
-              button: {
-                [`&.active`]: {
-                  backgroundColor: "#13395e",
-                  color: "#b6c8d9",
+            {/* Demage Cars */}
+            <Menu
+              menuItemStyles={{
+                button: {
+                  [`&.active`]: {
+                    backgroundColor: "#13395e",
+                    color: "#b6c8d9",
+                  },
                 },
-              },
-            }}
-          >
-            <SubMenu label="Demage Cars">
-              {pages
-                .filter((page) => page.type === "Demage Cars") // Filter only type "Masters"
-                .map((page) => (
-                  <MenuItem
-                    key={page.path}
-                    onClick={() => changePage(page.path)}
-                    className={currentPage === page.path ? "active" : ""}
-                  >
-                    {page.name}
-                  </MenuItem>
-                ))}
-            </SubMenu>
-          </Menu>
+              }}
+            >
+              <SubMenu label="Demage Cars">
+                {pages
+                  .filter((page) => page.type === "Demage Cars") // Filter only type "Masters"
+                  .map((page) => (
+                    <MenuItem
+                      key={page.path}
+                      onClick={() => changePage(page.path)}
+                      className={currentPage === page.path ? "active" : ""}
+                    >
+                      {page.name}
+                    </MenuItem>
+                  ))}
+              </SubMenu>
+            </Menu>
 
-          {/* Price List */}
-          <Menu
-            menuItemStyles={{
-              button: {
-                [`&.active`]: {
-                  backgroundColor: "#13395e",
-                  color: "#b6c8d9",
+            {/* Price List */}
+            <Menu
+              menuItemStyles={{
+                button: {
+                  [`&.active`]: {
+                    backgroundColor: "#13395e",
+                    color: "#b6c8d9",
+                  },
                 },
-              },
-            }}
-          >
-            <SubMenu label="Price">
-              {pages
-                .filter((page) => page.type === "Price List") // Filter only type "Masters"
-                .map((page) => (
-                  <MenuItem
-                    key={page.path}
-                    onClick={() => changePage(page.path)}
-                    className={currentPage === page.path ? "active" : ""}
-                  >
-                    {page.name}
-                  </MenuItem>
-                ))}
-            </SubMenu>
-          </Menu>
+              }}
+            >
+              <SubMenu label="Price">
+                {pages
+                  .filter((page) => page.type === "Price List") // Filter only type "Masters"
+                  .map((page) => (
+                    <MenuItem
+                      key={page.path}
+                      onClick={() => changePage(page.path)}
+                      className={currentPage === page.path ? "active" : ""}
+                    >
+                      {page.name}
+                    </MenuItem>
+                  ))}
+              </SubMenu>
+            </Menu>
 
-          {/* Companies */}
-          <Menu
-            menuItemStyles={{
-              button: {
-                [`&.active`]: {
-                  backgroundColor: "#13395e",
-                  color: "#b6c8d9",
+            {/* Companies */}
+            <Menu
+              menuItemStyles={{
+                button: {
+                  [`&.active`]: {
+                    backgroundColor: "#13395e",
+                    color: "#b6c8d9",
+                  },
                 },
-              },
-            }}
-          >
-            <SubMenu label="Companies">
-              {pages
-                .filter((page) => page.type === "Companies") // Filter only type "Masters"
-                .map((page) => (
-                  <MenuItem
-                    key={page.path}
-                    onClick={() => changePage(page.path)}
-                    className={currentPage === page.path ? "active" : ""}
-                  >
-                    {page.name}
-                  </MenuItem>
-                ))}
-            </SubMenu>
-          </Menu>
-        </Sidebar>
+              }}
+            >
+              <SubMenu label="Companies">
+                {pages
+                  .filter((page) => page.type === "Companies") // Filter only type "Masters"
+                  .map((page) => (
+                    <MenuItem
+                      key={page.path}
+                      onClick={() => changePage(page.path)}
+                      className={currentPage === page.path ? "active" : ""}
+                    >
+                      {page.name}
+                    </MenuItem>
+                  ))}
+              </SubMenu>
+            </Menu>
+          </Sidebar>
+        ) : (
+          <Sidebar className="text-navBg border-t-2">
+            {/* Reservations */}
+            <Menu
+              menuItemStyles={{
+                button: {
+                  [`&.active`]: {
+                    backgroundColor: "#13395e",
+                    color: "#b6c8d9",
+                  },
+                },
+              }}
+            >
+              <SubMenu label="Reservations">
+                {pages
+                  .filter((page) => page.type === "Reservations") // Filter only type "Masters"
+                  .map((page) => (
+                    <MenuItem
+                      key={page.path}
+                      onClick={() => changePage(page.path)}
+                      className={currentPage === page.path ? "active" : ""}
+                    >
+                      {page.name}
+                    </MenuItem>
+                  ))}
+              </SubMenu>
+            </Menu>
+          </Sidebar>
+        )}
       </div>
       <div className="w-full h-full flex p-3">
         <div className="bg-white overflow-y-auto w-full rounded-md">
