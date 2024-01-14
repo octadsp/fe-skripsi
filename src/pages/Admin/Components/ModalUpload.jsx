@@ -67,17 +67,17 @@ function ModalUpload({ reservID }) {
 
       const resp = await API.post("/reservation-item", formData, config);
 
-      alert("Success Upload Image");
       setForm({
         demage_sub_category_id: 0,
         image: "",
-        price: 0,
         status: false,
         post_to_user: "no",
       });
+      setPrice(0);
       setPreview(
         "https://res.cloudinary.com/dpxazv6a6/image/upload/v1704687841/skripsi/no_image_btbbwy.png"
       );
+      alert("Success Upload Image");
       document.getElementById("modalUpload").close();
     } catch (error) {
       console.log("Gagal Upload :", error);
