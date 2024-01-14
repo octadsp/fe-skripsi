@@ -21,9 +21,9 @@ function formatPrice(price) {
   return formattedPrice;
 }
 
-function ModalView({ reservID }) {
+function ModalViewMKA({ reservID }) {
   const { data: reserv, refetchReserv } = useQuery(
-    "reservationsModalCache",
+    "reservationsModalMKACache",
     async () => {
       const resp = await API.get(`reservation/${reservID}`);
       return resp.data.data;
@@ -32,21 +32,29 @@ function ModalView({ reservID }) {
   );
 
   const { data: reservItem, refetchReservItem } = useQuery(
-    "reservationItemModalCache",
+    "reservationItemModalMKACache",
     async () => {
-      const resp = await API.get(`reservation-item-byreserv/${reservID}/no`);
+      const resp = await API.get(`reservation-item-byreserv/${reservID}/yes`);
       return resp.data.data;
     },
     { refetchInterval: 1000 }
   );
 
+  // console.log("🚀 ~ ModalViewMKA ~ reservItem:", reservItem)
+
+  const filterStatus = (status) => {
+    return reservItem?.filter((item) => item.status === status);
+  };
+
+  const filteredStatusTrue = filterStatus(true);
+
   return (
-    <dialog id="modalView" className="modal">
+    <dialog id="modalViewMKA" className="modal">
       <div className="modal-box w-11/12 max-w-5xl text-navBg bg-light-silver">
         <div className="hidden">{reservID}</div>
         <h3 className="font-bold text-lg">List Items {reserv?.kode_order}</h3>
         <div className="grid grid-cols-3 gap-3 mt-2 rounded-lg bg-white py-10">
-          {reservItem?.map((item, index) => (
+          {filteredStatusTrue?.map((item, index) => (
             <div
               key={index}
               className="flex flex-col items-center gap-2 justify-center"
@@ -73,4 +81,4 @@ function ModalView({ reservID }) {
   );
 }
 
-export default ModalView;
+export default ModalViewMKA;

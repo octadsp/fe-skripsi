@@ -13,6 +13,8 @@ import ModalUpload from "../Components/ModalUpload";
 import ModalView from "../Components/ModalView";
 import ModalSend from "../Components/ModalSend";
 import ModalSendMessage from "../Components/ModalSendMessage";
+import ModalViewMKA from "../Components/ModalViewMKA";
+import ModalApproved from "../Components/ModalApproved";
 
 function formatDateAndTime(inputDateString) {
   const inputDate = new Date(inputDateString);
@@ -36,7 +38,9 @@ function ReservationList() {
   const [rejectUserID, setRejectUserID] = useState(1);
   const [uploadID, setUploadID] = useState(1);
   const [viewModal, setViewModal] = useState(1);
+  const [viewModalMKA, setViewModalMKA] = useState(1);
   const [sendID, setSendID] = useState(1);
+  const [approved, setApproved] = useState(1);
   const [sendMessage, setSendMessage] = useState(1);
 
   const { data: reservation, refetch: reservRefetch } = useQuery(
@@ -111,9 +115,19 @@ function ReservationList() {
     setViewModal(reservID);
   };
 
+  const handleViewMKAButton = (reservID) => {
+    document.getElementById("modalViewMKA").showModal();
+    setViewModalMKA(reservID);
+  };
+
   const handleSendButton = (reservID) => {
     document.getElementById("modalSend").showModal();
     setSendID(reservID);
+  };
+
+  const handleApprovedButton = (reservID) => {
+    document.getElementById("modalApproved").showModal();
+    setApproved(reservID);
   };
 
   const handleSendMessageToCust = (reservID) => {
@@ -510,12 +524,20 @@ function ReservationList() {
                         </th>
                         <th className="border text-center">
                           <div className="flex gap-2">
-                            <button className="bg-textSuccess p-1 rounded-lg">
+                            <button
+                              onClick={() => handleViewMKAButton(item.id)}
+                              className="bg-light-silver hover:bg-info py-1 px-3 rounded-lg"
+                            >
                               View
                             </button>
-                            <button className="bg-textSuccess p-1 rounded-lg">
-                              View
+                            <ModalViewMKA reservID={viewModalMKA} />
+                            <button
+                              onClick={() => handleApprovedButton(item.id)}
+                              className="bg-light-silver hover:bg-textSuccess py-1 px-3 rounded-lg"
+                            >
+                              Approved
                             </button>
+                            <ModalApproved reservID={approved} />
                           </div>
                         </th>
                       </tr>
