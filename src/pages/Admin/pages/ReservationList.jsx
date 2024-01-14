@@ -8,6 +8,7 @@ import { API } from "../../../config/api";
 import ErrorAlert from "../../../components/Elements/ErrorAlert";
 import SuccessAlert from "../../../components/Elements/SuccessAlert";
 import ModalReject from "../Components/ModalReject";
+import ModalUpload from "../Components/ModalUpload";
 
 function formatDateAndTime(inputDateString) {
   const inputDate = new Date(inputDateString);
@@ -28,6 +29,7 @@ function ReservationList() {
   const [openTab, setOpenTab] = useState(1);
   const [prosesTab, setProsesTab] = useState(1);
   const [rejectUserID, setRejectUserID] = useState(1);
+  const [uploadID, setUploadID] = useState(null);
 
   const { data: reservation, refetch: reservRefetch } = useQuery(
     "reservListCache",
@@ -36,10 +38,6 @@ function ReservationList() {
       return resp.data.data;
     }
   );
-  // console.log(
-  //   "🚀 ~ file: ReservationList.jsx:13 ~ ReservationList ~ reservation:",
-  //   reservation
-  // );
 
   const { data: reservBySubBD, refetch: reservBySubBDRefetch } = useQuery(
     "reservBySubBDCache",
@@ -93,6 +91,11 @@ function ReservationList() {
   const handleRejectButton = (userID) => {
     document.getElementById("modalReject").showModal();
     setRejectUserID(userID);
+  };
+
+  const handleUploadButton = (reservID) => {
+    document.getElementById("modalUpload").showModal();
+    setUploadID(reservID);
   };
 
   return (
@@ -326,10 +329,14 @@ function ReservationList() {
                         </th>
                         <th className="border text-center">
                           <div className="flex gap-2">
-                            <button className="bg-textSuccess p-1 rounded-lg">
-                              View
+                            <button
+                              onClick={() => handleUploadButton(item.id)}
+                              className="bg-light-silver hover:bg-lightGreen py-1 px-2 rounded-lg"
+                            >
+                              Upload
                             </button>
-                            <button className="bg-textSuccess p-1 rounded-lg">
+                            <ModalUpload reservID={uploadID} />
+                            <button className="bg-light-silver hover:bg-info py-1 px-2 rounded-lg">
                               View
                             </button>
                           </div>
