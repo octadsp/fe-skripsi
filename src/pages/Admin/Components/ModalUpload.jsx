@@ -134,7 +134,7 @@ function ModalUpload({ reservID }) {
         <div className="hidden">{reservID}</div>
         <h3 className="font-bold text-lg">Upload Item</h3>
         <div className="flex flex-col justify-center items-center gap-2 mt-2">
-          <img src={preview} class="object-cover rounded-xl h-52 w-56" />
+          <img src={preview} className="object-cover rounded-xl h-52 w-56" />
           <input
             onChange={handleChange}
             name="image"

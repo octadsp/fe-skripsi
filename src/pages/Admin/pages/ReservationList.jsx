@@ -9,6 +9,7 @@ import ErrorAlert from "../../../components/Elements/ErrorAlert";
 import SuccessAlert from "../../../components/Elements/SuccessAlert";
 import ModalReject from "../Components/ModalReject";
 import ModalUpload from "../Components/ModalUpload";
+import ModalView from "../Components/ModalView";
 
 function formatDateAndTime(inputDateString) {
   const inputDate = new Date(inputDateString);
@@ -30,6 +31,7 @@ function ReservationList() {
   const [prosesTab, setProsesTab] = useState(1);
   const [rejectUserID, setRejectUserID] = useState(1);
   const [uploadID, setUploadID] = useState(null);
+  const [viewModal, setViewModal] = useState(1);
 
   const { data: reservation, refetch: reservRefetch } = useQuery(
     "reservListCache",
@@ -96,6 +98,11 @@ function ReservationList() {
   const handleUploadButton = (reservID) => {
     document.getElementById("modalUpload").showModal();
     setUploadID(reservID);
+  };
+
+  const handleViewButton = (reservID) => {
+    document.getElementById("modalView").showModal();
+    setViewModal(reservID);
   };
 
   return (
@@ -336,9 +343,13 @@ function ReservationList() {
                               Upload
                             </button>
                             <ModalUpload reservID={uploadID} />
-                            <button className="bg-light-silver hover:bg-info py-1 px-2 rounded-lg">
+                            <button
+                              onClick={() => handleViewButton(item.id)}
+                              className="bg-light-silver hover:bg-info py-1 px-2 rounded-lg"
+                            >
                               View
                             </button>
+                            <ModalView reservID={viewModal} />
                           </div>
                         </th>
                       </tr>
