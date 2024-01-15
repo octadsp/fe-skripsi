@@ -40,14 +40,14 @@ function AboutUs() {
             title="Who We Are?"
             content="Established in 2012, with a vision of becoming a reliable workshop services company, providing fast, quality service and prioritizing customer satisfaction"
           />
-          <Collapse
+          {/* <Collapse
             title="Who We Are?"
             content="Established in 2012, with a vision of becoming a reliable workshop services company, providing fast, quality service and prioritizing customer satisfaction"
           />
           <Collapse
             title="Who We Are?"
             content="Established in 2012, with a vision of becoming a reliable workshop services company, providing fast, quality service and prioritizing customer satisfaction"
-          />
+          /> */}
         </div>
       </div>
     </section>
