@@ -199,18 +199,20 @@ function FormReservation() {
 
   const generateOrderCode = async () => {
     const currentDate = new Date();
-    const dayOfMonth = currentDate.getDate();
-    const month = currentDate.getMonth() + 1;
+    const dayOfMonth = currentDate.getDate().toString().padStart(2, "0");
+    const month = (currentDate.getMonth() + 1).toString().padStart(2, "0");
     const year = currentDate.getFullYear().toString().slice(-2);
 
-    const resp = await API.get(
-      `/order-count?date=${currentDate.toISOString()}`
-    );
+    // Extract only the date part (YYYY-MM-DD) from the ISO string
+    const datePart = currentDate.toISOString().split("T")[0];
+
+    console.log("CurrentDate :", datePart);
+    const resp = await API.get(`/reservation-count?date=${datePart}`);
     const orderCount = resp.data.count + 1;
 
     const formattedOrderCount = orderCount.toString().padStart(4, "0");
 
-    const orderCode = `RES${dayOfMonth}${month}${year}${formattedOrderCount}`;
+    const orderCode = `RES${dayOfMonth}${month}${year}-${formattedOrderCount}`;
 
     return orderCode;
   };
@@ -218,6 +220,7 @@ function FormReservation() {
   const handleSubmitNon = useMutation(async (e) => {
     try {
       e.preventDefault();
+      const orderCode = await generateOrderCode();
 
       const currentTime = new Date(); // Get the current time
       const formattedTime = currentTime.toISOString(); // Format the time as needed
@@ -229,7 +232,7 @@ function FormReservation() {
       });
 
       const resp = await API.post("/reservation", {
-        kode_order: "RES",
+        kode_order: orderCode,
         status: "Pending",
         order_masuk: formattedTime,
         user_id: formNo.userId,
@@ -239,6 +242,8 @@ function FormReservation() {
         car_color: formNo.warna.trim(),
         is_insurance: 0,
       });
+
+      console.log(resp.data.data);
 
       const alert = <SuccessAlert title={"Reservation Success! 😊"} />;
       showAlert(alert, 5000);
