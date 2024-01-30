@@ -18,14 +18,21 @@ const tahun = Array.from({ length: 28 }, (_, index) => {
 const asuransi = [
   {
     id: 1,
-    kode: "ASR01",
+    kode: "ASR001",
     tipe: "Asuransi",
     name: "Sompo Insurance Indonesia",
   },
-  { id: 2, kode: "ASR02", tipe: "Asuransi", name: "Bumida" },
-  { id: 3, kode: "ASR03", tipe: "Asuransi", name: "KSK" },
-  { id: 4, kode: "ASR04", tipe: "Asuransi", name: "KB" },
-  { id: 5, kode: "ASR05", tipe: "Asuransi", name: "Binagriya" },
+  { id: 2, kode: "ASR002", tipe: "Asuransi", name: "Bumida" },
+  { id: 3, kode: "ASR003", tipe: "Asuransi", name: "KSK" },
+  { id: 4, kode: "ASR004", tipe: "Asuransi", name: "KB" },
+  { id: 5, kode: "ASR005", tipe: "Asuransi", name: "Binagriya" },
+  { id: 5, kode: "ASR006", tipe: "Asuransi", name: "Tugu Pratama" },
+  { id: 5, kode: "ASR007", tipe: "Asuransi", name: "Reliance Indonesia" },
+  { id: 5, kode: "ASR008", tipe: "Asuransi", name: "MNC" },
+  { id: 5, kode: "ASR009", tipe: "Asuransi", name: "Malacca" },
+  { id: 5, kode: "ASR010", tipe: "Asuransi", name: "Harta" },
+  { id: 5, kode: "ASR011", tipe: "Asuransi", name: "Kresna Mitra" },
+  { id: 5, kode: "ASR012", tipe: "Asuransi", name: "Tugu Kresna" },
 ];
 
 const sim = [
