@@ -64,7 +64,7 @@ function FormReservation() {
 
   const [formNo, setFormNo] = useState({
     userId: state?.user.id,
-    namaTertanggung: `${state?.user.fullname} ${state?.user.lastname}`,
+    namaTertanggung: state?.user.fullname + state?.user.lastname,
     address: state?.user.address,
     phone: state?.user.phone,
     merk: "",
@@ -213,7 +213,6 @@ function FormReservation() {
     // Extract only the date part (YYYY-MM-DD) from the ISO string
     const datePart = currentDate.toISOString().split("T")[0];
 
-    console.log("CurrentDate :", datePart);
     const resp = await API.get(`/reservation-count?date=${datePart}`);
     const orderCount = resp.data.count + 1;
 
@@ -223,6 +222,12 @@ function FormReservation() {
 
     return orderCode;
   };
+
+  useEffect(() => {
+    generateOrderCode();
+  }, [5000]);
+
+  console.log("ini hasil res code :", generateOrderCode());
 
   const handleSubmitNon = useMutation(async (e) => {
     try {
@@ -270,6 +275,7 @@ function FormReservation() {
   const handleSubmitYes = useMutation(async (e) => {
     try {
       e.preventDefault();
+      const orderCode = await generateOrderCode();
 
       const currentTime = new Date(); // Get the current time
       const formattedTime = currentTime.toISOString(); // Format the time as needed
@@ -281,7 +287,7 @@ function FormReservation() {
       });
 
       const resp = await API.post("/reservation", {
-        kode_order: "RES",
+        kode_order: orderCode,
         status: "Pending",
         order_masuk: formattedTime,
         user_id: formNo.userId,
@@ -430,8 +436,8 @@ function FormReservation() {
                     <option disabled selected hidden>
                       Choose your option...
                     </option>
-                    {asuransi?.map((item) => (
-                      <option key={item.id} value={item.name}>
+                    {asuransi?.map((item, index) => (
+                      <option key={index} value={item.name}>
                         {item.name}
                       </option>
                     ))}
@@ -459,8 +465,8 @@ function FormReservation() {
                           <option disabled selected hidden>
                             Choose your option...
                           </option>
-                          {merek?.map((item) => (
-                            <option key={item.id} value={item.id}>
+                          {merek?.map((item, index) => (
+                            <option key={index} value={item.id}>
                               {item.name}
                             </option>
                           ))}
@@ -478,8 +484,8 @@ function FormReservation() {
                               <option disabled selected hidden>
                                 Pilih tipe
                               </option>
-                              {type?.map((item) => (
-                                <option key={item.id} value={item.id}>
+                              {type?.map((item, index) => (
+                                <option key={index} value={item.id}>
                                   {item.car_type.name} {item.car_type.tipe}
                                 </option>
                               ))}
@@ -501,9 +507,9 @@ function FormReservation() {
                           <option disabled selected hidden>
                             Pilih tahun
                           </option>
-                          {tahun?.map((item) => (
+                          {tahun?.map((item, index) => (
                             <option
-                              key={item.id}
+                              key={index}
                               value={item.id}
                               name={item.name}
                             >
@@ -594,8 +600,8 @@ function FormReservation() {
                           <option disabled selected hidden>
                             Choose your option...
                           </option>
-                          {hubungan?.map((item) => (
-                            <option key={item.id} value={item.name}>
+                          {hubungan?.map((item, index) => (
+                            <option key={index} value={item.name}>
                               {item.name}
                             </option>
                           ))}
@@ -629,8 +635,8 @@ function FormReservation() {
                           <option disabled selected hidden>
                             Choose your option...
                           </option>
-                          {sim?.map((item) => (
-                            <option key={item.id} value={item.name}>
+                          {sim?.map((item, index) => (
+                            <option key={index} value={item.name}>
                               {item.name}
                             </option>
                           ))}
@@ -720,8 +726,8 @@ function FormReservation() {
                         <option disabled selected hidden>
                           Choose your option...
                         </option>
-                        {merek?.map((item) => (
-                          <option key={item.id} value={item.id}>
+                        {merek?.map((item, index) => (
+                          <option key={index} value={item.id}>
                             {item.name}
                           </option>
                         ))}
@@ -739,8 +745,8 @@ function FormReservation() {
                             <option disabled selected hidden>
                               Pilih tipe
                             </option>
-                            {type?.map((item) => (
-                              <option key={item.id} value={item.id}>
+                            {type?.map((item, index) => (
+                              <option key={index} value={item.id}>
                                 {item.car_type.name} {item.car_type.tipe}
                               </option>
                             ))}
@@ -762,12 +768,8 @@ function FormReservation() {
                         <option disabled selected hidden>
                           Pilih tahun
                         </option>
-                        {tahun?.map((item) => (
-                          <option
-                            key={item.id}
-                            value={item.id}
-                            name={item.name}
-                          >
+                        {tahun?.map((item, index) => (
+                          <option key={index} value={item.id} name={item.name}>
                             {item.name}
                           </option>
                         ))}
