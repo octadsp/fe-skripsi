@@ -129,14 +129,14 @@ function AddCarClass() {
     try {
       e.preventDefault();
       // Pengecekan Form Input jangan kosong pake trim
-      if (formData.car_brand_id.trim() === "" || formData.car_brand_id === 0) {
-        const alert = <ErrorAlert title={"Brand tidak boleh kosong!"} />;
-        showAlert(alert, 5000);
-      }
-      if (!car_type_id || car_type_id === 0) {
-        const alert = <ErrorAlert title={"Tipe tidak boleh kosong!"} />;
-        showAlert(alert, 5000);
-      }
+      // if (formData.car_brand_id.trim() === "" || formData.car_brand_id === 0) {
+      //   const alert = <ErrorAlert title={"Brand tidak boleh kosong!"} />;
+      //   showAlert(alert, 5000);
+      // }
+      // if (!car_type_id || car_type_id === 0) {
+      //   const alert = <ErrorAlert title={"Tipe tidak boleh kosong!"} />;
+      //   showAlert(alert, 5000);
+      // }
       if (golongan.trim() === "" || golongan.trim() === null) {
         const alert = <ErrorAlert title={"Golongan tidak boleh kosong!"} />;
         showAlert(alert, 5000);
@@ -161,6 +161,7 @@ function AddCarClass() {
     } catch (error) {
       const alert = <ErrorAlert title={"Add Class Failed! ❌"} />;
       showAlert(alert, 5000);
+      console.log("🚀 ~ handleOnSubmit ~ error:", error);
     }
   });
 
@@ -180,6 +181,7 @@ function AddCarClass() {
     } catch (error) {
       const alert = <ErrorAlert title={"Delete Class Failed! ❌"} />;
       showAlert(alert, 5000);
+      console.log(error);
     }
   });
 
