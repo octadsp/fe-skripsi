@@ -14,6 +14,7 @@ import CompanyServices from "../Admin/pages/CompanyServices";
 
 import { UserContext } from "../../context/userContext";
 import AddPriceList from "./pages/AddPriceList";
+import Laporan from "./pages/Laporan";
 
 const pages = [
   {
@@ -76,6 +77,12 @@ const pages = [
     name: "Services",
     path: "services",
     component: <CompanyServices />,
+  },
+  {
+    type: "Laporan",
+    name: "Laporan",
+    path: "laporan",
+    component: <Laporan />,
   },
 ];
 
@@ -237,7 +244,7 @@ function HomePage() {
             </Menu> */}
 
             {/* Companies */}
-            <Menu
+            {/* <Menu
               menuItemStyles={{
                 button: {
                   [`&.active`]: {
@@ -250,6 +257,30 @@ function HomePage() {
               <SubMenu label="Companies">
                 {pages
                   .filter((page) => page.type === "Companies") // Filter only type "Masters"
+                  .map((page) => (
+                    <MenuItem
+                      key={page.path}
+                      onClick={() => changePage(page.path)}
+                      className={currentPage === page.path ? "active" : ""}
+                    >
+                      {page.name}
+                    </MenuItem>
+                  ))}
+              </SubMenu>
+            </Menu> */}
+            <Menu
+              menuItemStyles={{
+                button: {
+                  [`&.active`]: {
+                    backgroundColor: "#13395e",
+                    color: "#b6c8d9",
+                  },
+                },
+              }}
+            >
+              <SubMenu label="Laporan">
+                {pages
+                  .filter((page) => page.type === "Laporan") // Filter only type "Laporans"
                   .map((page) => (
                     <MenuItem
                       key={page.path}
@@ -278,6 +309,30 @@ function HomePage() {
               <SubMenu label="Reservations">
                 {pages
                   .filter((page) => page.type === "Reservations") // Filter only type "Masters"
+                  .map((page) => (
+                    <MenuItem
+                      key={page.path}
+                      onClick={() => changePage(page.path)}
+                      className={currentPage === page.path ? "active" : ""}
+                    >
+                      {page.name}
+                    </MenuItem>
+                  ))}
+              </SubMenu>
+            </Menu>
+            <Menu
+              menuItemStyles={{
+                button: {
+                  [`&.active`]: {
+                    backgroundColor: "#13395e",
+                    color: "#b6c8d9",
+                  },
+                },
+              }}
+            >
+              <SubMenu label="Laporan">
+                {pages
+                  .filter((page) => page.type === "Laporan") // Filter only type "Laporans"
                   .map((page) => (
                     <MenuItem
                       key={page.path}

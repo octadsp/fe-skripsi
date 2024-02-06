@@ -669,7 +669,7 @@ function ReservationList() {
                 <>
                   {filteredSelesai?.map((item, index) => (
                     <tr key={index}>
-                      <th className="border">1</th>
+                      <th className="border">{index+1}</th>
                       <th className="border">{item.kode_order}</th>
                       <th className="border">{item.status}</th>
                       <th className="border">
