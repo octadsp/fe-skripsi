@@ -36,7 +36,7 @@ function Laporan() {
     window.print();
 
     document.body.innerHTML = originalContents;
-    window.location.reload();
+    // window.location.reload();
   };
 
   const { data: reservation, refetch: reservRefetch } = useQuery(
