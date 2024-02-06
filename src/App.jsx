@@ -31,6 +31,7 @@ import DemageSubCategories from "./pages/Admin/pages/DemageSubCategories";
 import PriceList from "./pages/Admin/pages/PriceList";
 import CompanyPartners from "./pages/Admin/pages/CompanyPartners";
 import CompanyServices from "./pages/Admin/pages/CompanyServices";
+import AddPriceList from "./pages/Admin/pages/AddPriceList";
 
 function App() {
   const navigate = useNavigate();
@@ -105,6 +106,7 @@ function App() {
             <Route exact path="/add-car-brand" element={<AddCarBrand />} />
             <Route exact path="/add-car-type" element={<AddCarType />} />
             <Route exact path="/add-car-class" element={<AddCarClass />} />
+            <Route exact path="/add-price_lists" element={<AddPriceList />} />
             <Route
               exact
               path="/reservation-list"

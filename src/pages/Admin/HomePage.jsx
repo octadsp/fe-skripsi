@@ -13,6 +13,7 @@ import CompanyPartners from "../Admin/pages/CompanyPartners";
 import CompanyServices from "../Admin/pages/CompanyServices";
 
 import { UserContext } from "../../context/userContext";
+import AddPriceList from "./pages/AddPriceList";
 
 const pages = [
   {
@@ -58,12 +59,12 @@ const pages = [
     path: "demage-categories",
     component: <DemageCategories />,
   },
-  {
-    type: "Price List",
-    name: "List",
-    path: "price-list",
-    component: <PriceLists />,
-  },
+  // {
+  //   type: "Price List",
+  //   name: "List",
+  //   path: "add-price_lists",
+  //   component: <AddPriceList />,
+  // },
   {
     type: "Companies",
     name: "Partner",
@@ -109,13 +110,25 @@ function HomePage() {
     window.history.pushState(null, null, `/${path}`);
   };
 
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    alert("Logout success! 👌");
+    // Back to Landing Page
+    window.location.reload();
+  };
+
   return (
     <div className="flex w-screen h-screen bg-light-silver">
       <div className="bg-white w-64 float-left">
-        <div className="flex justify-center py-7 mt-5 mb-10 bg-navBg text-white rounded-lg">
+        <div className="flex justify-center py-7 mt-5 mb-5 bg-navBg text-white rounded-lg">
           <h1>
             Welcome, {state.user.fullname} {state.user.lastname} 😊
           </h1>
+        </div>
+        <div className="mb-5 btn text-textError btn-sm bg-light-gray/60 border-none shadow-lg ring-1 ring-light-silver hover:text-white hover:bg-textError/70 flex justify-center mx-14">
+          <button onClick={() => handleLogout()} className="w-full h-full">
+            Logout
+          </button>
         </div>
         {state?.user.roles == "Super Admin" ? (
           <Sidebar className="text-navBg border-t-2">
@@ -198,7 +211,7 @@ function HomePage() {
             </Menu>
 
             {/* Price List */}
-            <Menu
+            {/* <Menu
               menuItemStyles={{
                 button: {
                   [`&.active`]: {
@@ -221,7 +234,7 @@ function HomePage() {
                     </MenuItem>
                   ))}
               </SubMenu>
-            </Menu>
+            </Menu> */}
 
             {/* Companies */}
             <Menu

@@ -68,22 +68,102 @@ function ModalEditProfile({ form, refetchParent }) {
     try {
       e.preventDefault();
 
-      //configuration
-      // const config = {
-      //   headers: {
-      //     "Content-type": "multipart/form-data",
-      //   },
-      // };
-
-      // const formData = new FormData();
-      // formData.set("fullname", fullname);
-      // if (image) {
-      //   formData.set("image", image[0], image[0].name);
-      // }
-      // formData.set("lastname", lastname);
-      // formData.set("email", email);
-      // formData.set("phone", phone);
-      // formData.set("address", address);
+      if (fullname.trim() === "" || fullname.trim() === null) {
+        const alert = (
+          <div className="px-10 mt-5">
+            <div role="alert" className="alert alert-error flex justify-center">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="stroke-current shrink-0 h-6 w-6"
+                fill="none"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
+                />
+              </svg>
+              <span>Nama depan tidak boleh kosong!</span>
+            </div>
+          </div>
+        );
+        showAlert(alert, 5000);
+        return;
+      }
+      if (lastname.trim() === "" || lastname.trim() === null) {
+        const alert = (
+          <div className="px-10 mt-5">
+            <div role="alert" className="alert alert-error flex justify-center">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="stroke-current shrink-0 h-6 w-6"
+                fill="none"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
+                />
+              </svg>
+              <span>Nama belakang tidak boleh kosong!</span>
+            </div>
+          </div>
+        );
+        showAlert(alert, 5000);
+        return;
+      }
+      if (phone.trim() === "" || phone.trim() === null) {
+        const alert = (
+          <div className="px-10 mt-5">
+            <div role="alert" className="alert alert-error flex justify-center">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="stroke-current shrink-0 h-6 w-6"
+                fill="none"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
+                />
+              </svg>
+              <span>Nomor Handphone tidak boleh kosong!</span>
+            </div>
+          </div>
+        );
+        showAlert(alert, 5000);
+        return;
+      }
+      if (address.trim() === "" || address.trim() === null) {
+        const alert = (
+          <div className="px-10 mt-5">
+            <div role="alert" className="alert alert-error flex justify-center">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="stroke-current shrink-0 h-6 w-6"
+                fill="none"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
+                />
+              </svg>
+              <span>Nama depan tidak boleh kosong!</span>
+            </div>
+          </div>
+        );
+        showAlert(alert, 5000);
+        return;
+      }
 
       // update user data
       const resp = await API.patch(`/user-info/${state.user.id}`, {
@@ -93,7 +173,26 @@ function ModalEditProfile({ form, refetchParent }) {
         address: address,
       });
 
-      const alert = <SuccessAlert title={"Edit Profile Success! 😊"} />;
+      const alert = (
+        <div className="px-10 mt-5">
+          <div role="alert" className="alert alert-success flex justify-center">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="stroke-current shrink-0 h-6 w-6"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+              />
+            </svg>
+            <span>Edit Profile Success! 😊</span>
+          </div>
+        </div>
+      );
       showAlert(alert, 3000);
       setTimeout(() => {
         document.getElementById("my_modal_editProfile").close();
@@ -107,7 +206,6 @@ function ModalEditProfile({ form, refetchParent }) {
   return (
     <dialog id="my_modal_editProfile" className="modal text-navBg">
       <div className="modal-box bg-white">
-        {message && message}
         <h3 className="font-bold text-center text-xl mb-3">Edit Profile</h3>
         <form onSubmit={(e) => handleSubmit.mutate(e)}>
           <div className="flex flex-col gap-1">
@@ -168,8 +266,8 @@ function ModalEditProfile({ form, refetchParent }) {
               value={address}
             />
           </div>
-
-          <div className="flex justify-center mt-5">
+          {message && message}
+          <div className="flex justify-center mt-2">
             <button
               disabled={handleSubmit?.isLoading}
               type="submit"

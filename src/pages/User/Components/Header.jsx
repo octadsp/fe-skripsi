@@ -2,14 +2,14 @@ import logoGuns from "../../../assets/logo.png";
 import ModalUserLogin from "../../../components/Fragments/ModalUserLogin";
 import ModalUserRegister from "../../../components/Fragments/ModalUserRegister";
 import AvatarProfile from "../../../components/Elements/AvatarProfile";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FaUser, FaBell } from "react-icons/fa";
 import { HiArrowLeftOnRectangle } from "react-icons/hi2";
 import { IoMdMail } from "react-icons/io";
 
 import { useContext, useState, useEffect } from "react";
 import { API } from "../../../config/api";
-import { useQuery } from "react-query";
+import { useQuery, useMutation } from "react-query";
 import { UserContext } from "../../../context/userContext";
 
 // Fungsi untuk menghitung jumlah notifikasi
@@ -19,6 +19,7 @@ const countNotifications = (notifications) => {
 
 const Header = () => {
   const [state] = useContext(UserContext);
+  const navigate = useNavigate();
   const [notificationCount, setNotificationCount] = useState(0);
 
   const handleReservClick = (e) => {
@@ -34,6 +35,19 @@ const Header = () => {
     },
     { refetchInterval: 2000 }
   );
+
+  const updateNotificationStatus = async (notificationId) => {
+    try {
+      await API.patch(`/notification/${notificationId}`, {
+        is_read: true, // Atau nilai yang sesuai dengan status notifikasi yang ingin Anda update
+      });
+      // Panggil refetch untuk memuat ulang data notifikasi setelah pembaruan
+      refetchNotif();
+      navigate("/profile");
+    } catch (error) {
+      console.error("Error updating notification status:", error);
+    }
+  };
 
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -119,7 +133,13 @@ const Header = () => {
                                 </div>
                               </div>
                               <div className="btn btn-xs border text-navBg hover:text-white hover:border-navBg bg-textSuccess/90 focus:bg-white">
-                                <button>View</button>
+                                <button
+                                  onClick={() =>
+                                    updateNotificationStatus(item.id)
+                                  }
+                                >
+                                  View
+                                </button>
                               </div>
                             </div>
                           </li>
