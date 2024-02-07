@@ -1005,7 +1005,7 @@ function FormReservation() {
                         <input
                           type="text"
                           placeholder="xxxx"
-                          name="umur"
+                          name="pekerjaan"
                           onChange={handleInputOnChange}
                           className="bg-white rounded-md p-2 border border-light-silver shadow text-navBg"
                         ></input>
