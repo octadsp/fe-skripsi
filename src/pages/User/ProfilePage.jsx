@@ -179,7 +179,7 @@ function ProfilePage() {
                   />
                 </div>
                 <div className="mt-2">
-                  <h1 className="text-xl text-navBg">
+                  <h1 className="text-lg text-navBg">
                     {form.fullname} {form.lastname}
                   </h1>
                 </div>

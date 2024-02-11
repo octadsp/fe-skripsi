@@ -59,9 +59,9 @@ function FormReservation() {
 
   const [isChecked, setIsChecked] = useState(true);
 
-  const [selectedBrandId, setSelectedBrandId] = useState(0);
+  const [selectedBrandId, setSelectedBrandId] = useState(null);
   const [isBrandSelected, setIsBrandSelected] = useState(false);
-  const [selectedClassId, setSelectedClassId] = useState(0);
+  const [selectedClassId, setSelectedClassId] = useState(null);
 
   const [formNo, setFormNo] = useState({
     userId: state?.user.id,
@@ -84,11 +84,8 @@ function FormReservation() {
     sim: "",
   });
 
-  const [formItem, setFormItem] = useState({
-    item: "",
-    image: "",
-    price: 0,
-  });
+  console.log("merek:", formNo?.merk);
+  console.log("tipe:", formNo?.tipe);
 
   const showAlert = (alertComponent, timeout) => {
     setMessage(alertComponent);
@@ -123,15 +120,15 @@ function FormReservation() {
     }
   );
 
-  // const { data: classData, refetch: refetchClass } = useQuery(
-  //   "classMobilCache",
-  //   async () => {
-  //     const resp = await API.get(`/car-class/${selectedClassId}`);
-  //     const data = resp.data.data;
-  //     updateFormNo(data);
-  //     return data;
-  //   }
-  // );
+  const { data: classData, refetch: refetchClass } = useQuery(
+    "classMobilCache",
+    async () => {
+      const resp = await API.get(`/car-class/${selectedClassId}`);
+      const data = resp.data.data;
+      updateFormNo(data);
+      return data;
+    }
+  );
 
   const updateFormNo = (classData) => {
     if (classData) {
@@ -331,6 +328,30 @@ function FormReservation() {
                 />
               </svg>
               <span>Merek tidak boleh kosong!</span>
+            </div>
+          </div>
+        );
+        showAlertError(alert, 5000);
+        return;
+      }
+      if (formNo.tipe === "" || formNo.tipe === null) {
+        const alert = (
+          <div className="px-64">
+            <div role="alert" className="alert alert-error">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="stroke-current shrink-0 h-6 w-6"
+                fill="none"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
+                />
+              </svg>
+              <span>Tipe tidak boleh kosong!</span>
             </div>
           </div>
         );
@@ -672,7 +693,7 @@ function FormReservation() {
       await refetchType();
     };
 
-    if (selectedBrandId !== 0) {
+    if (selectedBrandId !== null) {
       fetchData();
     }
   }, [selectedBrandId]);
@@ -682,7 +703,7 @@ function FormReservation() {
       await refetchClass();
     };
 
-    if (selectedClassId !== 0) {
+    if (selectedClassId !== null) {
       fetchData();
     }
   }, [selectedClassId]);
@@ -809,7 +830,7 @@ function FormReservation() {
                           onChange={(e) => handleSelectChange(e)}
                           className="bg-white text-navBg rounded-md p-2 border border-light-silver shadow"
                         >
-                          <option disabled selected hidden value={0}>
+                          <option disabled selected hidden>
                             Choose your option...
                           </option>
                           {merek?.map((item, index) => (
@@ -828,6 +849,9 @@ function FormReservation() {
                         >
                           {type && type.length > 0 ? (
                             <>
+                              <option disabled selected hidden>
+                                Pilih tipe
+                              </option>
                               {type?.map((item, index) => (
                                 <option key={index} value={item.id}>
                                   {item.car_type.name} {item.car_type.tipe}

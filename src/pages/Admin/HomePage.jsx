@@ -15,6 +15,7 @@ import CompanyServices from "../Admin/pages/CompanyServices";
 import { UserContext } from "../../context/userContext";
 import AddPriceList from "./pages/AddPriceList";
 import Laporan from "./pages/Laporan";
+import TestLaporan from "./pages/TestLaporan";
 
 const pages = [
   {
@@ -78,11 +79,17 @@ const pages = [
     path: "services",
     component: <CompanyServices />,
   },
+  // {
+  //   type: "Laporan",
+  //   name: "Laporan",
+  //   path: "laporan",
+  //   component: <Laporan />,
+  // },
   {
     type: "Laporan",
     name: "Laporan",
     path: "laporan",
-    component: <Laporan />,
+    component: <TestLaporan />,
   },
 ];
 
