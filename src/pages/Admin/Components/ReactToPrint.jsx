@@ -32,13 +32,24 @@ const formatDate = (dateString) => {
   const monthName = month.charAt(0).toUpperCase() + month.slice(1); // Ubah huruf pertama bulan menjadi kapital
   return `${day} ${monthName} ${year}`;
 };
-function ReactToPrint({ reservation }) {
+
+function ReactToPrint({ reservation, showOwner }) {
   const componentRef = useRef();
   const handlePrint = useReactToPrint({
     content: () => componentRef.current,
     documentTitle: "Visitor Pass",
     onAfterPrint: () => console.log("Printed PDF successfully!"),
   });
+  console.log(showOwner);
+
+  const getTotalPrice = (reservations) => {
+    let totalPrice = 0;
+    reservations.forEach((item) => {
+      totalPrice += item.total_price;
+    });
+    return totalPrice;
+  };
+
   return (
     <>
       <div className="flex justify-end mr-10 text-navBg/70 mt-5 items-center gap-1">
@@ -115,7 +126,35 @@ function ReactToPrint({ reservation }) {
                   </tr>
                 )}
               </tbody>
+              <tfoot>
+                <tr className="border">
+                  <td className=" text-bold"></td>
+                  <td className=" text-bold">Jumlah</td>
+                  <td className=" text-bold"></td>
+                  <td className=" text-bold"></td>
+                  <td className=" text-bold"></td>
+                  <td className=" text-bold"></td>
+                  <td className=" text-bold"></td>
+                  <td className=" text-bold"></td>
+                  <td className="text-center">
+                    {formatPrice(getTotalPrice(reservation))}
+                  </td>
+                </tr>
+              </tfoot>
             </table>
+          </div>
+        </div>
+        <div className={showOwner ? "" : "hidden"}>
+          <div className="flex justify-end my-20 mr-5">
+            <div className="">
+              Tangerang,...................................
+            </div>
+          </div>
+          <div className="flex flex-col items-end pr-5">
+            <div className="flex flex-col items-center">
+              <div className="underline">Euis Indriawati</div>
+              <div>Manager Operasional</div>
+            </div>
           </div>
         </div>
       </div>

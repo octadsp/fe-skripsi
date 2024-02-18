@@ -1,13 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { useMutation, useQuery } from "react-query";
 import { API } from "../../../config/api";
-import Logo from "../../../assets/kop.png";
-import { FaPrint } from "react-icons/fa";
 
-import autoTable, { jsPDFDocument } from "jspdf-autotable";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
-import DataTable from "react-data-table-component";
 import Chart from "../Components/Chart";
 import ReactToPrint from "../Components/ReactToPrint";
 
@@ -55,16 +50,7 @@ function TestLaporan() {
   const [dateUntil, setDateUntil] = useState(`${formattedDate}`);
   const [reservation, setReservation] = useState([]);
   const [reservChart, setReservChart] = useState([]);
-
-  //   const { data: reservation, refetch: reservRefetch } = useQuery(
-  //     "reservListCache",
-  //     async () => {
-  //       const resp = await API.get(
-  //         `/reservations?status=${status}&from=${dateFrom}&until=${dateUntil}`
-  //       );
-  //       return resp.data.data;
-  //     }
-  //   );
+  const [showOwner, setShowOwner] = useState(false);
 
   // Mengambil data pertama kali saat komponen dimuat
   useEffect(() => {
@@ -115,6 +101,7 @@ function TestLaporan() {
         // Simpan data reservasi yang diterima ke dalam state
         setReservation(response.data.data);
         setReservChart(chartResp.data.data);
+        setShowOwner(true);
       } else {
         console.error("Failed to fetch reservations");
       }
@@ -134,8 +121,6 @@ function TestLaporan() {
       doc.save("laporan.pdf");
     });
   };
-
-  //   console.log(reservation);
 
   return (
     <>
@@ -178,7 +163,7 @@ function TestLaporan() {
           />
         </div>
         <div>
-          <ReactToPrint reservation={reservation} />
+          <ReactToPrint reservation={reservation} showOwner={showOwner} />
         </div>
       </div>
     </>

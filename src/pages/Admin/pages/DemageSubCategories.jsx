@@ -238,7 +238,9 @@ function DemageSubCategories() {
             <div className="w-full px-10">
               <div className="overflow-x-auto">
                 <div className="flex justify-center mb-5">
-                  <h1 className="font-bold text-3xl">List Car Brand</h1>
+                  <h1 className="font-bold text-3xl">
+                    List Sub Kategori Kerusakan
+                  </h1>
                 </div>
                 <div className="w-full h-[560px]">
                   <table className="table border">
