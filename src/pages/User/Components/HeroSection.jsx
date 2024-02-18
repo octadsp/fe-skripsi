@@ -30,6 +30,9 @@ const HeroSection = () => {
           >
             Booking
           </Link>
+          <p className="text-sm text-navBg/50">
+            *sementara hanya menerima dari jabodetabek
+          </p>
         </section>
       ) : (
         <section
@@ -41,12 +44,16 @@ const HeroSection = () => {
           <p className="text-lg mb-8">
             The best car repair services at affordable prices.
           </p>
+
           <button
             onClick={() => document.getElementById("modalAlert").showModal()}
             className="ring-2 ring-mikado-yellow text-mikado-yellow font-bold py-2 px-6 rounded-full hover:bg-mikado-yellow hover:text-white transition duration-300"
           >
             Booking
           </button>
+          <p className="text-sm text-navBg/50">
+            *sementara hanya menerima dari jabodetabek
+          </p>
 
           {/* MODAL ALERT */}
           <dialog id="modalAlert" className="modal text-navBg">
