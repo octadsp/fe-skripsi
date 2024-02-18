@@ -12,6 +12,7 @@
   "dependencies": {
     "@react-pdf/renderer": "^3.3.6",
     "axios": "^1.6.2",
+    "chart.js": "^4.4.1",
     "dotenv": "^16.3.1",
     "html2canvas": "^1.4.1",
     "jspdf-autotable": "^3.8.1",
@@ -19,6 +20,7 @@
     "pdf-lib": "^1.17.1",
     "print-js": "^1.6.0",
     "react": "^18.2.0",
+    "react-chartjs-2": "^5.2.0",
     "react-data-table-component": "^7.6.2",
     "react-dom": "^18.2.0",
     "react-icons": "^4.12.0",
@@ -26,7 +28,7 @@
     "react-pro-sidebar": "^1.1.0-alpha.1",
     "react-query": "^3.39.3",
     "react-router-dom": "^6.15.0",
-    "react-to-print": "^2.14.15"
+    "react-to-print": "^2.15.1"
   },
   "devDependencies": {
     "@types/react": "^18.2.15",
