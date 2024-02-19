@@ -302,6 +302,54 @@ function HomePage() {
           </Sidebar>
         ) : (
           <Sidebar className="text-navBg border-t-2">
+            <Menu
+              menuItemStyles={{
+                button: {
+                  [`&.active`]: {
+                    backgroundColor: "#13395e",
+                    color: "#b6c8d9",
+                  },
+                },
+              }}
+            >
+              <SubMenu label="Masters">
+                {pages
+                  .filter((page) => page.type === "Masters") // Filter only type "Masters"
+                  .map((page) => (
+                    <MenuItem
+                      key={page.path}
+                      onClick={() => changePage(page.path)}
+                      className={currentPage === page.path ? "active" : ""}
+                    >
+                      {page.name}
+                    </MenuItem>
+                  ))}
+              </SubMenu>
+            </Menu>
+            <Menu
+              menuItemStyles={{
+                button: {
+                  [`&.active`]: {
+                    backgroundColor: "#13395e",
+                    color: "#b6c8d9",
+                  },
+                },
+              }}
+            >
+              <SubMenu label="Demage Cars">
+                {pages
+                  .filter((page) => page.type === "Demage Cars") // Filter only type "Masters"
+                  .map((page) => (
+                    <MenuItem
+                      key={page.path}
+                      onClick={() => changePage(page.path)}
+                      className={currentPage === page.path ? "active" : ""}
+                    >
+                      {page.name}
+                    </MenuItem>
+                  ))}
+              </SubMenu>
+            </Menu>
             {/* Reservations */}
             <Menu
               menuItemStyles={{
@@ -327,7 +375,7 @@ function HomePage() {
                   ))}
               </SubMenu>
             </Menu>
-            <Menu
+            {/* <Menu
               menuItemStyles={{
                 button: {
                   [`&.active`]: {
@@ -350,7 +398,7 @@ function HomePage() {
                     </MenuItem>
                   ))}
               </SubMenu>
-            </Menu>
+            </Menu> */}
           </Sidebar>
         )}
       </div>
