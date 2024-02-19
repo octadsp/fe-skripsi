@@ -46,28 +46,33 @@ function ModalUserRegister() {
       e.preventDefault();
       // Pengecekan Form Input jangan kosong pake trim
       if (fullname.trim() === "" || fullname.trim() === null) {
-        const alert = <ErrorAlert title={"First Name cant be empty!"} />;
-        showAlert(alert, 5000);
-        return;
-      }
-      if (email.trim() === "" || email.trim() === null) {
-        const alert = <ErrorAlert title={"Email cant be empty!"} />;
-        showAlert(alert, 5000);
-        return;
-      }
-      if (password === "" || password === null) {
-        const alert = <ErrorAlert title={"Password cant be empty!"} />;
-        showAlert(alert, 5000);
-        return;
-      }
-      if (address === "" || address === null) {
-        const alert = <ErrorAlert title={"Address cant be empty!"} />;
-        showAlert(alert, 5000);
+        // const alert = <ErrorAlert title={"First Name cant be empty!"} />;
+        // showAlert(alert, 5000);
+        alert("First Name cant be empty!");
         return;
       }
       if (institute === "" || institute === null) {
-        const alert = <ErrorAlert title={"Institute cant be empty!"} />;
-        showAlert(alert, 5000);
+        // const alert = <ErrorAlert title={"Institute cant be empty!"} />;
+        // showAlert(alert, 5000);
+        alert("Institute cant be empty!");
+        return;
+      }
+      if (email.trim() === "" || email.trim() === null) {
+        // const alert = <ErrorAlert title={"Email cant be empty!"} />;
+        // showAlert(alert, 5000);
+        alert("Email cant be empty!");
+        return;
+      }
+      if (password === "" || password === null) {
+        // const alert = <ErrorAlert title={"Password cant be empty!"} />;
+        // showAlert(alert, 5000);
+        alert("Password cant be empty!");
+        return;
+      }
+      if (address === "" || address === null) {
+        // const alert = <ErrorAlert title={"Address cant be empty!"} />;
+        // showAlert(alert, 5000);
+        alert("Address cant be empty!");
         return;
       }
 
@@ -82,8 +87,9 @@ function ModalUserRegister() {
         address: address.trim(),
       });
 
-      const alert = <SuccessAlert title={"Register Success! 😊"} />;
-      showAlert(alert, 5000);
+      // const alert = <SuccessAlert title={"Register Success! 😊"} />;
+      // showAlert(alert, 5000);
+      alert("Register Success!");
 
       setForm({
         fullname: "",
@@ -95,8 +101,9 @@ function ModalUserRegister() {
         address: "",
       });
     } catch (error) {
-      const alert = <ErrorAlert title={"Oops, email already exists!"} />;
-      showAlert(alert, 5000);
+      // const alert = <ErrorAlert title={"Oops, email already exists!"} />;
+      // showAlert(alert, 5000);
+      alert("Oops, email already exists!");
       console.log("register failed : ", error);
     }
   });
