@@ -11,6 +11,7 @@ import HomeIndo from "./pages/HomeIndo";
 import ReservationPage from "./pages/User/ReservationPage";
 import ProfilePage from "./pages/User/ProfilePage";
 import LandingPage from "./pages/User/LandingPage";
+import LandingPageIndo from "./pages/User/LandingPageIndo";
 import DetailReservation from "./pages/User/Components/DetailReservation";
 
 // API CONFIG
@@ -74,15 +75,6 @@ function App() {
     }
   }, []);
 
-  // useEffect(() => {
-  //   // Redirect Auth but just when isLoading is false
-  //   if (!isLoading) {
-  //     if (state.isLogin === false) {
-  //       navigate("/");
-  //       navigate("/id");
-  //     }
-  //   }
-  // }, [isLoading]);
   useEffect(() => {
     // Redirect jika pengguna belum login dan isLoading adalah false
     if (!isLoading && !state.isLogin) {
@@ -107,6 +99,11 @@ function App() {
           </Route>
           <Route element={<PrivateRouteUser />}>
             <Route exact path="/landing-page" element={<LandingPage />} />
+            <Route
+              exact
+              path="/landing-page/id"
+              element={<LandingPageIndo />}
+            />
             <Route
               exact
               path="/reservation-page"

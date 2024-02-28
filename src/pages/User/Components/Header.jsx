@@ -22,7 +22,8 @@ const countNotifications = (notifications) => {
 
 const Header = () => {
   const [state] = useContext(UserContext);
-  const { dispatch: setLanguage } = useContext(LanguageContext);
+  const { state: languageState, dispatch: setLanguage } =
+    useContext(LanguageContext);
   const navigate = useNavigate();
   const [notificationCount, setNotificationCount] = useState(0);
 
@@ -110,6 +111,21 @@ const Header = () => {
                   <a href="#contactsection" className=" ">
                     Contacts
                   </a>
+                </li>
+                <li className="dropdown dropdown-hover dropdown-bottom dropdown-end p-2 hover:p-2 hover:text-mikado-yellow hover:ring-2 hover:ring-mikado-yellow hover:rounded-lg hover:underline">
+                  <div tabIndex={0} role="button" className="">
+                    <img src={EngFlag} alt="English" className="w-6" />
+                  </div>
+                  <ul
+                    tabIndex={0}
+                    className="dropdown-content z-[1] menu p-2 shadow bg-white rounded-box w-20"
+                  >
+                    <li className="flex items-center">
+                      <Link to={"/landing-page/id"}>
+                        <img src={IndoFlag} alt="Indonesia" className="w-6" />
+                      </Link>
+                    </li>
+                  </ul>
                 </li>
                 <li className="flex gap-5 justify-center items-center">
                   <div className="indicator">

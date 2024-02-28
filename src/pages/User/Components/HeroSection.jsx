@@ -31,7 +31,7 @@ const HeroSection = () => {
             Booking
           </Link>
           <p className="text-sm text-navBg/50">
-            *sementara hanya menerima dari jabodetabek
+            *while only receiving from jabodetabek
           </p>
         </section>
       ) : (

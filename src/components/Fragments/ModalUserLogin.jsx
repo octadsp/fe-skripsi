@@ -62,22 +62,6 @@ function ModalUserLogin() {
         payload: response.data.data,
       });
       setAuthToken(localStorage.token);
-
-      //   // Setelah waktu kadaluarsa, hapus token dan logout
-      //   setTimeout(() => {
-      //     const confirmLogout = window.confirm(
-      //       "Your session has expired. Please Login again 🤞"
-      //     );
-      //     if (confirmLogout) {
-      //       dispatch({
-      //         type: "LOGOUT",
-      //       });
-      //       setAuthToken();
-      //       localStorage.removeItem("token");
-      //       window.location.reload();
-      //     }
-      //   }, timeDiffInMillis);
-      // }, 4000);
     } catch (error) {
       const alert = (
         <ErrorAlert title={"Username and Password not match! ❌"} />
