@@ -50,6 +50,13 @@ function ReactToPrint({ reservation, showOwner }) {
     return totalPrice;
   };
 
+  // Mendapatkan tanggal hari ini
+  const getCurrentDate = () => {
+    const today = new Date();
+    const options = { day: "numeric", month: "long", year: "numeric" };
+    return today.toLocaleDateString("id-ID", options);
+  };
+
   return (
     <>
       <div className="flex justify-end mr-10 text-navBg/70 mt-5 items-center gap-1">
@@ -146,9 +153,7 @@ function ReactToPrint({ reservation, showOwner }) {
         </div>
         <div className={showOwner ? "" : "hidden"}>
           <div className="flex justify-end my-20 mr-5">
-            <div className="">
-              Tangerang,...................................
-            </div>
+            <div className="">Tangerang, {getCurrentDate()}</div>
           </div>
           <div className="flex flex-col items-end pr-5">
             <div className="flex flex-col items-center">
