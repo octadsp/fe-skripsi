@@ -15,6 +15,7 @@ import ProfilePageIndo from "./pages/User/ProfilePageIndo";
 import LandingPage from "./pages/User/LandingPage";
 import LandingPageIndo from "./pages/User/LandingPageIndo";
 import DetailReservation from "./pages/User/Components/DetailReservation";
+import DetailReservationIndo from "./pages/User/Components/DetailReservationIndo";
 
 // API CONFIG
 import { API, setAuthToken } from "./config/api";
@@ -122,6 +123,11 @@ function App() {
               exact
               path="/detail-reservation/:id"
               element={<DetailReservation />}
+            />
+            <Route
+              exact
+              path="/detail-reservation/:id/id"
+              element={<DetailReservationIndo />}
             />
           </Route>
           <Route element={<PrivateRouteVisible />}>

@@ -6,11 +6,11 @@ import { API } from "../../../config/api";
 import { UserContext } from "../../../context/userContext";
 
 const ratingOptions = [
-  { id: 0, name: "Not satisfied" },
-  { id: 1, name: "Satisfied" },
+  { id: 0, name: "Tidak Puas" },
+  { id: 1, name: "Puas" },
 ];
 
-function ModalRating({ reservID }) {
+function ModalRatingIndo({ reservID }) {
   const [state] = useContext(UserContext);
   const [rating, setRating] = useState(null);
   const [ratingName, setRatingName] = useState("");
@@ -54,23 +54,23 @@ function ModalRating({ reservID }) {
   });
 
   return (
-    <dialog id="modalRating" className="modal">
+    <dialog id="modalRatingIndo" className="modal">
       {ratings && ratings.length > 0 ? (
         <>
           <div className="modal-box bg-white flex flex-col items-center">
             <div className="hidden">{reservID}</div>
             <h3 className="font-bold text-lg">
-              Hello! You have completed the assessment 😊
+              Hello! Anda telah mengisi penilaian 😊
             </h3>
-            <p className="py-4">Continue to see details?</p>
+            <p className="py-4">Lanjut melihat detail?</p>
             <div>
               <div className="flex justify-center mt-2">
                 <div>
                   <Link
-                    to={`/detail-reservation/${reservID}`}
+                    to={`/detail-reservation/${reservID}/id`}
                     className="btn btn-sm bg-lightGreen text-navBg border-none hover:bg-navBg hover:text-white"
                   >
-                    Yes
+                    Iya
                   </Link>
                 </div>
               </div>
@@ -85,9 +85,9 @@ function ModalRating({ reservID }) {
           <div className="modal-box bg-white flex flex-col items-center">
             <div className="hidden">{reservID}</div>
             <h3 className="font-bold text-lg">
-              Hello! Please fill it in first 😊
+              Hello! Mohon untuk diisi terlebih dahulu ya 😊
             </h3>
-            <p className="py-4">Are you satisfied with the results?</p>
+            <p className="py-4">Sudah puaskah anda dengan hasilnya?</p>
             <form onSubmit={(e) => handleSubmit.mutate(e)}>
               <div className="flex justify-center gap-5">
                 {ratingOptions?.map((option) => (
@@ -119,4 +119,4 @@ function ModalRating({ reservID }) {
   );
 }
 
-export default ModalRating;
+export default ModalRatingIndo;

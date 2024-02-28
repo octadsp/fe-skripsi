@@ -1,8 +1,8 @@
 import React, { useState, useContext, useEffect } from "react";
-import Header from "./Components/HeaderReservation";
+import Header from "./Components/HeaderReservationIndo";
 import AvatarProfile from "../../components/Elements/AvatarProfile";
 import EditModal from "../../components/Fragments/ModalEditProfile";
-import ModalRating from "./Components/ModalRating";
+import ModalRatingIndo from "./Components/ModalRatingIndo";
 import { FcExpired } from "react-icons/fc";
 import { FcSynchronize } from "react-icons/fc";
 import { FcOk } from "react-icons/fc";
@@ -146,7 +146,7 @@ function ProfilePageIndo() {
   };
 
   const handleRating = (reservID) => {
-    document.getElementById("modalRating").showModal();
+    document.getElementById("modalRatingIndo").showModal();
     setReservID(reservID);
   };
 
@@ -402,7 +402,7 @@ function ProfilePageIndo() {
                             <div className="flex justify-center item-center">
                               <div>
                                 <Link
-                                  to={`/detail-reservation/` + item.id}
+                                  to={`/detail-reservation/${item.id}/id`}
                                   className="text-navBg btn btn-wide btn-sm mt-5 transition ease-in-out delay-90 hover:-translate-y-1 hover:scale-110 hover:bg-navBg hover:text-white bg-mikado-yellow font-semibold rounded-lg"
                                 >
                                   Detail
@@ -451,7 +451,7 @@ function ProfilePageIndo() {
                             <div className="flex justify-center item-center">
                               <div>
                                 <Link
-                                  to={`/detail-reservation/` + item.id}
+                                  to={`/detail-reservation/${item.id}/id`}
                                   className="text-navBg btn btn-wide btn-sm mt-5 transition ease-in-out delay-90 hover:-translate-y-1 hover:scale-110 hover:bg-navBg hover:text-white bg-mikado-yellow font-semibold rounded-lg"
                                 >
                                   Detail
@@ -500,7 +500,7 @@ function ProfilePageIndo() {
                             <div className="flex justify-center item-center">
                               <div>
                                 <Link
-                                  to={`/detail-reservation/` + item.id}
+                                  to={`/detail-reservation/${item.id}/id`}
                                   className="text-navBg btn btn-wide btn-sm mt-5 transition ease-in-out delay-90 hover:-translate-y-1 hover:scale-110 hover:bg-navBg hover:text-white bg-mikado-yellow font-semibold rounded-lg"
                                 >
                                   Detail
@@ -549,7 +549,7 @@ function ProfilePageIndo() {
                             <div className="flex justify-center item-center">
                               <div>
                                 <Link
-                                  to={`/detail-reservation/` + item.id}
+                                  to={`/detail-reservation/${item.id}/id`}
                                   className="text-navBg btn btn-wide btn-sm mt-5 transition ease-in-out delay-90 hover:-translate-y-1 hover:scale-110 hover:bg-navBg hover:text-white bg-mikado-yellow font-semibold rounded-lg"
                                 >
                                   Detail
@@ -605,7 +605,7 @@ function ProfilePageIndo() {
                               >
                                 Detail
                               </button>
-                              <ModalRating reservID={reservID} />
+                              <ModalRatingIndo reservID={reservID} />
                             </div>
                           </div>
                         </div>

@@ -48,7 +48,7 @@ const formatDate = (dateString) => {
   return `${day} ${monthName} ${year}`;
 };
 
-function DetailReservation() {
+function DetailReservationIndo() {
   const navigate = useNavigate();
   const { id } = useParams();
   const [message, setMessage] = useState(null);
@@ -171,7 +171,7 @@ function DetailReservation() {
             <span>
               <BsArrowLeft />
             </span>
-            back
+            kembali
           </button>
         </div>
       </header>
@@ -183,7 +183,7 @@ function DetailReservation() {
             <div className="mt-5 w-1/2">
               <div className="text-xl p-5">
                 <div className="flex shadow w-10/12 h-10 items-center px-2">
-                  Reservation Code :&nbsp;
+                  Kode Reservasi :&nbsp;
                   <span className="font-semibold">
                     {reservation?.kode_order}
                   </span>
@@ -196,11 +196,11 @@ function DetailReservation() {
                         {reservation?.insurance_name}
                       </div>
                     ) : (
-                      <div>Do not use insurance</div>
+                      <div>Tidak menggunakan Asuransi</div>
                     )}
                   </>
                 ) : (
-                  <div>Do not use insurance</div>
+                  <div>Tidak menggunakan Asuransi</div>
                 )}
               </div>
             </div>
@@ -208,7 +208,7 @@ function DetailReservation() {
               <div className="flex">
                 <div className="">
                   <div>{getStatusIcon(reservation?.status)}</div>
-                  <div>Finished</div>
+                  <div>{reservation?.status}</div>
                 </div>
               </div>
               <div className="flex items-center font-semibold">
@@ -220,7 +220,7 @@ function DetailReservation() {
           {/* PROFILE USER */}
           <div className="flex flex-col gap-3 mx-5">
             <div className="flex gap-5 w-full py-1 border-b border-navBg/10">
-              <p className="w-1/6 text-lg text-navBg/80">Name</p>
+              <p className="w-1/6 text-lg text-navBg/80">Nama</p>
               <p className="text-lg">
                 :&nbsp;
                 <span className="font-semibold">
@@ -229,7 +229,7 @@ function DetailReservation() {
               </p>
             </div>
             <div className="flex gap-5 w-full py-1 border-b border-navBg/10">
-              <p className="w-1/6 text-lg text-navBg/80">Institute</p>
+              <p className="w-1/6 text-lg text-navBg/80">Perusahaan</p>
               <p className="text-lg">
                 :&nbsp;
                 <span className="font-semibold">
@@ -238,14 +238,14 @@ function DetailReservation() {
               </p>
             </div>
             <div className="flex gap-5 w-full py-1 border-b border-navBg/10">
-              <p className="w-1/6 text-lg text-navBg/80">Phone</p>
+              <p className="w-1/6 text-lg text-navBg/80">Telepon</p>
               <p className="text-lg">
                 :&nbsp;
                 <span className="font-semibold">{reservation?.user.phone}</span>
               </p>
             </div>
             <div className="flex gap-5 w-full py-1 border-b border-navBg/10">
-              <p className="w-1/6 text-lg text-navBg/80">Address</p>
+              <p className="w-1/6 text-lg text-navBg/80">Alamat</p>
               <p className="text-lg">
                 :&nbsp;
                 <span className="font-semibold">
@@ -263,11 +263,11 @@ function DetailReservation() {
                 <div className="w-1/2 shadow rounded-lg p-2">
                   <div className="flex justify-center text-lg text-navBg font-semibold mb-2">
                     <h1 className="underline underline-offset-8">
-                      Vehicle Data
+                      Data Kendaraan
                     </h1>
                   </div>
                   <div className="flex gap-5 w-full py-1 border-b border-navBg/10">
-                    <p className="w-1/6 text-lg text-navBg/80">Brand</p>
+                    <p className="w-1/6 text-lg text-navBg/80">Merek</p>
                     <p className="text-lg">
                       :&nbsp;
                       <span className="font-semibold">
@@ -276,7 +276,7 @@ function DetailReservation() {
                     </p>
                   </div>
                   <div className="flex gap-5 w-full py-1 border-b border-navBg/10">
-                    <p className="w-1/6 text-lg text-navBg/80">Type</p>
+                    <p className="w-1/6 text-lg text-navBg/80">Tipe</p>
                     <p className="text-lg">
                       :&nbsp;
                       <span className="font-semibold">
@@ -285,7 +285,7 @@ function DetailReservation() {
                     </p>
                   </div>
                   <div className="flex gap-5 w-full py-1 border-b border-navBg/10">
-                    <p className="w-1/6 text-lg text-navBg/80">Year</p>
+                    <p className="w-1/6 text-lg text-navBg/80">Tahun</p>
                     <p className="text-lg">
                       :&nbsp;
                       <span className="font-semibold">
@@ -294,7 +294,7 @@ function DetailReservation() {
                     </p>
                   </div>
                   <div className="flex gap-5 w-full py-1 border-b border-navBg/10">
-                    <p className="w-1/6 text-lg text-navBg/80">Color</p>
+                    <p className="w-1/6 text-lg text-navBg/80">Warna</p>
                     <p className="text-lg">
                       :&nbsp;
                       <span className="font-semibold">
@@ -307,11 +307,11 @@ function DetailReservation() {
                 <div className="w-1/2 shadow rounded-lg p-2">
                   <div className="flex justify-center text-lg text-navBg font-semibold mb-2">
                     <h1 className="underline underline-offset-8">
-                      Description of the incident
+                      Keterangan - Keterangan Kejadian
                     </h1>
                   </div>
                   <div className="flex gap-5 w-full py-1 border-b border-navBg/10">
-                    <p className="w-1/6 text-lg text-navBg/80">Date</p>
+                    <p className="w-1/6 text-lg text-navBg/80">Tanggal</p>
                     <p className="text-lg">
                       :&nbsp;
                       <span className="font-semibold">
@@ -320,7 +320,7 @@ function DetailReservation() {
                     </p>
                   </div>
                   <div className="flex gap-5 w-full py-1 border-b border-navBg/10">
-                    <p className="w-1/6 text-lg text-navBg/80">Place</p>
+                    <p className="w-1/6 text-lg text-navBg/80">Tempat</p>
                     <p className="text-lg">
                       :&nbsp;
                       <span className="font-semibold">
@@ -329,18 +329,18 @@ function DetailReservation() {
                     </p>
                   </div>
                   <div className="flex gap-5 w-full py-1 border-b border-navBg/10">
-                    <p className="w-1/6 text-lg text-navBg/80">Time</p>
+                    <p className="w-1/6 text-lg text-navBg/80">Waktu</p>
                     <p className="text-lg">
                       :&nbsp;
                       <span className="font-semibold">{reservation?.time}</span>
                     </p>
                   </div>
                   <div className="flex gap-5 w-full py-1 border-b border-navBg/10">
-                    <p className="w-1/6 text-lg text-navBg/80">Speed</p>
+                    <p className="w-1/6 text-lg text-navBg/80">Kecepatan</p>
                     <p className="text-lg">
                       :&nbsp;
                       <span className="font-semibold">
-                        {reservation?.driver_speed} km/h
+                        {reservation?.driver_speed} km/s
                       </span>
                     </p>
                   </div>
@@ -351,11 +351,11 @@ function DetailReservation() {
               <div className="flex flex-col gap-3 mx-5 shadow rounded-lg mt-3 p-2">
                 <div className="flex justify-center text-lg text-navBg font-semibold mb-2">
                   <h1 className="underline underline-offset-8">
-                    Vehicle Driver Information
+                    Informasi Pengemudi Kendaraan
                   </h1>
                 </div>
                 <div className="flex gap-11 w-full py-1 border-b border-navBg/10">
-                  <p className="text-lg text-navBg/80">Full Name</p>
+                  <p className="text-lg text-navBg/80">Nama Lengkap</p>
                   <p className="text-lg">
                     :&nbsp;
                     <span className="font-semibold">
@@ -365,7 +365,7 @@ function DetailReservation() {
                 </div>
                 <div className="flex gap-3">
                   <div className="flex w-1/2 gap-20 py-1 border-b border-navBg/10">
-                    <p className="text-lg text-navBg/80">Relation</p>
+                    <p className="text-lg text-navBg/80">Hubungan</p>
                     <p className="text-lg">
                       :&nbsp;
                       <span className="font-semibold">
@@ -374,19 +374,19 @@ function DetailReservation() {
                     </p>
                   </div>
                   <div className="flex gap-20 w-1/2 py-1 border-b border-navBg/10">
-                    <p className="w-1/6 text-lg text-navBg/80">Age</p>
+                    <p className="w-1/6 text-lg text-navBg/80">Umur</p>
                     <p className="text-lg">
                       :&nbsp;
                       <span className="font-semibold">
                         {reservation?.driver_age}{" "}
-                        <span className="text-navBg/80">Year</span>
+                        <span className="text-navBg/80">tahun</span>
                       </span>
                     </p>
                   </div>
                 </div>
                 <div className="flex gap-3">
                   <div className="flex w-1/2 gap-20 py-1 border-b border-navBg/10">
-                    <p className="text-lg text-navBg/80 mr-2">Work</p>
+                    <p className="text-lg text-navBg/80 mr-2">Pekerjaan</p>
                     <p className="text-lg">
                       :&nbsp;
                       <span className="font-semibold">
@@ -414,11 +414,11 @@ function DetailReservation() {
                 <div className="w-full shadow rounded-lg p-2">
                   <div className="flex justify-center text-lg text-navBg font-semibold mb-2">
                     <h1 className="underline underline-offset-8">
-                      Vehicle Data
+                      Data Kendaraan
                     </h1>
                   </div>
                   <div className="flex gap-5 w-full py-1 border-b border-navBg/10">
-                    <p className="w-1/6 text-lg text-navBg/80">Brand</p>
+                    <p className="w-1/6 text-lg text-navBg/80">Merek</p>
                     <p className="text-lg">
                       :&nbsp;
                       <span className="font-semibold">
@@ -427,7 +427,7 @@ function DetailReservation() {
                     </p>
                   </div>
                   <div className="flex gap-5 w-full py-1 border-b border-navBg/10">
-                    <p className="w-1/6 text-lg text-navBg/80">Type</p>
+                    <p className="w-1/6 text-lg text-navBg/80">Tipe</p>
                     <p className="text-lg">
                       :&nbsp;
                       <span className="font-semibold">
@@ -436,7 +436,7 @@ function DetailReservation() {
                     </p>
                   </div>
                   <div className="flex gap-5 w-full py-1 border-b border-navBg/10">
-                    <p className="w-1/6 text-lg text-navBg/80">Year</p>
+                    <p className="w-1/6 text-lg text-navBg/80">Tahun</p>
                     <p className="text-lg">
                       :&nbsp;
                       <span className="font-semibold">
@@ -445,7 +445,7 @@ function DetailReservation() {
                     </p>
                   </div>
                   <div className="flex gap-5 w-full py-1 border-b border-navBg/10">
-                    <p className="w-1/6 text-lg text-navBg/80">Color</p>
+                    <p className="w-1/6 text-lg text-navBg/80">Warna</p>
                     <p className="text-lg">
                       :&nbsp;
                       <span className="font-semibold">
@@ -462,15 +462,14 @@ function DetailReservation() {
           {reservation?.status === "Pending" ? (
             <div className="mx-5 mt-3 p-5 shadow bg-light-gray/50 rounded-lg">
               <div className="flex justify-center mb-10">
-                <h1 className="text-2xl">Damage Items</h1>
+                <h1 className="text-2xl">Items Kerusakan</h1>
               </div>
               <div className="p-2 shadow bg-white/80 rounded-xl mb-5 flex flex-col gap-2">
                 <div>
-                  Total Items :{" "}
-                  <span className="font-medium">{totalItems}</span>
+                  Total Item : <span className="font-medium">{totalItems}</span>
                 </div>
                 <div>
-                  Total Estimated Price :{" "}
+                  Total Perkiraan Harga :{" "}
                   <span className="font-medium">
                     {formatPrice(totalEstimatedPrice)}
                   </span>
@@ -512,7 +511,7 @@ function DetailReservation() {
                     <p>Submit</p>
                   </button>
                 ) : (
-                  <div>wait for admin. . .</div>
+                  <div>tunggu admin. . .</div>
                 )}
               </div>
             </div>
@@ -522,15 +521,15 @@ function DetailReservation() {
                 <>
                   <div className="mx-5 mt-3 p-5 shadow bg-light-gray/50 rounded-lg">
                     <div className="flex justify-center mb-10">
-                      <h1 className="text-2xl">Damage Items</h1>
+                      <h1 className="text-2xl">Items Kerusakan</h1>
                     </div>
                     <div className="p-2 shadow bg-white/80 rounded-xl mb-5 flex flex-col gap-2">
                       <div>
-                        Total Items :{" "}
+                        Total Item :{" "}
                         <span className="font-medium">{totalItems}</span>
                       </div>
                       <div>
-                        Total Estimated Price :{" "}
+                        Total Perkiraan Harga :{" "}
                         <span className="font-medium">
                           {formatPrice(totalEstimatedPrice)}
                         </span>
@@ -572,7 +571,7 @@ function DetailReservation() {
                           <p>Submit</p>
                         </button>
                       ) : (
-                        <div>wait for admin. . .</div>
+                        <div>tunggu admin. . .</div>
                       )}
                     </div>
                   </div>
@@ -581,17 +580,17 @@ function DetailReservation() {
                 <>
                   <div className="mx-5 mt-3 p-5 shadow bg-light-gray/50 rounded-lg">
                     <div className="flex justify-center mb-10">
-                      <h1 className="text-2xl">Damage Items</h1>
+                      <h1 className="text-2xl">Items Kerusakan</h1>
                     </div>
                     <div className="p-2 shadow bg-white/80 rounded-xl mb-5 flex flex-col gap-2">
                       <div>
-                        Total Items :{" "}
+                        Total Item :{" "}
                         <span className="font-medium">
                           {reservation?.total_item}
                         </span>
                       </div>
                       <div>
-                        Total Estimated Price :{" "}
+                        Total Perkiraan Harga :{" "}
                         <span className="font-medium">
                           {formatPrice(reservation?.total_price)}
                         </span>
@@ -626,4 +625,4 @@ function DetailReservation() {
   );
 }
 
-export default DetailReservation;
+export default DetailReservationIndo;
