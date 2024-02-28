@@ -20,7 +20,7 @@ const countNotifications = (notifications) => {
   return notifications ? notifications.length : 0;
 };
 
-const Header = () => {
+const HeaderIndo = () => {
   const [state] = useContext(UserContext);
   const { dispatch: setLanguage } = useContext(LanguageContext);
   const navigate = useNavigate();
@@ -67,13 +67,13 @@ const Header = () => {
 
   const handleChangeLanguage = () => {
     // Set dispatch untuk mengubah bahasa menjadi Indonesia
-    setLanguage({ type: "CHANGE_LANGUAGE", payload: "indonesian" });
+    setLanguage({ type: "CHANGE_LANGUAGE", payload: "english" });
   };
 
   return (
     <>
       {state.isLogin ? (
-        <header className="bg-navBg py-1 text-light-silver w-full sticky top-0">
+        <Indo className="bg-navBg py-1 text-light-silver w-full sticky top-0">
           <div className="mx-5 flex justify-between items-center">
             <Link to={"/landing-page"} className="flex flex-row w-32">
               <img src={logoGuns} />
@@ -187,7 +187,7 @@ const Header = () => {
               </ul>
             </nav>
           </div>
-        </header>
+        </Indo>
       ) : (
         <header className="bg-navBg py-1 text-light-silver w-full sticky top-0">
           <div className="mx-5 flex justify-between items-center">
@@ -198,22 +198,22 @@ const Header = () => {
               <ul className="flex space-x-3">
                 <li className="p-2 hover:p-2 hover:text-mikado-yellow hover:ring-2 hover:ring-mikado-yellow hover:rounded-lg hover:underline">
                   <a href="#herosection" className="">
-                    Home
+                    Beranda
                   </a>
                 </li>
                 <li className="p-2 hover:p-2 hover:text-mikado-yellow hover:ring-2 hover:ring-mikado-yellow hover:rounded-lg hover:underline">
                   <a href="#aboutus" className=" ">
-                    About Us
+                    Tentang Kami
                   </a>
                 </li>
                 <li className="p-2 hover:p-2 hover:text-mikado-yellow hover:ring-2 hover:ring-mikado-yellow hover:rounded-lg hover:underline">
                   <a href="#servicesection" className=" ">
-                    Service
+                    Jasa
                   </a>
                 </li>
                 <li className="p-2 hover:p-2 hover:text-mikado-yellow hover:ring-2 hover:ring-mikado-yellow hover:rounded-lg hover:underline">
                   <a href="#partnersection" className=" ">
-                    Partners
+                    Mitra
                   </a>
                 </li>
                 {/* <li className="p-2 hover:p-2 hover:text-mikado-yellow hover:ring-2 hover:ring-mikado-yellow hover:rounded-lg hover:underline"><a href="#testimonialsection" className=" ">Testimonials</a></li> */}
@@ -227,7 +227,7 @@ const Header = () => {
                       document.getElementById("modalAlert").showModal()
                     }
                   >
-                    Reservations
+                    Reservasi
                   </button>
                 </li>
 
@@ -249,7 +249,7 @@ const Header = () => {
                         <form method="dialog">
                           {/* if there is a button, it will close the modal */}
                           <button className="hover:shadow hover:bg-navBg/10 hover:rounded-lg px-5 py-1 text-lg">
-                            No
+                            Tidak
                           </button>
                         </form>
                       </div>
@@ -258,7 +258,7 @@ const Header = () => {
                           className="bg-lightGreen hover:bg-textSuccess rounded-lg px-5 py-1 text-lg"
                           onClick={() => handleReservClick()}
                         >
-                          Yes
+                          Iya
                         </button>
                       </div>
                     </div>
@@ -268,13 +268,13 @@ const Header = () => {
 
                 <li className="p-2 hover:p-2 hover:text-mikado-yellow hover:ring-2 hover:ring-mikado-yellow hover:rounded-lg hover:underline">
                   <a href="#contactsection" className=" ">
-                    Contacts
+                    Kontak
                   </a>
                 </li>
 
                 <li className="dropdown dropdown-hover dropdown-bottom dropdown-end p-2 hover:p-2 hover:text-mikado-yellow hover:ring-2 hover:ring-mikado-yellow hover:rounded-lg hover:underline">
                   <div tabIndex={0} role="button" className="">
-                    <img src={EngFlag} alt="English" className="w-6" />
+                    <img src={IndoFlag} alt="Indonesia" className="w-6" />
                   </div>
                   <ul
                     tabIndex={0}
@@ -282,7 +282,7 @@ const Header = () => {
                   >
                     <li className="flex items-center">
                       <button onClick={handleChangeLanguage}>
-                        <img src={IndoFlag} alt="Indonesia" className="w-6" />
+                        <img src={EngFlag} alt="English" className="w-6" />
                       </button>
                     </li>
                   </ul>
@@ -296,11 +296,11 @@ const Header = () => {
                       document.getElementById("modalLogin").showModal()
                     }
                   >
-                    Login
+                    Masuk
                   </button>
                   <ModalUserLogin />
                 </li>
-                <li className="bg-mikado-yellow p-2 text-white font-semibold hover:bg-white hover:text-mikado-yellow rounded-sm">
+                <li className="bg-mikado-yellow py-2 px-4 text-white font-semibold hover:bg-white hover:text-mikado-yellow rounded-sm">
                   {/* You can open the modal using document.getElementById('ID').showModal() method */}
                   <button
                     className=" "
@@ -308,7 +308,7 @@ const Header = () => {
                       document.getElementById("modalRegister").showModal()
                     }
                   >
-                    Register
+                    Daftar
                   </button>
                   <ModalUserRegister />
                 </li>
@@ -321,4 +321,4 @@ const Header = () => {
   );
 };
 
-export default Header;
+export default HeaderIndo;

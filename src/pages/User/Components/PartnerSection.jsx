@@ -29,7 +29,7 @@ const PartnerSection = () => {
               width={150}
             />
           </div>
-          <h1 className="text-xl font-semibold mt-10">Asuransi</h1>
+          <h1 className="text-xl font-semibold mt-10">Insurance</h1>
           <div className="flex w-full justify-evenly px-20 mt-5 space-x-5">
             <img
               src="https://blog-media.lifepal.co.id/app/uploads/sites/2/2019/12/14130933/logo-sompo.jpeg"
@@ -48,7 +48,7 @@ const PartnerSection = () => {
               width={150}
             />
             <img
-              src="https://aaui.website/wp-content/uploads/2021/06/2PT-Asuransi-Binagriya-Upakara.png"
+              src="https://th.bing.com/th/id/OIP.qtO-OFfOe-9bgCDInYesigHaDt?rs=1&pid=ImgDetMain"
               width={150}
             />
           </div>

@@ -7,6 +7,7 @@ import HomePage from "./pages/Admin/HomePage";
 
 // USER PAGE
 import Home from "./pages/Home";
+import HomeIndo from "./pages/HomeIndo";
 import ReservationPage from "./pages/User/ReservationPage";
 import ProfilePage from "./pages/User/ProfilePage";
 import LandingPage from "./pages/User/LandingPage";
@@ -33,11 +34,13 @@ import CompanyPartners from "./pages/Admin/pages/CompanyPartners";
 import CompanyServices from "./pages/Admin/pages/CompanyServices";
 import AddPriceList from "./pages/Admin/pages/AddPriceList";
 import Laporan from "./pages/Admin/pages/Laporan";
+import { LanguageContext } from "./context/useLanguage";
 
 function App() {
   const navigate = useNavigate();
   const [state, dispatch] = useContext(UserContext);
   const [isLoading, setIsLoading] = useState(true);
+  const { state: languageState } = useContext(LanguageContext);
 
   const checkUser = async () => {
     try {
@@ -71,20 +74,33 @@ function App() {
     }
   }, []);
 
+  // useEffect(() => {
+  //   // Redirect Auth but just when isLoading is false
+  //   if (!isLoading) {
+  //     if (state.isLogin === false) {
+  //       navigate("/");
+  //       navigate("/id");
+  //     }
+  //   }
+  // }, [isLoading]);
   useEffect(() => {
-    // Redirect Auth but just when isLoading is false
-    if (!isLoading) {
-      if (state.isLogin === false) {
+    // Redirect jika pengguna belum login dan isLoading adalah false
+    if (!isLoading && !state.isLogin) {
+      // Cek bahasa yang dipilih
+      if (languageState.language === "indonesian") {
+        navigate("/id");
+      } else {
         navigate("/");
       }
     }
-  }, [isLoading]);
+  }, [isLoading, state.isLogin, navigate, languageState.language]);
 
   return (
     <>
       {isLoading ? null : (
         <Routes>
           <Route exact path="/" element={<Home />} />
+          <Route exact path="/id" element={<HomeIndo />} />
           <Route element={<PrivateRouteAdmin />}>
             <Route exact path="/admin-page" element={<HomePage />} />
             <Route exact path="/admin" element={<AuthPage />} />
