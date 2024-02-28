@@ -10,7 +10,7 @@ import ServiceStatisticIndo from "./Components/ServiceStatisticIndo";
 // import ContactSection from './Components/ContactSection'
 import FooterIndo from "./Components/FooterIndo";
 
-function LandingPage() {
+function LandingPageIndo() {
   return (
     <>
       <HeaderIndo />
@@ -27,4 +27,4 @@ function LandingPage() {
   );
 }
 
-export default LandingPage;
+export default LandingPageIndo;

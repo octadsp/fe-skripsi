@@ -51,7 +51,7 @@ const hubungan = [
   { id: 5, name: "Saudara", status: "A" },
 ];
 
-function FormReservation() {
+function FormReservationIndo() {
   const [state] = useContext(UserContext);
   const navigate = useNavigate();
   const [message, setMessage] = useState(null);
@@ -715,32 +715,32 @@ function FormReservation() {
         <div className="py-3 border-b-2 border-navBg">
           <ul className="flex gap-2">
             <li className="cursor-pointer">
-              <a onClick={() => navigate(-1)}>Home {">"}</a>
+              <a onClick={() => navigate(-1)}>Beranda {">"}</a>
             </li>
-            <li className="text-navBg">Reservation</li>
+            <li className="text-navBg">Reservasi</li>
           </ul>
         </div>
         {message && message}
         {/* Title */}
         <div className="py-7">
           <h1 className="text-3xl text-navBg font-medium">
-            Confirm your reservation
+            Konfirmasikan reservasi Anda
           </h1>
         </div>
 
         {/* CHECKBOX */}
         <div className="flex flex-col mb-3">
           <div>
-            <p>Do you want to use Insurance?</p>
+            <p>Apakah anda ingin menggunakan Asuransi?</p>
           </div>
           <div className="flex">
             <CheckBox
-              text={"Yes"}
+              text={"Iya"}
               checked={isChecked}
               onChange={(isChecked) => handleIsChecked(isChecked)}
             />
             <CheckBox
-              text={"No"}
+              text={"Tidak"}
               checked={!isChecked}
               onChange={(isChecked) => handleIsChecked(!isChecked)}
             />
@@ -761,7 +761,7 @@ function FormReservation() {
                 {/* Header Title */}
                 <div className="text-2xl text-navBg font-semibold mb-4">
                   <h1 className="underline underline-offset-8">
-                    Personal Data Information
+                    Informasi Data Diri
                   </h1>
                 </div>
                 {/* Content */}
@@ -769,21 +769,21 @@ function FormReservation() {
                   <InputForm
                     type="text"
                     placeholder="xxxx"
-                    label="Insured Name"
+                    label="Nama Tertanggung"
                     disabled={true}
                     value={state.user.fullname + " " + state.user.lastname}
                   />
                   <InputForm
                     type="text"
                     placeholder="profile kosong"
-                    label="Complete address"
+                    label="Alamat Lengkap"
                     disabled={true}
                     value={state.user.address}
                   />
                   <InputForm
                     type="number"
                     placeholder="xxxx"
-                    label="Mobile Number / Whatsapp"
+                    label="Nomor Handphone / Whatsapp"
                     disabled={true}
                     value={state.user.phone}
                   />
@@ -793,14 +793,14 @@ function FormReservation() {
                 {/* Data Asuransi */}
                 <div className="flex flex-col gap-1 w-full">
                   <label className="text-sm text-navBg">
-                    Insurance <span className="text-textError">*</span>
+                    Asuransi <span className="text-textError">*</span>
                   </label>{" "}
                   <select
                     onChange={(e) => handleAsuransiChange(e)}
                     className="bg-white text-navBg rounded-md p-2 border border-light-silver shadow"
                   >
                     <option disabled selected hidden value={""}>
-                      Select Insurance...
+                      Pilih Asuransi...
                     </option>
                     {asuransi?.map((item, index) => (
                       <option key={index} value={item.name}>
@@ -817,21 +817,21 @@ function FormReservation() {
                     {/* Header Title */}
                     <div className="text-2xl text-navBg font-semibold mb-4">
                       <h1 className="underline underline-offset-8">
-                        Vehicle Data
+                        Data Kendaraan
                       </h1>
                     </div>
                     {/* Content */}
                     <div className="flex flex-col gap-2">
                       <div className="flex flex-col gap-1 w-full">
                         <label className="text-sm text-navBg">
-                          Brand <span className="text-textError">*</span>
+                          Merek <span className="text-textError">*</span>
                         </label>
                         <select
                           onChange={(e) => handleSelectChange(e)}
                           className="bg-white text-navBg rounded-md p-2 border border-light-silver shadow"
                         >
                           <option disabled selected hidden>
-                            Select Brand
+                            Pilih Merek...
                           </option>
                           {merek?.map((item, index) => (
                             <option key={index} value={item.id}>
@@ -841,7 +841,7 @@ function FormReservation() {
                         </select>
                       </div>
                       <div className="flex flex-col gap-1 w-full">
-                        <label className="text-sm text-navBg">Type</label>
+                        <label className="text-sm text-navBg">Tipe</label>
                         <select
                           onChange={(e) => handleSelectClassChange(e)}
                           className="bg-white text-navBg rounded-md p-2 border border-light-silver shadow"
@@ -850,7 +850,7 @@ function FormReservation() {
                           {type && type.length > 0 ? (
                             <>
                               <option disabled selected hidden>
-                                Select Type
+                                Pilih tipe
                               </option>
                               {type?.map((item, index) => (
                                 <option key={index} value={item.id}>
@@ -860,7 +860,7 @@ function FormReservation() {
                             </>
                           ) : (
                             <option disabled selected value={false}>
-                              Choose a brand first
+                              Pilih merek terlebih dahulu
                             </option>
                           )}
                         </select>
@@ -868,14 +868,14 @@ function FormReservation() {
 
                       <div className="flex flex-col gap-1 w-full">
                         <label className="text-sm text-navBg">
-                          Years <span className="text-textError">*</span>
+                          Tahun <span className="text-textError">*</span>
                         </label>
                         <select
                           onChange={(e) => handleTahunChange(e)}
                           className="bg-white text-navBg rounded-md p-2 border border-light-silver shadow"
                         >
                           <option disabled selected hidden value="">
-                            Select Years
+                            Pilih tahun
                           </option>
                           {tahun?.map((item, index) => (
                             <option
@@ -890,7 +890,7 @@ function FormReservation() {
                       </div>
                       <div className="flex flex-col gap-1 w-full">
                         <label className="text-navBg text-sm">
-                          Color <span className="text-textError">*</span>
+                          Warna <span className="text-textError">*</span>
                         </label>
                         <input
                           type="text"
@@ -907,14 +907,15 @@ function FormReservation() {
                     {/* Header Title */}
                     <div className="text-2xl text-navBg font-semibold mb-4">
                       <h1 className="underline underline-offset-8">
-                        Description of the incident
+                        Keterangan - Keterangan Kejadian
                       </h1>
                     </div>
                     {/* Content */}
                     <div className="flex flex-col gap-2">
                       <div className="flex flex-col gap-1 w-full">
                         <label className="text-navBg text-sm">
-                          Event Date <span className="text-textError">*</span>
+                          Tanggal Kejadian{" "}
+                          <span className="text-textError">*</span>
                         </label>
                         <input
                           type="date"
@@ -926,7 +927,7 @@ function FormReservation() {
                       </div>
                       <div className="flex flex-col gap-1 w-full">
                         <label className="text-navBg text-sm">
-                          Place <span className="text-textError">*</span>
+                          Tempat <span className="text-textError">*</span>
                         </label>
                         <input
                           type="text"
@@ -938,7 +939,7 @@ function FormReservation() {
                       </div>
                       <div className="flex flex-col gap-1 w-full">
                         <label className="text-navBg text-sm">
-                          Time <span className="text-textError">*</span>
+                          Jam <span className="text-textError">*</span>
                         </label>
                         <input
                           type="time"
@@ -950,7 +951,7 @@ function FormReservation() {
                       </div>
                       <div className="flex flex-col gap-1 w-full">
                         <label className="text-navBg text-sm">
-                          Speed ( km/h ){" "}
+                          Kecepatan ( km/jam ){" "}
                         </label>
                         <input
                           type="number"
@@ -969,14 +970,14 @@ function FormReservation() {
                   {/* Header Title */}
                   <div className="text-2xl text-navBg font-semibold mb-4">
                     <h1 className="underline underline-offset-8">
-                      Name of Vehicle Driver
+                      Nama Pengemudi Kendaraan
                     </h1>
                   </div>
                   {/* Content */}
                   <div className="flex flex-col gap-2">
                     <div className="flex flex-col gap-1 w-full">
                       <label className="text-navBg text-sm">
-                        Full name <span className="text-textError">*</span>
+                        Nama Lengkap <span className="text-textError">*</span>
                       </label>
                       <input
                         type="text"
@@ -990,7 +991,7 @@ function FormReservation() {
                       {/* <SelectBoxReservation label="Hubungan dengan tertanggung" /> */}
                       <div className="flex flex-col gap-1 w-full">
                         <label className="text-sm text-navBg">
-                          Relationship with the insured{" "}
+                          Hubungan dengan tertanggung{" "}
                           <span className="text-textError">*</span>
                         </label>
                         <select
@@ -998,7 +999,7 @@ function FormReservation() {
                           className="bg-white text-navBg rounded-md p-2 border border-light-silver shadow"
                         >
                           <option disabled selected hidden value="">
-                            Choose your option...
+                            Pilih Hubungan...
                           </option>
                           {hubungan?.map((item, index) => (
                             <option key={index} value={item.name}>
@@ -1009,7 +1010,7 @@ function FormReservation() {
                       </div>
                       <div className="flex flex-col gap-1 w-full">
                         <label className="text-navBg text-sm">
-                          Age <span className="text-textError">*</span>
+                          Umur <span className="text-textError">*</span>
                         </label>
                         <input
                           type="number"
@@ -1023,7 +1024,7 @@ function FormReservation() {
                     <div className="flex gap-5">
                       <div className="flex flex-col gap-1 w-full">
                         <label className="text-navBg text-sm">
-                          Work <span className="text-textError">*</span>
+                          Pekerjaan <span className="text-textError">*</span>
                         </label>
                         <input
                           type="text"
@@ -1036,7 +1037,7 @@ function FormReservation() {
                       {/* <SelectBoxReservation label="Jenis Golongan SIM" /> */}
                       <div className="flex flex-col gap-1 w-full">
                         <label className="text-sm text-navBg">
-                          SIM (Driving License){" "}
+                          SIM (Surat Izin Mengemudi){" "}
                           <span className="text-textError">*</span>
                         </label>
                         <select
@@ -1044,7 +1045,7 @@ function FormReservation() {
                           className="bg-white text-navBg rounded-md p-2 border border-light-silver shadow"
                         >
                           <option disabled selected hidden value="">
-                            Choose your option...
+                            Pilih SIM...
                           </option>
                           {sim?.map((item, index) => (
                             <option key={index} value={item.name}>
@@ -1070,7 +1071,7 @@ function FormReservation() {
                         <span className="loading loading-spinner loading-md"></span>
                       </p>
                     ) : (
-                      "Submit"
+                      "Kirim"
                     )}
                   </button>
                 </div>
@@ -1090,7 +1091,7 @@ function FormReservation() {
                 {/* Header Title */}
                 <div className="text-2xl text-navBg font-semibold mb-4">
                   <h1 className="underline underline-offset-8">
-                    Personal Data Information
+                    Informasi Data Diri
                   </h1>
                 </div>
                 {/* Content */}
@@ -1098,21 +1099,21 @@ function FormReservation() {
                   <InputForm
                     type="text"
                     placeholder="xxxx"
-                    label="Insured Name"
+                    label="Nama Tertanggung"
                     disabled={true}
                     value={state.user.fullname + " " + state.user.lastname}
                   />
                   <InputForm
                     type="text"
                     placeholder="profile kosong"
-                    label="Complete address"
+                    label="Alamat Lengkap"
                     disabled={true}
                     value={state.user.address}
                   />
                   <InputForm
                     type="number"
                     placeholder="xxxx"
-                    label="Mobile Number / Whatsapp"
+                    label="Nomor Handphone / Whatsapp"
                     disabled={true}
                     value={state.user.phone}
                   />
@@ -1124,21 +1125,21 @@ function FormReservation() {
                   {/* Header Title */}
                   <div className="text-2xl text-navBg font-semibold mb-4">
                     <h1 className="underline underline-offset-8">
-                      Vehicle Data
+                      Data Kendaraan
                     </h1>
                   </div>
                   {/* Content */}
                   <div className="flex flex-col gap-2">
                     <div className="flex flex-col gap-1 w-full">
                       <label className="text-sm text-navBg">
-                        Brand <span className="text-textError">*</span>
+                        Merek <span className="text-textError">*</span>
                       </label>
                       <select
                         onChange={(e) => handleSelectChange(e)}
                         className="bg-white text-navBg rounded-md p-2 border border-light-silver shadow"
                       >
                         <option disabled selected hidden value={0}>
-                          Select Brand
+                          Pilih Merek...
                         </option>
                         {merek?.map((item, index) => (
                           <option key={index} value={item.id}>
@@ -1148,7 +1149,7 @@ function FormReservation() {
                       </select>
                     </div>
                     <div className="flex flex-col gap-1 w-full">
-                      <label className="text-sm text-navBg">Type</label>
+                      <label className="text-sm text-navBg">Tipe</label>
                       <select
                         onChange={(e) => handleSelectClassChange(e)}
                         className="bg-white text-navBg rounded-md p-2 border border-light-silver shadow"
@@ -1164,7 +1165,7 @@ function FormReservation() {
                           </>
                         ) : (
                           <option disabled selected value={false}>
-                            Choose a brand first
+                            Pilih merek terlebih dahulu
                           </option>
                         )}
                       </select>
@@ -1172,14 +1173,14 @@ function FormReservation() {
 
                     <div className="flex flex-col gap-1 w-full">
                       <label className="text-sm text-navBg">
-                        Year <span className="text-textError">*</span>
+                        Tahun <span className="text-textError">*</span>
                       </label>
                       <select
                         onChange={(e) => handleTahunChange(e)}
                         className="bg-white text-navBg rounded-md p-2 border border-light-silver shadow"
                       >
                         <option disabled selected hidden value="">
-                          Select Year
+                          Pilih tahun
                         </option>
                         {tahun?.map((item, index) => (
                           <option key={index} value={item.id} name={item.name}>
@@ -1190,7 +1191,7 @@ function FormReservation() {
                     </div>
                     <div className="flex flex-col gap-1 w-full">
                       <label className="text-navBg text-sm">
-                        Color <span className="text-textError">*</span>
+                        Warna <span className="text-textError">*</span>
                       </label>
                       <input
                         type="text"
@@ -1216,7 +1217,7 @@ function FormReservation() {
                           <span className="loading loading-spinner loading-md"></span>
                         </p>
                       ) : (
-                        "Submit"
+                        "Kirim"
                       )}
                     </button>
                   </div>
@@ -1231,4 +1232,4 @@ function FormReservation() {
   );
 }
 
-export default FormReservation;
+export default FormReservationIndo;

@@ -83,33 +83,33 @@ const HeaderIndo = () => {
               <ul className="flex space-x-3">
                 <li className="p-2 hover:p-2 hover:text-mikado-yellow hover:ring-2 hover:ring-mikado-yellow hover:rounded-lg hover:underline">
                   <a href="#herosection" className="">
-                    Home
+                    Beranda
                   </a>
                 </li>
                 <li className="p-2 hover:p-2 hover:text-mikado-yellow hover:ring-2 hover:ring-mikado-yellow hover:rounded-lg hover:underline">
                   <a href="#aboutus" className=" ">
-                    About Us
+                    Tentang Kami
                   </a>
                 </li>
                 <li className="p-2 hover:p-2 hover:text-mikado-yellow hover:ring-2 hover:ring-mikado-yellow hover:rounded-lg hover:underline">
                   <a href="#servicesection" className=" ">
-                    Service
+                    Jasa
                   </a>
                 </li>
                 <li className="p-2 hover:p-2 hover:text-mikado-yellow hover:ring-2 hover:ring-mikado-yellow hover:rounded-lg hover:underline">
                   <a href="#partnersection" className=" ">
-                    Partners
+                    Mitra
                   </a>
                 </li>
                 {/* <li className="p-2 hover:p-2 hover:text-mikado-yellow hover:ring-2 hover:ring-mikado-yellow hover:rounded-lg hover:underline"><a href="#testimonialsection" className=" ">Testimonials</a></li> */}
                 <li className="p-2 hover:p-2 hover:text-mikado-yellow hover:ring-2 hover:ring-mikado-yellow hover:rounded-lg hover:underline">
-                  <Link to={"/reservation-page"} className=" ">
-                    Reservations
+                  <Link to={"/reservation-page/id"} className=" ">
+                    Reservasi
                   </Link>
                 </li>
                 <li className="p-2 hover:p-2 hover:text-mikado-yellow hover:ring-2 hover:ring-mikado-yellow hover:rounded-lg hover:underline">
                   <a href="#contactsection" className=" ">
-                    Contacts
+                    Kontak
                   </a>
                 </li>
                 <li className="dropdown dropdown-hover dropdown-bottom dropdown-end p-2 hover:p-2 hover:text-mikado-yellow hover:ring-2 hover:ring-mikado-yellow hover:rounded-lg hover:underline">
@@ -163,7 +163,7 @@ const HeaderIndo = () => {
                                     updateNotificationStatus(item.id)
                                   }
                                 >
-                                  View
+                                  Lihat
                                 </button>
                               </div>
                             </div>
