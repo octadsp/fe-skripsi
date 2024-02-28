@@ -185,7 +185,7 @@ const HeaderIndo = () => {
                           <span>
                             <FaUser />
                           </span>
-                          <Link to={"/profile"}>Profil</Link>
+                          <Link to={"/profile/id"}>Profil</Link>
                         </div>
                       </li>
                       <div className="ring-1 ring-light-silver"></div>

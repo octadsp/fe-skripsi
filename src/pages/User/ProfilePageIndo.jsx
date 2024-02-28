@@ -23,7 +23,7 @@ const formatDate = (dateString) => {
   return `${day} ${monthName} ${year}`;
 };
 
-function ProfilePage() {
+function ProfilePageIndo() {
   const [state] = useContext(UserContext);
   // console.log("🚀 ~ ProfilePage ~ state:", state.user.id)
   const [openTab, setOpenTab] = useState(1);
@@ -195,7 +195,7 @@ function ProfilePage() {
                         .showModal()
                     }
                   >
-                    edit
+                    ubah
                   </button>
                 </div>
                 <EditModal />
@@ -206,12 +206,12 @@ function ProfilePage() {
             <div className="w-4/6 h-full text-navBg flex flex-col py-5 px-10 shadow-md border justify-center border-light-silver rounded-lg">
               <div className="border-b border-b-light-silver my-2"></div>
               <div className="flex gap-10 w-full py-3">
-                <p className="w-1/4 font-semibold text-xl">First Name</p>
+                <p className="w-1/4 font-semibold text-xl">Nama Depan</p>
                 <p className="text-xl font-semibold">: {form.fullname}</p>
               </div>
               <div className="border-b border-b-light-silver my-2"></div>
               <div className="flex gap-10 w-full py-3">
-                <p className="w-1/4 font-semibold text-xl">Last Name</p>
+                <p className="w-1/4 font-semibold text-xl">Nama Belakang</p>
                 <p className="text-xl font-semibold">: {form.lastname}</p>
               </div>
               <div className="border-b border-b-light-silver my-2"></div>
@@ -221,7 +221,7 @@ function ProfilePage() {
               </div>
               <div className="border-b border-b-light-silver my-2"></div>
               <div className="flex gap-10 w-full py-3">
-                <p className="w-1/4 font-semibold text-xl">Address</p>
+                <p className="w-1/4 font-semibold text-xl">Alamat</p>
                 <p className="text-xl font-semibold">: {form.address}</p>
               </div>
               <div className="border-b border-b-light-silver my-2"></div>
@@ -235,7 +235,7 @@ function ProfilePage() {
             {/* TITLE */}
             <div className="flex justify-center pb-4 mb-5">
               <h1 className="text-navBg text-3xl font-bold">
-                History Reservation
+                Histori Reservasi
               </h1>
             </div>
 
@@ -262,7 +262,7 @@ function ProfilePage() {
                         : "px-10 py-2 text-navBg/50 cursor-pointer"
                     }
                   >
-                    Process
+                    Proses
                   </a>
                 </li>
                 <li>
@@ -274,7 +274,7 @@ function ProfilePage() {
                         : "px-10 py-2 text-navBg/50 cursor-pointer"
                     }
                   >
-                    Finished
+                    Selesai
                   </a>
                 </li>
               </ul>
@@ -295,8 +295,8 @@ function ProfilePage() {
                                 {formatDate(item.created_at)}
                               </h1>
                               <p className="mt-3 text-sm">
-                                Brand vehicles {item.car_brand} with type{" "}
-                                {item.car_type} colored {item.car_color}
+                                Kendaraan merek {item.car_brand} dengan tipe{" "}
+                                {item.car_type} berwarna {item.car_color}
                               </p>
                             </div>
                             <div>
@@ -311,7 +311,9 @@ function ProfilePage() {
                     </div>
                   ) : (
                     <div className="flex justify-center bg-light-gray/30 p-5 rounded-box shadow">
-                      <div className="text-lg text-navBg/60">No data</div>
+                      <div className="text-lg text-navBg/60">
+                        Tidak ada data
+                      </div>
                     </div>
                   )}
                 </div>
@@ -329,7 +331,7 @@ function ProfilePage() {
                               : "px-10 py-2 text-navBg/50 cursor-pointer"
                           }
                         >
-                          Not Checked Yet
+                          Belum Dicek
                         </a>
                       </li>
                       <li>
@@ -341,7 +343,7 @@ function ProfilePage() {
                               : "px-10 py-2 text-navBg/50 cursor-pointer"
                           }
                         >
-                          Check Confirmation
+                          Konfirmasi Pengecekan
                         </a>
                       </li>
                       <li>
@@ -365,7 +367,7 @@ function ProfilePage() {
                               : "px-10 py-2 text-navBg/50 cursor-pointer"
                           }
                         >
-                          Being repaired
+                          Sedang Diperbaiki
                         </a>
                       </li>
                     </ul>
@@ -385,14 +387,14 @@ function ProfilePage() {
                                   {formatDate(item.created_at)}
                                 </h1>
                                 <p className="mt-3 text-sm">
-                                  Brand vehicles {item.car_brand} with type{" "}
-                                  {item.car_type} colored {item.car_color}
+                                  Kendaraan merek {item.car_brand} dengan tipe{" "}
+                                  {item.car_type} berwarna {item.car_color}
                                 </p>
                               </div>
                               <div>
                                 <div className="flex flex-col items-center">
                                   {getStatusIcon(item.status)}
-                                  <div>Process</div>
+                                  <div>{item.status}</div>
                                 </div>
                               </div>
                             </div>
@@ -412,7 +414,9 @@ function ProfilePage() {
                       </div>
                     ) : (
                       <div className="flex justify-center bg-light-gray/30 p-5 rounded-box shadow">
-                        <div className="text-lg text-navBg/60">No data</div>
+                        <div className="text-lg text-navBg/60">
+                          Tidak ada data
+                        </div>
                       </div>
                     )}
                   </div>
@@ -432,14 +436,14 @@ function ProfilePage() {
                                   {formatDate(item.created_at)}
                                 </h1>
                                 <p className="mt-3 text-sm">
-                                  Brand vehicles {item.car_brand} with type{" "}
-                                  {item.car_type} colored {item.car_color}
+                                  Kendaraan merek {item.car_brand} dengan tipe{" "}
+                                  {item.car_type} berwarna {item.car_color}
                                 </p>
                               </div>
                               <div>
                                 <div className="flex flex-col items-center">
                                   {getStatusIcon(item.status)}
-                                  <div>Process</div>
+                                  <div>{item.status}</div>
                                 </div>
                               </div>
                             </div>
@@ -459,7 +463,9 @@ function ProfilePage() {
                       </div>
                     ) : (
                       <div className="flex justify-center bg-light-gray/30 p-5 rounded-box shadow">
-                        <div className="text-lg text-navBg/60">No data</div>
+                        <div className="text-lg text-navBg/60">
+                          Tidak ada data
+                        </div>
                       </div>
                     )}
                   </div>
@@ -479,14 +485,14 @@ function ProfilePage() {
                                   {formatDate(item.created_at)}
                                 </h1>
                                 <p className="mt-3 text-sm">
-                                  Brand vehicles {item.car_brand} with type{" "}
-                                  {item.car_type} colored {item.car_color}
+                                  Kendaraan merek {item.car_brand} dengan tipe{" "}
+                                  {item.car_type} berwarna {item.car_color}
                                 </p>
                               </div>
                               <div>
                                 <div className="flex flex-col items-center">
                                   {getStatusIcon(item.status)}
-                                  <div>Process</div>
+                                  <div>{item.status}</div>
                                 </div>
                               </div>
                             </div>
@@ -506,7 +512,9 @@ function ProfilePage() {
                       </div>
                     ) : (
                       <div className="flex justify-center bg-light-gray/30 p-5 rounded-box shadow">
-                        <div className="text-lg text-navBg/60">No data</div>
+                        <div className="text-lg text-navBg/60">
+                          Tidak ada data
+                        </div>
                       </div>
                     )}
                   </div>
@@ -526,14 +534,14 @@ function ProfilePage() {
                                   {formatDate(item.created_at)}
                                 </h1>
                                 <p className="mt-3 text-sm">
-                                  Brand vehicles {item.car_brand} with type{" "}
-                                  {item.car_type} colored {item.car_color}
+                                  Kendaraan merek {item.car_brand} dengan tipe{" "}
+                                  {item.car_type} berwarna {item.car_color}
                                 </p>
                               </div>
                               <div>
                                 <div className="flex flex-col items-center">
                                   {getStatusIcon(item.status)}
-                                  <div>Process</div>
+                                  <div>{item.status}</div>
                                 </div>
                               </div>
                             </div>
@@ -553,7 +561,9 @@ function ProfilePage() {
                       </div>
                     ) : (
                       <div className="flex justify-center bg-light-gray/30 p-5 rounded-box shadow">
-                        <div className="text-lg text-navBg/60">No data</div>
+                        <div className="text-lg text-navBg/60">
+                          Tidak ada data
+                        </div>
                       </div>
                     )}
                   </div>
@@ -575,14 +585,14 @@ function ProfilePage() {
                                 {formatDate(item.created_at)}
                               </h1>
                               <p className="mt-3 text-sm">
-                                Brand vehicles {item.car_brand} with type{" "}
-                                {item.car_type} colored {item.car_color}
+                                Kendaraan merek {item.car_brand} dengan tipe{" "}
+                                {item.car_type} berwarna {item.car_color}
                               </p>
                             </div>
                             <div>
                               <div className="flex flex-col items-center">
                                 {getStatusIcon(item.status)}
-                                <div>Finished</div>
+                                <div>{item.status}</div>
                               </div>
                             </div>
                           </div>
@@ -603,7 +613,9 @@ function ProfilePage() {
                     </div>
                   ) : (
                     <div className="flex justify-center bg-light-gray/30 p-5 rounded-box shadow">
-                      <div className="text-lg text-navBg/60">No data</div>
+                      <div className="text-lg text-navBg/60">
+                        Tidak ada data
+                      </div>
                     </div>
                   )}
                 </div>
@@ -616,4 +628,4 @@ function ProfilePage() {
   );
 }
 
-export default ProfilePage;
+export default ProfilePageIndo;

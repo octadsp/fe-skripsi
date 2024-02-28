@@ -11,6 +11,7 @@ import HomeIndo from "./pages/HomeIndo";
 import ReservationPage from "./pages/User/ReservationPage";
 import ReservationPageIndo from "./pages/User/ReservationPageIndo";
 import ProfilePage from "./pages/User/ProfilePage";
+import ProfilePageIndo from "./pages/User/ProfilePageIndo";
 import LandingPage from "./pages/User/LandingPage";
 import LandingPageIndo from "./pages/User/LandingPageIndo";
 import DetailReservation from "./pages/User/Components/DetailReservation";
@@ -116,6 +117,7 @@ function App() {
               element={<ReservationPageIndo />}
             />
             <Route exact path="/profile" element={<ProfilePage />} />
+            <Route exact path="/profile/id" element={<ProfilePageIndo />} />
             <Route
               exact
               path="/detail-reservation/:id"
