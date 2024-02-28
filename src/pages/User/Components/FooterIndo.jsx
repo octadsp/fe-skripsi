@@ -14,7 +14,7 @@ const Footer = () => {
         <div className="w-5/12 px-12">
           <div className="flex flex-col bg-white/10 rounded-xl pl-3 pr-6 py-5 text-white">
             <div className="flex justify-center mb-3">
-              <h1 className="text-xl font-bold">Contact Info</h1>
+              <h1 className="text-xl font-bold">Info kontak</h1>
             </div>
             <div className="flex flex-col gap-3">
               {/* ADDRESS */}
@@ -44,15 +44,15 @@ const Footer = () => {
                 <p className="text-xs">gunspaintbodyrepair@gmail.com</p>
               </div>
 
-              <h1 className="font-semibold ml-12 mt-5">Opening Hours</h1>
+              <h1 className="font-semibold ml-12 mt-5">Jam buka</h1>
               {/* OFFICE HOURS */}
               <div className="flex gap-2">
                 <div className="w-10 flex justify-center items-center">
                   <img src={ClockIcon} className="w-[35px]" />
                 </div>
                 <div className="flex flex-col gap-1 text-sm">
-                  <p className="">Monday - Saturday : 09.00-17.00</p>
-                  <p className="">Sunday : Closed</p>
+                  <p className="">Senin - Sabtu : 09.00-17.00</p>
+                  <p className="">Minggu : Tutup</p>
                 </div>
               </div>
             </div>
@@ -65,7 +65,7 @@ const Footer = () => {
 
       <div className="container mx-auto flex justify-center bg-white/10 text-white rounded-lg">
         <p className="px-2">
-          &copy; 2023 Car Repair Workshop. All rights reserved.
+          &copy; 2023 Bengkel Reparasi Mobil. Seluruh hak cipta.
         </p>
         <div>
           <div>

@@ -1,27 +1,27 @@
 import HeaderIndo from "./Components/HeaderIndo";
-import HeroSection from "./Components/HeroSection";
-import PartnerSection from "./Components/PartnerSection";
-import AboutUs from "./Components/AboutUs";
-import ServiceOverviewSection from "./Components/ServiceOverviewSection";
-import ServicesSection from "./Components/ServiceSection";
-import TrademarkSection from "./Components/TrademarkSection";
-import ServiceStatistic from "./Components/ServiceStatistic";
+import HeroSectionIndo from "./Components/HeroSectionIndo";
+import PartnerSectionIndo from "./Components/PartnerSectionIndo";
+import AboutUsIndo from "./Components/AboutUsIndo";
+import ServiceOverviewSectionIndo from "./Components/ServiceOverviewSectionIndo";
+import ServicesSectionIndo from "./Components/ServiceSectionIndo";
+import TrademarkSectionIndo from "./Components/TrademarkSectionIndo";
+import ServiceStatisticIndo from "./Components/ServiceStatisticIndo";
 // import TestimonialSection from './Components/TestimonialSection'
 // import ContactSection from './Components/ContactSection'
-import Footer from "./Components/Footer";
+import FooterIndo from "./Components/FooterIndo";
 
 function LandingPage() {
   return (
     <>
       <HeaderIndo />
-      <HeroSection />
-      <PartnerSection />
-      <AboutUs />
-      <ServiceOverviewSection />
-      <ServicesSection />
-      <TrademarkSection />
-      <ServiceStatistic />
-      <Footer />
+      <HeroSectionIndo />
+      <PartnerSectionIndo />
+      <AboutUsIndo />
+      <ServiceOverviewSectionIndo />
+      <ServicesSectionIndo />
+      <TrademarkSectionIndo />
+      <ServiceStatisticIndo />
+      <FooterIndo />
       {/* <TestimonialSection /> */}
     </>
   );
