@@ -173,8 +173,13 @@ const HeaderIndo = () => {
                     </div>
                   </div>
                   <div className="dropdown dropdown-hover dropdown-end">
-                    <div tabIndex={0} role="button">
-                      <AvatarProfile width={40} state={state} />
+                    <div
+                      tabIndex={0}
+                      role="button"
+                      className="flex flex-col items-center"
+                    >
+                      <AvatarProfile width={25} state={state} />
+                      <h1 className="text-xs">{state.user.fullname}</h1>
                     </div>
                     <ul
                       tabIndex={0}
